@@ -6,11 +6,12 @@ import { Component, Input, OnInit } from '@angular/core';
 import { saveAs } from 'file-saver';
 import { of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { KitService } from 'src/app/modules/registro/kits/services/kit.service';
 import { UiService } from 'src/app/services/ui.service';
 import { b64toBlob, NewID } from 'src/app/utils/utils';
 import { environment } from 'src/environments/environment';
 
-import { KitService } from 'src/app/pages/home/kits/services/kit.service';
+
 
 
 

@@ -1,8 +1,9 @@
-import { Cuaderno, ResponseCuaderno } from './../pages/home/cuadernos/interface/cuaderno.interface';
+
 import { HttpClient } from '@angular/common/http';
 
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import { Cuaderno, ResponseCuaderno } from '../modules/registro/cuadernos/interface/cuaderno.interface';
 
 
 @Injectable({

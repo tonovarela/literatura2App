@@ -1,7 +1,8 @@
 import { AfterViewInit, ElementRef, Input ,Component, OnInit, ViewChild,} from '@angular/core';
-import { Impresion } from 'src/app/interfaces/impresion.interface';
-import  * as printJS  from 'print-js';
+
+
 import { HttpClient } from '@angular/common/http';
+import { Impresion } from 'src/app/interfaces/shared/impresion.interface';
 
 @Component({
   selector: 'app-view-impresion',

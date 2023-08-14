@@ -8,10 +8,6 @@ import { TopbarComponent } from './topbar/topbar.component';
 import { ContadorComponent } from './contador/contador.component';
 import { ErrorIndicadorDirective } from './directives/error-indicador.directive';
 
-
-
-
-
 @NgModule({
   declarations: [
     FooterComponent,

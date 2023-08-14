@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { ResponsePreEtiqueta } from '../pages/confeccion/conteo/interfaces/interfaces';
+import { ResponsePreEtiqueta } from '../modules/confeccion/conteo/interfaces/conteo.interfaces';
+//import { ResponsePreEtiqueta } from '../pages/confeccion/conteo/interfaces/interfaces';
+
 
 @Injectable({
   providedIn: 'root'

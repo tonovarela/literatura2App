@@ -1,4 +1,4 @@
-import { AfterContentInit, AfterViewInit, Component, OnInit } from '@angular/core';
+import {  AfterViewInit, Component, OnInit } from '@angular/core';
 declare function iniciar_plugins() :any;
 @Component({
   selector: 'app-pages',
@@ -6,12 +6,10 @@ declare function iniciar_plugins() :any;
   styles: [
   ]
 })
-export class PagesComponent implements OnInit, AfterViewInit ,AfterContentInit{
+export class PagesComponent implements OnInit, AfterViewInit {
 
   constructor() { }
-  ngAfterContentInit(): void {
-    
-  }
+  
   ngAfterViewInit(): void {
     iniciar_plugins();    
   }

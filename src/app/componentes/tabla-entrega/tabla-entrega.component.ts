@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { LoteService } from '@services/lote.service';
 import { UiService } from '@services/ui.service';
-import { mdColors } from 'src/app/interfaces/colors';
+import { mdColors } from 'src/app/interfaces/shared/colors';
 
 @Component({
   selector: 'app-tabla-entrega',

@@ -1,4 +1,4 @@
-import { mdColors } from "src/app/interfaces/colors";
+import { mdColors } from "src/app/interfaces/shared/colors";
 import { groupBy } from "src/app/utils/utils";
 import { SeleccionSugerida, StackKits } from "../interfaces/interfaces";
 

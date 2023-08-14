@@ -1,10 +1,14 @@
-import { environment } from './../../environments/environment';
-import { ResponseKit, ResponseKitDetalle, ResponseRegistroKit, solicitudKit } from './../interfaces/kit.interfaces';
+
+
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { from } from 'rxjs';
 import { concatMap, map } from 'rxjs/operators';
-import { ResponseResiduosKit } from '../pages/confeccion/kits/pages/interface/interfaces';
+import { ResponseResiduosKit } from '../modules/confeccion/kits/pages/interface/interfaces';
+import { environment } from 'src/environments/environment.development';
+import { ResponseKitDetalle } from '../interfaces/shared/kit.interfaces';
+
+
 
 
 @Injectable({

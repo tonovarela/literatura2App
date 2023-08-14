@@ -4,7 +4,7 @@ import { GridAllModule, GridModule } from '@syncfusion/ej2-angular-grids';
 import { DropDownListAllModule } from '@syncfusion/ej2-angular-dropdowns';
 
 import { CalidadRoutingModule } from './calidad-routing.module';
-import { CalidadComponent } from './calidad.component';
+
 import { FormsModule } from '@angular/forms';
 
 import { EntregaComponent } from './pages/entrega/entrega.component';
@@ -22,7 +22,7 @@ import { ListadoInspeccionComponent } from './componentes/listado-inspeccion/lis
 
 @NgModule({
   declarations: [
-    CalidadComponent,        
+    
     EntregaComponent,
     InspeccionComponent,
     RevisionKitComponent,

@@ -2,7 +2,8 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ConfeccionService } from '@services/confeccion.service';
 import { WebsocketService } from '@services/websocket.service';
 import { Subscription } from 'rxjs';
-import { ResumenParte } from 'src/app/interfaces/confeccion.interface';
+import { ResumenParte } from 'src/app/interfaces/shared/confeccion.interface';
+
 
 @Component({
   selector: 'app-progreso-confeccion',

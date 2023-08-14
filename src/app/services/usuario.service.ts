@@ -3,7 +3,8 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { Usuario } from '../interfaces/usuario.interface';
+import { Usuario } from '../interfaces/shared/usuario.interface';
+//import { Usuario } from '../interfaces/usuario.interface';
 
 @Injectable({
   providedIn: 'root'

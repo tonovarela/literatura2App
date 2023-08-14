@@ -1,9 +1,9 @@
 import { environment } from './../../environments/environment';
-import { SolicitudCuaderno } from 'src/app/interfaces/solicitudCuaderno';
+
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { of } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { SolicitudCuaderno } from '../interfaces/shared/solicitudCuaderno';
+
 
 @Injectable({
   providedIn: 'root'

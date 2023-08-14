@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ConInspeccionComponent } from './pages/con-inspeccion/con-inspeccion.component';
-import { EntregaComponent } from './pages/entrega/entrega.component';
+
 import { InspeccionComponent } from './pages/inspeccion/inspeccion.component';
 import { SinInspeccionComponent } from './pages/sin-inspeccion/sin-inspeccion.component';
 

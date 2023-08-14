@@ -1,8 +1,10 @@
 import { CellModel, SpreadsheetComponent } from "@syncfusion/ej2-angular-spreadsheet";
 //import { ModelError, Registro } from "../interfaces/models";
 import { DateTime } from "luxon";
-import { solicitudKit } from "../interfaces/kit.interfaces";
-import { ErrorMensaje } from "../pages/home/kits/interfaces/kit.interface";
+//import { solicitudKit } from "../interfaces/kit.interfaces";
+import { ErrorMensaje } from "../modules/registro/kits/interfaces/kit.interface";
+import { solicitudKit } from "../interfaces/shared/kit.interfaces";
+//import { ErrorMensaje } from "../pages/home/kits/interfaces/kit.interface";
 
 
 const obtenerValorColumna = (spreadsheetObj: SpreadsheetComponent, i: number, j: number) => {
