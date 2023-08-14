@@ -14,6 +14,21 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "dist/literatura2-fase",
+            "allowedCommonJsDependencies": [
+              "bwip-js",
+              "xlsx",
+              "jsbarcode/bin/JsBarcode",
+              "pdfmake/build/pdfmake",
+              "pdfmake/build/vfs_fonts",
+              "lodash",              
+              "print-js",
+              "sweetalert2",
+              "moment",
+              "alasql",
+              "file-saver",
+              "socket.io-client",
+              "uuid"
+            ],
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -51,7 +66,13 @@
               "vendorChunk": true,
               "extractLicenses": false,
               "sourceMap": true,
-              "namedChunks": true
+              "namedChunks": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.development.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"

@@ -1,0 +1,28 @@
+<div class="row">
+    <div class="col-4">
+        <h1>{{print.titulo}}</h1>
+    </div>
+    <div class="col-4 ml-auto">
+        <div *ngIf="cargando; else mostrarControles;" class="spinner-border spinner-border-custom-1 text-primary  mt-3"
+            role="status"></div>
+        <ng-template #mostrarControles>
+            <button type="button" (click)="imprimir()" class="btn btn-primary btn-icon-square-sm mt-3"><i
+                    class="dripicons-print  "></i></button>
+            <button type="button" (click)="cargarInfo()" class="btn btn-secondary btn-icon-square-sm ml-2 mt-3"><i
+                    class="fas fa-sync   "></i></button>
+
+                    
+        </ng-template>
+
+    </div>
+
+
+</div>
+<div class="row">
+    <div class="col-12">
+        <div #container>
+
+        </div>
+    </div>
+
+</div>

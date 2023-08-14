@@ -1,0 +1,41 @@
+<app-pde-inactivo  *ngIf="!cargando && !tienePdeActivo"></app-pde-inactivo>
+<app-loader-spinner *ngIf="cargando"></app-loader-spinner>
+<!-- <div class="container-fluid" *ngIf="!cargando">    
+    <div class="row mb-2">             
+        <div class="col3">
+            <h2 class=" font-weight-bold ">Empaque</h2>
+        </div>
+        <div class="col-4 ml-auto">        
+            <div class="text-right" >                
+                <a class="btn btn-sm btn-info mt-3" (click)="cargarData()" role="button"><i class="fas fa-sync-alt   mr-2"></i>Actualizar</a>                
+            </div>            
+        </div>        
+        
+    </div>
+    <div class="row">        
+        <div class="col-12">
+            <ejs-grid [dataSource]='pdes'  
+            [filterSettings]="filterSettings"
+            allowReordering='true'
+            allowFiltering=true
+            allowPaging="true"
+            allowResizing="true"     
+            allowSorting="true"                
+                [pageSettings]='pageSettings' [height]="height">
+                <e-columns>                                        
+                    <e-column field='nombre' headerText='' [allowFiltering]=false width=15>
+                        <ng-template #template let-data>
+                            <span class="badge badge-outline-dark detalle_icon"  [routerLink]="['/pages/confeccion/kits/resumen',data.id_pde]" ><i class="fab fa-wpforms"></i></span>                            
+                        </ng-template>
+                    </e-column>                    
+                    <e-column field='nombre' headerText='Nombre' width=120></e-column>                                        
+                    <e-column field='fecha_entrega' headerText='Fecha entrega' width=120></e-column>                                                           
+                    <e-column field='totalEmpaque' headerText='Empaque' width=50>                       
+                    </e-column>>
+                </e-columns>
+            </ejs-grid>
+        </div>        
+    </div>
+
+
+</div> -->

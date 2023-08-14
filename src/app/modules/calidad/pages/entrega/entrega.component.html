@@ -1,0 +1,36 @@
+<div class="container-fluid">
+    <div class="row" *ngIf="cargando">
+        <app-loader-spinner></app-loader-spinner>
+    </div>
+    <div class="row" *ngIf="!cargando">        
+        <div class="col-sm-1">
+            <button type="button" (click)="regresar()" class="btn btn-outline-primary waves-effect waves-light btn-icon-square-sm mt-3 "><i
+                    class="mdi mdi-keyboard-backspace"></i></button>
+        </div>   
+        <div class="col-sm-11">
+            <div class="page-title-box">
+                <div class="row">
+                    <div class="col">
+                        <h4 class="page-title">Calidad</h4>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="javascript:void(0);" (click)="regresar()">PDE</a></li>
+                            <li class="breadcrumb-item active" active>Entrega</li>                            
+                        </ol>
+                    </div>                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" *ngIf="!cargando">                    
+        <div class="col-4  offset-4 mt-4">
+            <div *ngIf="lotesDetalle.length==0" class="alert alert-outline-secondary text-center" role="alert">
+                <strong> SIN REGISTRO DE ENTREGAS</strong>
+            </div>
+        </div>
+        <div class="col-8 offset-1">
+            <app-tabla-entrega *ngIf="lotesDetalle.length>0" [lotesDetalle]="lotesDetalle"  etiquetaDetalle="Ver inspección"  (irEntrega)="irInspeccion($event)"></app-tabla-entrega>            
+        </div>
+    </div>
+    
+</div>
+

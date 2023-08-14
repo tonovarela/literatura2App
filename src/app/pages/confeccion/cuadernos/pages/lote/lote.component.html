@@ -1,0 +1,18 @@
+<div class="container-fluid">  
+    <div class="row">
+        <div class="col-1">
+            <button type="button" (click)="regresar()"  class="btn btn-outline-primary waves-effect waves-light btn-icon-square-sm mt-2 "><i
+                    class="mdi mdi-keyboard-backspace"></i></button>
+        </div>       
+        <div class="col-2 ml-auto">
+            <div class="nav-link">
+                <a class=" btn btn-sm btn-soft-primary mt-3" (click)="actualizar()" *ngIf="actualizo" role="button"><i
+                        class="fas fa-save mr-2"></i>Actualizar</a>
+            </div>
+        </div>
+    </div>    
+    <div >
+        <app-tarimador [tarimas]="distribucion " [resumenConfeccion]=""  *ngIf="distribucion"
+        style="width: 100vw;" [maximoCajasPorTarima]="12"  (movioItem)="movioItem($event)" ></app-tarimador>
+    </div>      
+</div>

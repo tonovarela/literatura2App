@@ -1,0 +1,34 @@
+<div class="card-body"  >
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped mb-0 table-centered viewGeneral">
+            <thead>
+                <tr>
+                    <th class="fontView">NumpartPrd</th>
+                    <th class="fontView">#Libros</th>
+                    <th class="fontView">Descripción</th>
+                    <th class="fontView">Total</th>
+                    <th class="fontView">Pendientes</th>
+                    <th class="fontView">Armados</th>
+                    <th class="fontView">Revisados</th>
+                    <th class="fontView">Empacados</th>                                        
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let kit of resumenKit">
+                    <td>{{kit.numpartprod}}</td>
+                    <td>{{kit.totalCuadernos}}</td>
+                    <td> {{kit.descripcion}}</td>
+                    <td class="text-center">
+                        <span class="badge badge-outline-dark total"> {{kit.total}}
+                        </span>
+                    </td>
+                    <td><span class="badge badge-outline-dark number">{{kit.pendientes}}</span></td>
+                    <td><span class="badge badge-outline-dark number">{{kit.armados}}</span></td>
+                    <td><span class="badge badge-outline-dark number">{{kit.porEmpacar}}</span></td>
+                    <td><span class="badge badge-outline-dark number">{{kit.empacados}}</span></td>                    
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+

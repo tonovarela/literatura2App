@@ -1,0 +1,47 @@
+datalist {
+  color: #0c213a;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.report-main-icon{
+  height: 42px!important;
+}
+.card-header{
+  padding: 0.3rem 1rem
+}
+
+
+/* .f-20 {
+  font-size: 20px;
+}
+
+.w-5 {
+  width: 5%;
+}
+
+.w-10 {
+  width: 10%;
+}
+
+.w-30 {
+  width: 30%;
+}
+
+.w-20 {
+  width: 20%;
+} */
+
+input, input::-webkit-input-placeholder {
+  font-size: 12px;
+}
+
+/* .th-inspeccion {
+  background-color: #373434 !important;
+  color: white !important;
+}
+
+th {
+  background-color: #12a4ed!important;
+  color: white !important;
+} */

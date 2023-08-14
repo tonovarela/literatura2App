@@ -1,0 +1,85 @@
+<div class="row">    
+    <div class="resum mt-5" style="position: absolute;left:1.4rem;top:35px;width: 25%">
+        <div class="container-fluid">
+            
+            <div class="row">                
+                <div class="col">
+                    <div class="card report-card">
+                        <div class="card-body tarjeta-kits" >
+                            <div class="row d-flex justify-content-center">
+                                <div class="col-6">
+                                    <p class="text-dark   mb-0 font-weight-semibold">TOTAL KITS</p>                                    
+                                </div>
+                                <div class="col-6">
+                                    <h3 class="m-0 ">{{ obtenerTotalKits()}}</h3>
+                                </div>                                
+                            </div>
+                            <hr class="hr-dashed" style="margin:4%">
+                            <div class="row">
+                                <div class="col-6 ">
+                                    <button type="button"   [disabled]="actualizo" (click)="ImpresionCajas('ALL')" class="btn  btn-xs btn-outline-pink waves-effect waves-light"><i class="fas fa-file-pdf  mr-2"></i>Cajas</button>
+                                </div>
+                                <div class="col-6">
+                                    <button type="button"  [disabled]="actualizo" (click)="ImpresionTarimas('ALL')" class="btn  btn-xs btn-outline-pink waves-effect waves-light " ><i class="fas fa-file-pdf  mr-2"></i>Tarimas</button>
+                                </div>
+                            </div>                            
+                        </div><!--end card-body--> 
+                    </div>
+                </div>
+            </div>
+        </div>            
+    </div>
+    <div class="col-sm-8 offset-sm-2">                        
+        <div class="nav-tabs-custom text-center ">            
+            <ul class="nav nav-tabs" role="tablist">                
+                <li class="nav-item">
+                    <a class="nav-link text-center "  [ngClass]="tabTarima('completas')" data-toggle="tab" href="#tarimas_completas" role="tab"
+                        ><i class="fas fa-box d-block"></i> <b>{{tarimas.completas.length}}</b>
+                        Tarimas completas
+                    </a>
+                    <span class="badge badge-outline-primary mt-1">Cajas {{ obtenerTotalCajasTarima(tarimas.completas)}}</span>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-center "  [ngClass]="tabTarima('incompletas')"  data-toggle="tab" href="#tarimas_incompletas" role="tab"
+                        ><i class="fas fa-boxes  d-block"></i><b>{{tarimas.mezcladas.length}}</b>
+                        Tarimas mezcladas
+                    </a>
+                    <span class="badge badge-outline-primary mt-1">Cajas {{ obtenerTotalCajasTarima(tarimas.mezcladas)}}</span>
+                </li>                
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+
+        <div class="tab-content">
+            <div class="tab-pane p-3 active"   [ngClass]="tabTarima('completas')" id="tarimas_completas" role="tabpanel">
+                <p class="mb-0 text-muted">
+                    <app-entarimado [tarimas]="tarimas.completas" [totalTarimas]="totalTarimas" 
+                    [actualizo]="actualizo"
+                    [pdesAsociados]="pdesAsociados"
+                        [maximoCajasPorTarima]="maximoCajasPorTarima" [puedeMoverCajas]="false"
+                        (eliminarTarimaDistribucion)="_eliminarTarimaDistribucion($event)"
+                        >
+                        
+                    </app-entarimado>
+                </p>
+            </div>
+            <div class="tab-pane p-3 "  [ngClass]="tabTarima('incompletas')" id="tarimas_incompletas" role="tabpanel">
+                <div class="mb-0 text-muted">
+                    <app-entarimado [tarimas]="tarimas.mezcladas" [totalTarimas]="totalTarimas"
+                        [actualizo]="actualizo"
+                        [pdesAsociados]="pdesAsociados"
+                        [maximoCajasPorTarima]="maximoCajasPorTarima" [puedeMoverCajas]="true"
+                        (apilar)="apilarCajasSugerencia()" (reset)="resetTarimasMezcladas()"
+                        (movioItem)="_movioItem($event)" (agregarTarima)="agregarTarima()"                        
+                        (eliminarCaja)="_eliminarCaja($event)"                        
+                        (eliminarTarima)="_eliminarTarima($event)">
+                    </app-entarimado>
+                </div>
+            </div>            
+        </div>
+    </div>
+    
+</div>

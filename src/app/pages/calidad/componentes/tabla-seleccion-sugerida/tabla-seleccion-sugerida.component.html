@@ -1,0 +1,107 @@
+
+<div class="row">
+                <div class="table-responsive">
+                    <hr>
+                    <table class="table mb-0">
+                        <thead>
+                            <tr>
+                                <th class="w-5">#</th>
+                                <th class="w-5">Número parte</th>
+                                <th class="w-10">Tarima</th>
+                                <th class="w-10">Caja</th>
+                                <th class="w-30" colspan="2">Kits a inspeccionar</th>
+                                <th class="w-5">Aceptados</th>
+                                <th class="w-5">Rechazados</th>
+                                <th class="w-20"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let seleccion of  CajasActivas ;let i=index">                                                                                                
+                                    <td scope="row">
+                                        <i class="fas fa-dot-circle   "
+                                            [ngStyle]="{'color':seleccion.colorHexadecimal}"></i>
+                                    </td>
+                                    <td>{{seleccion.nombreCaja | uppercase}} </td>
+                                    <td>{{seleccion.nombreTarima}}</td>
+                                    <td>Caja {{seleccion.numeroCaja}}</td>
+                                    <td>{{seleccion.totalKits}} kits </td>
+                                    <td>
+                                        <div class="input-group">
+                                            <input type="text" [(ngModel)]="seleccion.dataMatrixCode"
+                                                name="dataMatrix_{{seleccion.id_caja}}" disabled=disabled
+                                                 class="form-control">
+    
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <input type="text" [(ngModel)]="seleccion.aceptados" maxlength="2"
+                                            disabled="disabled"
+                                            
+                                            name="aceptado_{{seleccion.id_caja}}" class="form-control input-sm" />
+                                    </td>
+                                    <td>
+                                        <input type="text" [(ngModel)]="seleccion.rechazados" maxlength="2"
+                                            disabled="disabled"
+                                            
+                                            name="rechazado_{{seleccion.id_caja}}" class="form-control input-sm" />
+                                    </td>
+                                    <td>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i                                                        
+                                                        class="fas fa-comment-dots"></i></span>
+                                            </div>
+                                            <input type="text" maxlength="100" [(ngModel)]="seleccion.comentarios"
+                                                name="comentario_{{seleccion.id_caja}}" class="form-control"
+                                                disabled="disabled" placeholder="Comentarios">
+                                        </div>
+                                    </td>                                
+                            </tr>
+                            <tr *ngFor="let seleccion of  CajasInactivas  ;let i=index">
+                                
+                                <td scope="row">
+                                    <i class="fas fa-dot-circle   "
+                                        [ngStyle]="{'color':seleccion.colorHexadecimal}"></i>
+                                </td>
+                                <td>{{seleccion.nombreCaja | uppercase}}</td>
+                                <td>{{seleccion.nombreTarima}}</td>
+                                <td>Caja {{seleccion.numeroCaja}}</td>
+                                <td>{{seleccion.totalKits}} kits</td>
+                                <td>
+                                    <div class="input-group">
+                                        <input type="text" [(ngModel)]="seleccion.codeShadow"
+                                        [placeholder]="seleccion.dataMatrixCode"
+                                        disabled="disabled"
+                                            name="dataMatrix_{{seleccion.id_caja}}" 
+                                             class="form-control">
+
+                                    </div>
+                                </td>
+                                <td>
+                                    <input type="text" [(ngModel)]="seleccion.aceptados" maxlength="2"
+                                          disabled="disabled"                                       
+                                        name="aceptado_{{seleccion.id_caja}}" class="form-control input-sm" />
+                                </td>
+                                <td>
+                                    <input type="text" [(ngModel)]="seleccion.rechazados" maxlength="2"
+                                        disabled="disabled"                                        
+                                        name="rechazado_{{seleccion.id_caja}}" class="form-control input-sm" />
+                                </td>
+                                <td>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i                                                    
+                                                    class="fas fa-comment-dots"></i></span>
+                                        </div>
+                                        <input type="text" maxlength="100" [(ngModel)]="seleccion.comentarios"
+                                            name="comentario_{{seleccion.id_caja}}" class="form-control"
+                                            disabled="disabled" placeholder="Comentarios">
+                                    </div>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>

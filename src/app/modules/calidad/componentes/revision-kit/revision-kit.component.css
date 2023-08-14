@@ -1,0 +1,8 @@
+.mensaje-flotante {
+    left: 25%;
+    position: fixed;
+    top: 7px;
+    width: 65%;
+    z-index: 999
+  }
+ 

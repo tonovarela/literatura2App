@@ -1,0 +1,11 @@
+.etiqueta {
+    font-size: 1.2em;
+}
+
+.tarimador {
+    margin-top: 10px;
+    padding-top: 5px;
+    border: 2px solid #6794f8cc;
+    border-style: dashed;
+    border-radius: 10px;
+}

@@ -1,0 +1,297 @@
+<div class="container-fluid">
+    <hr>
+    <div class="row">
+        <div class="col-12">
+            <form [formGroup]="kitForm">
+                
+                <div *ngIf="kitForm.errors?.valoresUnicos==false" class="alert alert-danger border-0 mt-3" role="alert">
+                    <strong>Opps!</strong> No se pueden repetir skus en el contenido del kit.
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-1">
+                                <button type="button" (click)="router.navigateByUrl('/pages/kits/inicio')"
+                                    class="btn  btn-outline-primary waves-effect waves-light btn-icon-square-sm"><i
+                                        class="mdi mdi-keyboard-backspace"></i></button>
+
+                            </div>
+                            <div class="col-2">
+                                <h4 class="card-title">Kit: [{{kitForm.get("numparteprod").value}}]</h4>
+                            </div>
+                            <div class="col-2 ml-auto">
+                                <button type="button" (click)="agregarDetalle()"
+                                    class="btn btn-soft-primary waves-effect waves-light"><i
+                                        class="fas fa-plus mr-2"></i>Agregar cuaderno</button>
+
+                            </div>
+                            <div class="col-2 ">
+                                <button type="button" class="btn btn-outline-secondary" disabled
+                                    *ngIf="kitForm.invalid"><i class="far fa-save mr-2"></i>Guardar</button>
+                                <button type="button" class="btn btn-outline-primary " (click)="guardar()"
+                                    *ngIf="!kitForm.invalid"><i class="far fa-save mr-2"></i>Guardar</button>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <!--end card-header-->
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-6">
+
+                                
+
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label text-right">Núm parte</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" type="text" formControlName="numparte"
+                                            name="numparte" />
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label text-right">Edición</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" type="text" formControlName="edicion"
+                                            name="edicion">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label text-right">Clave kit 1</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" type="text" formControlName="clavekit"
+                                            name="clavekit" />
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label text-right">Clave kit 2</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" type="text" formControlName="clavekit2"
+                                            name="clavekit2" />
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label text-right">Identifica</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" type="text" formControlName="identifica"
+                                            name="identifica">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label text-right">Plataforma</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" type="text" formControlName="plataforma"
+                                            name="plataforma" />
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label text-right">Pr</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" type="text" formControlName="pr" name="pr" />
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label text-right">Indice</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" type="text" formControlName="indice"
+                                            name="indice" />
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label text-right">Idioma</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" error-indicador [valido]="!tieneErrorKit('idioma')"
+                                            type="text" formControlName="idioma" name="idioma" />
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label text-right">Cont1</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" type="text" formControlName="cont1" name="cont1" />
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label text-right">Cont2</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" type="text" formControlName="cont2" name="cont2" />
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label text-right">Vehiculo</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" type="text" formControlName="vehiculo"
+                                            name="vehiculo" />
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label text-right">Tipo</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" type="text" formControlName="tipo" name="tipo" />
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label text-right">Etiqueta</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" type="text" formControlName="etiqueta"
+                                            name="etiqueta" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <h4>Especificación en almacen</h4>
+                        <div class="row">                            
+                            <div class="col-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label text-right">Total por caja</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" type="text" formControlName="totalPorCaja"
+                                        error-indicador [valido]="!tieneErrorKit('totalPorCaja')"
+                                            name="totalPorCaja" />
+                                    </div>
+                                </div>                                                                
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label text-right">Orden de compra </label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" type="text" formControlName="orden_compra"
+                                        error-indicador [valido]="!tieneErrorKit('orden_compra')"
+                                            name="orden_compra" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end card-body-->
+                </div>
+
+                <div class="mt-1 row p-2 mb-3" style="background-color:rgba(176, 176, 176, 0.17);">
+                    <div class="col-4 animationSandbox  slideInRight  animated"
+                        *ngFor="let detalle of detallesArray.controls;let i=index">
+                        <div class="card ">
+                            <div class="card-header ">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <h4 class="card-title">Cuaderno {{i+1}}</h4>
+                                    </div>
+                                    <div class="col-2 ml-auto">
+                                        <button type="button" (click)="eliminarDetalle(i)"
+                                            class="btn btn-outline-danger btn-icon-circle-sm mr-5 "><i
+                                                class="ti-close   "></i></button>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!--end card-header-->
+                            <div class="card-body" [formGroup]="detalle">
+                                <div class="card-body ">
+
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label text-left">sku1</label>
+                                        <div class="col-sm-8">
+
+                                            
+                                                <!-- <ng-autocomplete 
+                                                  [data]="obtenerSkus(skusSugeridos[i])"                                                  
+                                                  searchKeyword="sku1"
+                                                  (selected)='colocarSugerencia($event,i)'
+                                                  (inputChanged)='autofillDescripcion(i)'                                                  
+                                                  [itemTemplate]="itemTemplate"                                                  
+                                                  formControlName="sku1"                                                  
+                                                  [notFoundTemplate]="notFoundTemplate">                                 
+                                                </ng-autocomplete>
+                                                
+                                                <ng-template #itemTemplate let-item>
+                                                <a [innerHTML]="item"></a>
+                                                </ng-template>
+                                                
+                                                <ng-template #notFoundTemplate let-notFound>
+                                                <div innerHTML="No se encontraron resultados"></div>
+                                                </ng-template> -->
+                                                
+                                            <input error-indicador [valido]="!tieneErrorDetalle(i,'sku1')"
+                                                (input)="autofillDescripcion(i)" (keydown.esc)="eliminarSugerencia(i)"                                                
+                                                list="i" class="form-control" type="text" formControlName="sku1" />                                                                                    
+
+                                            <div class="list-group sugerencias " >
+                                                <a  (click)="colocarSugerencia(skuSugerido,i)"                                                  
+                                                  *ngFor="let skuSugerido of skusSugeridos[i]"  type="button" class="list-group-item list-group-item-action"><i
+                                                        class="la la-arrow-right text-primary mr-2"></i>{{skuSugerido.sku1}} </a>                                                
+                                            </div>                                            
+                                        </div>
+
+
+
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label text-left">sku2</label>
+                                        <div class="col-sm-8">
+                                            <input class="form-control" type="text" formControlName="sku2" />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label required class="col-sm-4 col-form-label text-left">Descripción</label>
+                                        <div class="col-sm-8">
+                                            <input class="form-control" type="text" error-indicador
+                                                [valido]="!tieneErrorDetalle(i,'descripcion')"
+                                                formControlName="descripcion" />
+
+                                        </div>                                                                            
+                                    </div>
+                                    <div class="form-group row">
+                                        <label required class="col-sm-4 col-form-label text-left">Clasificación</label>
+                                        <div class="col-sm-8">
+                                            <input class="form-control" type="text" error-indicador
+                                                [valido]="!tieneErrorDetalle(i,'clasificacion')"
+                                                formControlName="clasificacion" />
+
+                                        </div>
+                                        </div>
+
+                                </div>
+                            </div>
+                            <!--end card -body-->
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="row">
+                    <div class="col-2 ml-auto">
+                        <button type="button" (click)="agregarDetalle()"
+                            class="btn btn-soft-primary waves-effect waves-light"><i
+                                class="fas fa-plus mr-2"></i>Agregar cuaderno</button>
+
+
+                    </div>
+                    <div class="col-2">
+                        <button type="button" class="btn btn-outline-secondary" disabled *ngIf="kitForm.invalid"><i
+                                class="far fa-save mr-2"></i>Guardar</button>
+                        <button type="button" class="btn btn-outline-primary" (click)="guardar()"
+                            *ngIf="!kitForm.invalid"><i class="far fa-save mr-2"></i>Guardar</button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+
+
+    </div>
+    <div class="row">
+        <hr>
+        <div class="col-12" id="footer">
+            <div *ngIf="kitForm.errors?.valoresUnicos==false" class="alert alert-danger border-0 mt-3" role="alert">
+                <strong>Opps!</strong> No se pueden repetir skus en el contenido del kit.
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- <pre> {{kitForm.value | json}}</pre> -->

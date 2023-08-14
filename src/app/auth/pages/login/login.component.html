@@ -1,0 +1,74 @@
+<body class="account-body accountbg">
+
+    <!-- Log In page -->
+    <div class="container">
+        <div class="row d-flex justify-content-center" style="height: 60vh !important;">
+            <div class="col-12 align-self-center">
+                <div class="row">
+                    <div class="col-lg-5 mx-auto">
+                        <div class="card">
+                            <div class="card-body p-0 auth-header-box">
+                                <div class="text-center p-3">
+                                    <a href="index.html" class="logo logo-admin">
+                                        <img src="assets/images/logos/Lito2.png" height="50" alt="logo"
+                                            class="auth-logo">
+                                    </a>
+
+                                </div>
+                            </div>
+                            <div class="card-body p-0">
+
+                                <!-- Tab panes -->
+                                <div class="tab-content">
+                                    <div class="tab-pane active p-3" id="LogIn_Tab" role="tabpanel">
+                                        <form class="form-horizontal auth-form" [formGroup]="loginForm"
+                                            (ngSubmit)="ingresar()">
+                                            <div class="form-group mb-2" 
+                                            [ngClass]="{ 'has-error': f.usuario.dirty && f.usuario.errors }"
+                                            >
+                                                <div class="input-group">
+                                                    <input type="text" autocomplete="off" formControlName="usuario"
+                                                        class="form-control" name="username" id="username"
+                                                        placeholder="Usuario">
+                                                </div>
+                                            </div>
+                                            <div class="form-group mb-2"
+                                            [ngClass]="{ 'has-error': f.password.dirty && f.password.errors }"
+                                            >
+                                                <div class="input-group">
+                                                    <input type="password" autocomplete="off" class="form-control"
+                                                        name="password" formControlName="password" id="userpassword"
+                                                        placeholder="Password">
+                                                </div>
+                                            </div>
+                                            <div class="form-group mb-0 row">
+                                                <div class="col-12">
+                                                    <button type="submit" [disabled]="loginForm.invalid"
+                                                        class="btn btn-primary btn-block waves-effect waves-light"                                                        
+                                                         >Ingresar <i
+                                                            class="fas fa-sign-in-alt ml-1"></i></button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <!--end card-body-->
+                            <div class="card-body bg-light-alt text-center">
+                                <span class="text-muted d-none d-sm-inline-block">© 2021 LITERATURA | LITOPROCESS
+                                </span>
+                            </div>
+                        </div>
+                        <!--end card-->
+                    </div>
+                    <!--end col-->
+                </div>
+                <!--end row-->
+            </div>
+            <!--end col-->
+        </div>
+        <!--end row-->
+    </div>
+    <!--end container-->
+    <!-- End Log In page -->

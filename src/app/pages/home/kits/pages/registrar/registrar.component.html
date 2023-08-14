@@ -1,0 +1,69 @@
+
+<div class="contanier-fluid">
+
+    <div class="row">
+    <div class="col-8">
+        <h4 class="page-title">Registro de Kits</h4>
+    </div>    
+    
+    <div class="col-2  ">        
+        <div class="row">            
+            <ul class="list-unstyled topbar-nav mb-0">
+                <li class="creat-btn">
+                    <div class="nav-link">                        
+                        <button class=" btn btn-sm btn-soft-primary" *ngIf="!cargando; else mostrarLoading "   (click)="registroKits()" role="button"><i
+                                class="fas fa-play mr-2"></i>Iniciar registro</button>
+                                <ng-template #mostrarLoading>
+                                    <div class="spinner-border spinner-border-custom-5 border-info" role="status"></div>
+                                </ng-template>
+                    </div>                    
+                </li>                    
+            </ul>
+        </div>
+    </div>
+    <div class="col-2  ">
+        <div class="row">
+            <ul class="list-unstyled topbar-nav mb-0">
+                <li class="creat-btn">
+                    <div class="nav-link">
+                        <button class=" btn btn-sm btn-soft-primary"  *ngIf="!cargando"  (click)="limpiarLayout()" role="button"><i
+                                class="fas fa-trash mr-2"></i>Limpiar layout</button>                                
+                    </div>                    
+                </li>                    
+            </ul>
+        </div>
+    </div>
+    </div>
+    <div class="row">
+        <div class="col-12 "> 
+            <ejs-spreadsheet     
+            class="pt-4"
+            [allowInsert]=false     
+            [sheets] = "spreadData"  
+            #spreadsheet [enableContextMenu]=false [showFormulaBar]="false"                   
+            [showRibbon]="false"  [showSheetTabs]="true"  [height]="spreadheight" >            
+        </ejs-spreadsheet>
+        </div>
+    </div>
+<hr>
+    
+<div class="row">    
+    <div class="col-3   ">
+        <app-contador etiqueta="Registro" subtitulo="Kit"  [success]="true"   [cuerpo]="TextoTotalKit"></app-contador>        
+    </div>
+    <div class="col-3">
+        <app-contador etiqueta="Con error " subtitulo="Kit" [success]="false" [cuerpo]="kitError.length"></app-contador>        
+    </div>        
+    <div class="col-3 ">
+        <app-contador etiqueta="Registro " subtitulo="Cuadernos" [success]="true"   [cuerpo]="TextoTotalDetalleKit"></app-contador>        
+    </div>
+    <div class="col-3">
+        <app-contador etiqueta="Con error"  subtitulo="Cuadernos" [success]="false" [cuerpo]="detalleKitError.length"></app-contador>        
+    </div>
+</div>
+
+
+
+
+    
+</div>

@@ -1,0 +1,97 @@
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-2">
+                <div class="custom-control custom-switch switch-pink">
+                    <input type="checkbox" class="custom-control-input" (change)="onReimpresionChange()" name=""
+                        [(ngModel)]="modoReimpresion" id="reimpresion" checked="">
+                    <label class="custom-control-label" for="reimpresion">Reimpresión</label>
+                </div>
+            </div>
+            <div class="col-2 ml-auto">
+                <h4 class="card-title"> Resumen</h4>
+            </div>
+            <!-- <div class="col-4 ml-auto" *ngIf="modoReimpresion; else impresionNormal "> -->
+                <div class="col-4 ml-auto" >
+                <div class="d-flex justify-content-end">
+                    <!-- <button class="btn btn-primary" type="button" disabled="" *ngIf="cargandoImpresion">
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span><span
+                            class="sr-only">Loading...</span>
+                    </button>
+                    <button type="button" *ngIf="existenConValor() && !cargandoImpresion" (click)="descargarConValor()"
+                        role="button" class="btn btn-sm btn-primary ">
+                        <i class="fas fa-file-pdf p-1"></i>Generar Re-impresión</button> -->
+                </div>
+            </div>
+            <!-- <ng-template #impresionNormal> -->
+                <div class="col-4 ml-auto">
+                    <div class="d-flex justify-content-end">
+                        <button class="btn btn-primary" type="button" disabled="" *ngIf="cargandoImpresion">
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span><span
+                                class="sr-only">Loading...</span>
+                        </button>
+                        <!-- <button type="button" *ngIf="existenSeleccionados() && !cargandoImpresion"
+                            (click)="descargarSeleccionados()" role="button" class="btn btn-sm btn-primary ">
+                            <i class="fas fa-file-pdf p-1"></i>Generar impresión</button> -->
+                    </div>
+                </div>
+            <!-- </ng-template> -->
+
+        </div>
+    </div>
+    <div class="card-body">
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Numparteprod</th>
+                    <th>Edición</th>
+                    <th>Clave kit</th>
+                    <th class="col-2">Idioma</th>
+                    <th>Plataforma</th>
+                    <th>TotalCajas</th>
+                    <th>Detalle </th>
+                    <th class="col-1">Total</th>
+                    <th>
+                        <!-- <div class="checkbox checkbox-success checkbox-circle" *ngIf="!modoReimpresion">
+                            <input [id]="id" (change)="onCheckboxChange($event)" type="checkbox">
+                            <label [for]="id">
+                            </label>
+                        </div> -->
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let r of resumenConfeccion">
+                    <td>{{r.numparteprod}}</td>
+                    <td>{{r.edicion}}</td>
+                    <td>{{r.clavekit}}</td>
+                    <td>{{r.idioma}}</td>
+                    <td>{{r.plataforma}}</td>
+                    <td>{{r.totalCajas}}</td>
+                    <td>{{r.detalle | resumenCajas}}</td>
+                    <td class="col-1">
+                        
+                        <input *ngIf="modoReimpresion; else confeccion" type="text" maxlength=4 [name]="r.numparteprod"
+                            [(ngModel)]="r.reimpresion" class="form-control input-sm reimpresiontxt" />
+                        <ng-template #confeccion>
+                            {{r.confeccion}}
+                        </ng-template>
+                    </td>
+                    <td class="col-1">
+                        <button  type="button" class="btn btn-xs btn-outline-pink waves-effect waves-light"  [disabled]="cargandoImpresion"  *ngIf="!modoReimpresion; else reimpresion" (click)="descargar(r,false)" ><i  class="fas fa-file-pdf "></i></button>                        
+                        <ng-template #reimpresion>
+                            <button  type="button" class="btn btn-xs btn-outline-pink waves-effect waves-light"  [disabled]="cargandoImpresion" *ngIf="esNumero(r.reimpresion)"  (click)="descargar(r,true)" ><i  class="fas fa-file-pdf "></i></button>                        
+                        </ng-template>
+                        <!-- <div class="checkbox checkbox-success checkbox-circle" *ngIf="!modoReimpresion">
+                            <input [id]="r.numparteprod" [(ngModel)]="r.seleccionado" type="checkbox" checked="">
+                            <label [for]="r.numparteprod">
+                            </label>
+                        </div> -->
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</div>

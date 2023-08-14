@@ -1,0 +1,52 @@
+<div class="container-fluid">
+<div class="row">
+    <h4 class="page-title">Kits</h4>
+    <hr>
+</div>
+    <div class="row">
+        <div class="col">
+            <ejs-grid [dataSource]='kits'  
+            [filterSettings]="filterSettings"
+            allowReordering='true'
+            allowFiltering=true
+            allowPaging="true"
+            allowResizing="true"     
+            allowSorting="true"                
+                [pageSettings]='pageSettings' [height]="height">
+
+                <e-columns>
+                    <e-column field='numparteprod' headerText='Numero part prod' width=150>
+                        <ng-template #template let-data>
+                            <a href="javascript:void(0);" (click)="verDetalle(data.id_kit)">{{data.numparteprod}}</a>
+                        </ng-template>
+                    </e-column>
+                    <e-column field='totalCuadernos' headerText='# cuadernos' width=80>
+                        <ng-template #template let-data>                            
+                            <span class="badge badge-soft-dark">{{data.totalCuadernos}}</span>
+                        </ng-template>
+                    </e-column>
+                    <e-column field='totalPorCaja' headerText='Total por caja' width=120></e-column>                    
+                    <e-column field='numparte' headerText='Número part' width=120></e-column>
+                    <e-column field='edicion' headerText='Edición' width=120></e-column>
+                    <e-column field='clavekit' headerText='Clave kit'  width=200></e-column>
+                    <e-column field='identifica' headerText='identifica'  width=200></e-column>
+                    <e-column field='plataforma' headerText='Plataforma'  width=200></e-column>
+                    <e-column field='pr' headerText='Pr' width=200></e-column>
+                    <e-column field='idioma' headerText='Idioma'  width=200></e-column>
+                    <e-column field='cont1' headerText='Cont1'  width=150></e-column>
+                    <e-column field='cont2' headerText='Cont2'  width=150></e-column>
+                    <e-column field='vehiculo' headerText='Vehiculo'  width=200></e-column>
+                    <e-column field='tipo' headerText='Tipo'  width=200></e-column>
+                    <e-column field='etiqueta' headerText='Etiqueta'  width=200></e-column>
+                    <e-column field='fecha_registro' headerText='Registro'  width=200>
+                    </e-column>
+                    <e-column field='fecha_actualización' headerText='Actualización'  width=200>
+                    </e-column>
+                </e-columns>
+
+            </ejs-grid>
+
+        </div>
+    </div>
+
+</div>

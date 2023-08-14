@@ -1,0 +1,44 @@
+
+.circle-one {
+	stroke-dasharray: 60;
+    stroke-width: 8;
+    stroke: #1761fd;
+    fill: transparent;
+    animation: 2s circleOne infinite;
+}
+
+@keyframes circleOne {
+	0% {
+		stroke-dasharray:60;
+	}
+	50% {
+		stroke-dasharray:30;
+	}
+	100% {
+		stroke-dasharray:60;
+		
+	}
+}
+
+
+.circle-two {
+	stroke-dasharray: 10;
+    stroke-width: 8;
+    stroke: #ff04e2;
+    fill: transparent;
+    animation: 2s circleTwo infinite;
+}
+
+@keyframes circleTwo {
+	0% {
+		stroke-dasharray:10;
+	}
+	50% {
+		stroke-dasharray:60;
+	}
+	100% {
+		stroke-dasharray:10;
+		
+	}
+} 
+

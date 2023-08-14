@@ -1,0 +1,129 @@
+<!-- <app-mensaje-estacion-bloquedada *ngIf="configuracionService.pausarSeleccion.habilitada"></app-mensaje-estacion-bloquedada> -->
+<div class="container-fluid">
+    <app-loader *ngIf="cargando"></app-loader>
+    <div class="" >
+        <div class="row mt-2">
+            <div class="col-1">
+                <button type="button" *ngIf="mostrarBack" (click)="irListado()" class="btn  btn-outline-primary waves-effect waves-light btn-icon-square-sm "><i
+                        class="mdi mdi-keyboard-backspace"></i></button>
+            </div>
+            <!-- <div class="col ">
+                <div class="">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" [ngClass]="{'active': selectedIndex == 1}" (click)="setSelected(1)" href="#resumen" role="tab" aria-selected="true">RESUMEN</a>
+                        </li>
+                    </ul>
+                </div>
+            </div> -->
+        </div>
+        <div class="tab-content">
+            <div class="row tab-pane active" [ngClass]="{'active': selectedIndex == 1}" id="resumen">
+                <div class="col-12">
+                    <div class="card mt-2">
+                        <div class="card-header">
+                            <div class="row align-items-center">
+                                <div class="col-11">
+                                    <div class="col">
+                                        <h3>{{pde.nombre}}</h3>
+                                    </div>
+                                </div>
+                                <div class="col ml-auto">
+                                    <button type="button" class="btn btn-primary btn-icon-square-sm" (click)="cambiarVista()">
+                                        <i class="fas"  [ngClass]="vistaToogle?'fa-th':'fa-th-large '" ></i>                                                                                            
+                                    </button>
+                                    <!-- <button class="btn btn-info btn-sm" (click)="cambiarPropuesta()">Cambiar propuesta</button> -->
+                                </div>
+                            </div>
+                        </div>
+                        <!--end card-header-->
+                        <div class="card-body" id="propuesta1" *ngIf="!vistaToogle">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped mb-0 table-centered viewGeneral">
+                                    <thead>
+                                        <tr>
+                                            <th class="fontView">NumpartPrd</th>
+                                            <th class="fontView">#Libros</th>
+                                            <th class="fontView">Descripción</th>
+                                            <th class="fontView">Total</th>
+                                            <th class="fontView">Pendientes</th>
+                                            <th class="fontView">Armados</th>
+                                            <th class="fontView">Revisados</th>
+                                            <th class="fontView">En tarima</th>
+                                            <!-- <th class="fontView">Estatus</th> -->
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let kit of resumenKit.resumenGeneral">
+                                            <td>{{kit.numpartprod}}</td>
+                                            <td>{{kit.totalCuadernos}}</td>
+                                            <td> {{kit.descripcion}}</td>
+                                            <td class="text-center">
+                                                <span class="badge badge-outline-dark total"> {{kit.total}}
+                                                </span>
+                                            </td>
+                                            <td><span class="badge badge-outline-dark number">{{kit.pendientes}}</span></td>
+                                            <td><span class="badge badge-outline-dark number">{{kit.armados}}</span></td>
+
+                                            <td><span class="badge badge-outline-dark number">{{kit.porEmpacar}}</span></td>
+                                            <td><span class="badge badge-outline-dark number">{{kit.empacados}}</span></td>
+                                            <!-- <td>
+                                                <span class="badge badge-success fontView p-2" *ngIf="kit.pendientes==0;else Incompleto">
+                                                    <i class="mdi mdi-check-all mr-2"></i>
+                                                    Completo</span>
+                                                <ng-template #Incompleto>
+                                                    <span class="badge badge-warning  p-2" style="font-size: 12px;" >Pendientes  <br>por armar</span>
+                                            
+                                                </ng-template>
+                                            </td> -->
+                                            <td class="text-center">
+                                                <a class="btn btn-sm btn-outline-primary waves-effect waves-light" *ngIf="puedeConfeccionarse(kit.numpartprod) && kit.pendientes>0" [routerLink]="['/pages/confeccion/cuadernos/revision',pde.id_pde,kit.numpartprod]"><i
+                                                        class="fas fa-diagnoses mr-2"></i>Confección</a>
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
+                        <div class="card-body" id="propuesta2" *ngIf="vistaToogle">
+                            <table class="table table-bordered table-striped mb-0 table-centered viewGeneral">
+                                <thead>
+                                    <th>NumpartPrd</th>
+                                    <th>Total </th>
+                                    <th>por Armar </th>
+                                    <th>Armados </th>
+                                    <th>por Revisar</th>
+                                    <th>Revisados</th>
+                                    <th></th>
+                                </thead>
+                                <tr *ngFor="let kit of resumenKit.resumenAlternativo">
+                                    <td>
+                                        {{kit.numpartprod}}
+                                    </td>
+                                    <td>
+                                        <span class="badge badge-outline-dark total">{{kit.total}}</span>
+                                    </td>
+                                    <td>
+                                        <span class="badge badge-outline-dark number">{{kit.porArmar}}</span>
+                                    </td>
+                                    <td><span class="badge badge-outline-dark number">{{kit.armados}}</span></td>
+                                    <td><span class="badge badge-outline-dark number">{{kit.porRevisar}}</span></td>
+                                    <td><span class="badge badge-outline-dark number">{{kit.revisados}}</span></td>
+                                    <td>
+                                        <a class="btn btn-sm btn-outline-primary waves-effect waves-light" *ngIf="puedeConfeccionarse(kit.numpartprod)" [routerLink]="['/pages/confeccion/cuadernos/revision',pde.id_pde,kit.numpartprod]"><i class="fas fa-diagnoses mr-2"></i>Confección</a>
+                                    </td>
+                                </tr>
+
+                            </table>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

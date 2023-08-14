@@ -1,0 +1,103 @@
+<div class="container-fluid">
+    <app-loader *ngIf="cargando"></app-loader>
+    <div *ngIf="!cargando">
+        <div class="row mt-1">
+            <div class="col-1">
+                <button type="button" (click)="irListado()" class="btn  btn-outline-primary waves-effect waves-light btn-icon-square-sm mt-3"><i
+                        class="mdi mdi-keyboard-backspace"></i></button>
+            </div>
+            <div class="col-9">
+                <div class="row mt-3">
+                    <div class="col-9">
+                        <h3 class="my-0 font-weight-bold text-info"> {{pde.nombre}}</h3>
+                    </div>
+                    <div class="col-3">
+                        <p class="mt-2 font-13"><b>Fecha de entrega:</b> {{pde.fecha_entrega | date:'dd-MM-YYYY'}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col ">
+            <div class="">
+                <ul class="nav nav-tabs" role="tablist" style="font-size: 21px;">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" 
+                        [ngClass]="{'active': selectedIndex == 1}"  
+                             href="#resumen" role="tab" aria-selected="true">Etiquetas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#confeccion"
+                            [ngClass]="{'active': selectedIndex == 2}"  role="tab"
+                            aria-selected="false">Confección </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#reporte"
+                            [ngClass]="{'active': selectedIndex == 3}"  role="tab"
+                            aria-selected="false">Reporte </a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+
+        <div class="tab-content">
+            <div class="row tab-pane active" [ngClass]="{'active': selectedIndex == 1}"  id="resumen">
+                <div class="col-12">
+                    <div class="card mt-2">
+                        <app-resumen-confeccion  [resumenConfeccion]="resumenConfeccion"></app-resumen-confeccion>    
+                    </div>
+                </div>
+            </div>
+            <div class="row tab-pane"  [ngClass]="{'active': selectedIndex == 2}" id="confeccion">
+                <app-progreso-confeccion [pde]="pde" ></app-progreso-confeccion>
+            </div>
+            <div class="row tab-pane"  [ngClass]="{'active': selectedIndex == 3}" id="reporte">
+                <div class="row m-2">
+                    <div class="col-2 ml-auto">
+                        <button type="button" [disabled]="reporteConfeccion.length==0"  (click)="descargarReporteExcel()" class="btn btn-primary waves-effect waves-light"><i class="far fa-file-excel  mr-2"></i>Descargar</button>                        
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body"  >
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped mb-0 table-centered viewGeneral">
+                                <thead>
+                                    <tr>
+                                        
+                                        <th class="fontView">tipo</th>
+                                        <th class="fontView">Numparte</th>
+                                        <th class="fontView">Orden de compra</th>
+                                        <th class="fontView">Clave</th>
+                                        <th class="fontView">Cantidad</th>
+                                        <th class="fontView">Pallet</th>
+                                        <th class="fontView">Tarimas</th>
+                                        <th class="fontView"># Cajas</th>
+                                        <th class="fontView">Números tarima</th>                                                                                
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let reporte of reporteConfeccion">
+                                        <td>{{reporte.tipoCarga}}</td>
+                                        <td><b>{{reporte.numpartprod}}</b></td>
+                                        <td><b>{{reporte.orden_compra}}</b></td>
+                                        <td>{{reporte.claveLitoprocess}}</td>
+                                        <td> {{reporte.cantidad}}</td>
+                                        <td> {{reporte.pallet}}</td>
+                                        <td> {{reporte.tarimas}}</td>
+                                        <td> {{reporte.totalCajas}}</td>
+                                        <td class=col-4> {{reporte.numerosTarima}}</td>
+                                        
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+               
+            </div>
+        </div>
+
+    </div>
+
+</div>

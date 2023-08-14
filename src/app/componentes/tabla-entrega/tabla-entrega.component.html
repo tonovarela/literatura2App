@@ -1,0 +1,82 @@
+<table class="table table-bordered">
+    <thead>
+        <th>-</th>
+        <th>Total</th>
+        <th>--</th>
+        <th *ngIf="etiquetaDetalle=='Ver'">Nombre pallet</th>        
+    </thead>
+    <tr *ngFor="let lote of lotesDetalle">
+        <td class="col-3 ">                            
+                    <h5>{{lote.nombreTarima}} - {{lote.tipo |titlecase}}</h5>                                                        
+                    <div *ngIf="lote.origen=='No'">
+                       <k>Registrado en el plan de entrega {{lote.nombrePDEOrigen}}</k> 
+                    </div>
+        </td>
+        <td  class="col-1 ">
+            {{lote.totalKits}}
+        </td>
+        <td>
+            <table class="table table-bordered">
+                <thead>
+                    <th></th>
+                    <th>PDE</th>                    
+                </thead>
+                <tr *ngFor="let pde of lote.pdes;let i=index">
+                    <td class="col-1"><i class="fas fa-circle " [ngStyle]="{color:colorPDE(pde)}"></i></td>
+                    <td>{{pde}}</td>                    
+                </tr>            
+            </table>
+        </td>
+       
+        <td class="col-2" *ngIf="etiquetaDetalle=='Ver'">                        
+            <div *ngIf="lote.tipo=='mezclada' && etiquetaDetalle=='Ver'">
+                <div class="input-group">
+                    <input type="text" [(ngModel)]="lote.nombrePallet" class="form-control"
+                        [ngClass]="{'is-invalid': lote.nombrePallet ==null|| lote.nombrePallet?.length==0}"
+                        maxlength="50" class="form-control" placeholder="Nombre del pallet">
+                    <span class="input-group-append">
+                        <button type="button" class="btn  btn-success" (click)="actualizarLote(lote)">
+                            <i class="far fa-save"></i>
+                        </button>
+                    </span>
+                </div>
+            </div>
+        </td>
+        
+        <!-- <td>
+            <table class="table table-bordered">
+                <thead>
+                    <th></th>
+                    <th>Nombre</th>
+                    <th>Total</th>
+                </thead>
+                <tr *ngFor="let detalle of lote.detalle;let i=index">
+                    <td class="col-1"><i class="fas fa-circle " [ngStyle]="{color:colors[i]}"></i></td>
+                    <td>{{detalle.nombre}}</td>
+                    <td class="derecha">{{detalle.total}}</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td class="derecha"><b>Total</b></td>
+                    <td class="derecha">{{obtenerTotal(lote.detalle)}}
+                    </td>
+                </tr>
+            </table>
+        </td> -->
+        <td>
+
+
+
+            <button type="button" (click)="_irEntrega(lote.id)" class="btn btn-soft-primary waves-effect waves-light"><i
+                    class="fas fa-boxes mr-2"></i>{{etiquetaDetalle}}</button>
+
+
+        </td>
+
+    </tr>
+</table>
+
+
+<!-- <pre>
+    {{lotesDetalle | json}}
+</pre> -->

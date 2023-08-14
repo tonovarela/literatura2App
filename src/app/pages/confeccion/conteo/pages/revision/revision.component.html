@@ -1,0 +1,139 @@
+<div class="container-fluid ">
+    <div class="row mt-2">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row" *ngIf="revisiones.length>0">
+                        <div class="col-6" *ngIf="!esFireFox">
+                            <div class="alert alert-warning border-0" role="alert">
+                                <strong>!</strong> Solo puedes hacer revisión de kits usando el navegador Firefox.
+                            </div>
+                            
+                        </div>
+                        <div class="col-6 " *ngIf="esFireFox">                            
+                            <form [formGroup]="formCaptura" *ngIf="!configuracionService.kitActivo.terminoRevision">
+                                <div class="input-group mt-3">
+                                    <input type="text" #kit style="max-width: 400px;" formControlName="entrada"
+                                        name="entrada" class="form-control" id="entrada" 
+                                        autocomplete="off" autofill="off"                                           
+                                        placeholder="Capture número de parte" [readonly]="blockInput" (keyup.enter)="verificarKit()">
+                                        <div class="input-group-append" *ngIf="blockInput; else verificar">
+                                            <span class="input-group-text"><i class="fas fa-spinner fa-pulse"></i></span>
+                                        </div>                                       
+                                        <ng-template #verificar>
+                                            <div class="input-group-append" (click)="verificarKit()">
+                                                <span class="input-group-text"><i class="fas fa-qrcode qr "></i></span>                                        
+                                            </div>
+                                        </ng-template>                                     
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-5">
+                            <h3>{{pde.nombre}}</h3>
+                        </div>
+                        <div class="col-1">
+                            <button type="button" class="btn btn-primary btn-icon-square-sm" (click)="cambiarVista()">
+                                <i class="fas" [ngClass]="vistaToogle?'fa-th':'fa-th-large '"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 contenedor-loader" id="contenedor-loader">
+                            <app-loader *ngIf="cargando"></app-loader>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body" *ngIf="!vistaToogle">
+
+                    <table class="table table-bordered table-striped mb-0 table-centered viewGeneral"
+                        *ngIf="resumenKit.length>0">
+                        <thead>
+                            <th>NumpartPrd</th>
+                            <th># Total por caja</th>
+                            <th>Descripción</th>
+                            <th>Total </th>
+                            <th>Pendientes </th>
+                            <th>Armados</th>
+                            <th>Revisados</th>
+                            <th>En tarima</th>
+                            <!-- <th>Estatus</th> -->
+                        </thead>
+                        <tr *ngFor="let kit of resumenKit ">
+                            <td>{{kit.numpartprod}}</td>
+                            <td>{{kit.totalPorCaja}}</td>
+                            <td>{{kit.descripcion}}</td>
+                            <td class="text-center">
+                                <span class="badge badge-outline-dark total">
+                                    {{kit.total}}
+                                </span>
+                            </td>
+                            <td class="text-center">
+                                <span class="badge badge-outline-dark number">
+                                    {{kit.pendientes}}
+                                </span>
+                            </td>
+                            <td class="text-center">
+                                <span class="badge badge-outline-dark number">
+                                    {{kit.armados}}
+                                </span>
+                            </td>
+                            <td class="text-center">
+                                <span class="badge badge-outline-dark number animated" [id]="kit.numpartprod">
+                                    {{kit.porEmpacar}}
+                                </span>
+                            </td>
+                            <td class="text-center">
+                                <span class="badge badge-outline-dark number animated">
+                                    {{kit.empacados}}
+                                </span>
+                            </td>
+
+                            <!-- <td>
+                                <span class="badge badge-success fontView p-2"
+                                    *ngIf="kit.porEmpacar==kit.total;else Incompleto ">
+                                    <i class="mdi mdi-check-all mr-2"></i>
+                                    Completo </span>
+                                <ng-template #Incompleto>
+                                    <span class="badge badge-warning  p-2"> Pendientes <br>por revisar
+                                    </span>
+                                </ng-template>
+                            </td> -->
+                        </tr>
+
+                    </table>
+                </div>
+                
+                <div class="card-body" *ngIf="vistaToogle">
+                    <table class="table table-bordered table-striped mb-0 table-centered viewGeneral">
+                        <thead>
+                            <th>NumpartPrd</th>
+                            <th>Total</th>
+                            <th>por Armar </th>
+                            <th>Armados </th>
+                            <th>por Revisar</th>
+                            <th>Revisados</th>
+                        </thead>
+                        <tr *ngFor="let kit of resumenAlternativo">
+                            <td>
+                                {{kit.numpartprod}}
+                            </td>
+                            <td>
+                                <span class="badge badge-outline-dark total">{{kit.total}}</span>
+                            </td>
+                            <td>
+                                <span class="badge badge-outline-dark number">{{kit.porArmar}}</span>
+                            </td>
+                            <td><span class="badge badge-outline-dark number">{{kit.armados}}</span></td>
+                            <td><span class="badge badge-outline-dark number">{{kit.porRevisar}}</span></td>
+                            <td><span class="badge badge-outline-dark number"
+                                    [id]="kit.numpartprod">{{kit.revisados}}</span></td>
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>

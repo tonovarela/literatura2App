@@ -1,0 +1,27 @@
+#entrada {
+    height: 40px;
+    font-size: 1.1rem;
+    border-color: purple;
+}
+.qr {
+    font-size: 1.6rem;
+    border-radius: 10px!important;
+    
+}
+.input-group-text{
+    border-color: purple;
+    color:purple;
+}
+.badge{
+    min-width: 60px;
+}
+
+#contenedor-loader{
+    min-height: 30px;
+}
+
+.sinArmado{
+    background-color: #cec9c9!important;
+    
+
+}

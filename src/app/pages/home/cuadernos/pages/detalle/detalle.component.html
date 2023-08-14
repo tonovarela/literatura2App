@@ -1,0 +1,78 @@
+<div class="container-fluid">
+    <hr>
+    <div class="row">
+        <div class="col-12">
+            <form [formGroup]="cuadernoForm">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-1">
+                                <button type="button" (click)="router.navigateByUrl('/pages/cuadernos/listado')"
+                                    class="btn  btn-outline-primary waves-effect waves-light btn-icon-square-sm"><i
+                                        class="mdi mdi-keyboard-backspace"></i></button>
+
+                            </div>
+                            <div class="col-2">
+                                <h4 class="card-title">Sku1: [{{cuadernoForm.get("sku1").value}}]</h4>
+                            </div>
+                            <div class="col-2 ml-auto">
+                                
+
+                            </div>
+                            <div class="col-2 ">
+                                <button type="button" class="btn btn-outline-secondary" disabled
+                                    *ngIf="cuadernoForm.invalid"><i class="far fa-save mr-2"></i>Guardar</button>
+                                <button type="button" class="btn btn-outline-primary " (click)="guardar()"
+                                    *ngIf="!cuadernoForm.invalid"><i class="far fa-save mr-2"></i>Guardar</button>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <!--end card-header-->
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-6">                                
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label text-right">sku2</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" type="text" formControlName="sku2"
+                                            name="sku2" />
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label text-right">Descripción</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" 
+                                             error-indicador 
+                                             [valido]="!tieneError('descripcion')"
+                                         type="text" formControlName="descripcion"
+                                            name="descripcion" />
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label text-right">Clasificación</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" 
+                                             error-indicador 
+                                             [valido]="!tieneError('clasificacion')"
+                                         type="text" formControlName="clasificacion"
+                                            name="descripcion" />
+                                    </div>
+                                </div>
+                                                        
+                            </div>
+                           
+                        </div>
+                    </div>
+                    <!--end card-body-->
+                </div>
+
+                                
+            </form>
+
+        </div>
+
+
+    </div>    
+</div>

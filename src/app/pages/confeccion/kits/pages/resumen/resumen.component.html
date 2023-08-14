@@ -1,0 +1,134 @@
+<div class="container-fluid">
+    <app-loader *ngIf="cargando"></app-loader>
+    <div class="">
+        <div class="row  mt-2">
+            <div class="col-1">
+                <button type="button" *ngIf="mostrarBack" (click)="irListado()"
+                    class="btn  btn-outline-primary waves-effect waves-light btn-icon-square-sm "><i
+                        class="mdi mdi-keyboard-backspace"></i></button>
+            </div>
+            <div class="col ">
+                <div class="">
+                    <ul class="nav nav-tabs" role="tablist" style="font-size: 21px;">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" [ngClass]="{'active': selectedIndex == 2}"
+                                (click)="setSelected(2)" href="#resumen" role="tab" aria-selected="true">CAJAS SIN ENTARIMAR</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#enLote"
+                                [ngClass]="{'active': selectedIndex == 1}" role="tab" aria-selected="false">TARIMAS
+                                <span [ngClass]="[ lotes.length==0?'badge-secondary':'badge-success']"
+                                    class="badge badge-pill notificacion  ">{{lotes.length}}</span></a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="tab-content">
+            <div class="row tab-pane active" [ngClass]="{'active': selectedIndex == 2}" id="resumen">
+                <div class="col-12">
+                    <div class="card mt-2">
+                        <div class="card-header">
+                            <div class="row" *ngIf="CajasSeleccionadas>12">
+                                <div class="col-12">
+                                    <div class="alert alert-danger text-center"> No se pueden generar una tarima de mas
+                                        de 12 cajas.</div>
+                                </div>
+                            </div>
+                            <div class="row align-items-center">
+
+                                <div class="col-9">
+                                    <div class="col">
+                                        <h4 *ngIf="CajasSeleccionadas>0 " class="card-title"> Cajas seleccionadas
+                                            {{CajasSeleccionadas}}</h4>
+                                    </div>
+                                </div>
+                                <div class="col-2 btn-lote">
+                                    <button class="btn btn-sm btn-soft-primary mt-3 ml-3" (click)="generarLot()"
+                                        *ngIf="puedeGenerarTarima"><i class="far fa-clone  mr-2"></i> Generar
+                                        entrega</button>
+                                </div>
+                                <!--end col-->
+                            </div>
+                        </div>
+                        <div class="card-body" id="propuesta1">
+                            <ng-container *ngTemplateOutlet="vistaGeneral"></ng-container>
+                        </div>
+                        <div *ngIf="residuosKitsPorEmpacar.length>0 && resumenConfeccion.resumenGeneral.length>0">
+                            <ng-container *ngTemplateOutlet="otrosPDE"></ng-container>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row  tab-pane" [ngClass]="{'active': selectedIndex == 1}" id="enLote">
+                <ng-container *ngTemplateOutlet="registroLotes"></ng-container>
+            </div>
+        </div>
+    </div>
+
+    <ng-template #vistaGeneral>
+
+        <ejs-grid [dataSource]='cajasEmpaque' #grid [filterSettings]="filterSettings" allowReordering='true'
+            allowFiltering=true allowPaging="true" allowResizing="true" allowSorting="true"
+            (load)='load($event)'
+            [pageSettings]='pageSettings' [height]="height"  [emptyText]="sin ">
+            
+            <e-columns>
+                <e-column field='nombre' headerText='' [allowFiltering]=false width=10>
+                    <ng-template #template let-data>
+                        <button type="button" (click)="ImpresionCaja(data)" class="btn btn-outline-dark btn-icon-circle-sm"><i class="dripicons-print"></i></button>
+                        <!-- <span class="badge badge-dark detalle_icon"
+                            (click)="verImpresionCaja(data)"
+                            ><i class="dripicons-print"></i></span> -->
+                    </ng-template>
+                </e-column>
+                <e-column field='nombrePDE' headerText='PDE' [allowFiltering]=true width=25></e-column>
+                <e-column field='numpartprod' headerText='Número de parte' [allowFiltering]=true width=25></e-column>
+                <e-column field='descripcion' headerText='Descripción' [allowFiltering]=true width=25></e-column>
+                <e-column field='totalPorCaja' headerText='TotalKits' [allowFiltering]=false width=25></e-column>
+
+                <e-column field='seleccionado' headerText="" [allowFiltering]='false' [allowSorting]="true"
+                    allowSelection="false" width=10>
+                    <ng-template #template let-data>                        
+                        <ejs-checkbox [(ngModel)]="data.seleccionado"                        
+                         (change)="cambiarCheck(data)" label="">
+                        </ejs-checkbox>
+                    </ng-template>
+                </e-column>
+            </e-columns>            
+        </ejs-grid>
+
+    </ng-template>
+    <!-- <ng-template #otrosPDE>
+        <h3>Kits revisados pendientes de otros Planes de entrega</h3>
+        <hr>
+        <ejs-grid [dataSource]='residuosKitsPorEmpacar' [filterSettings]="filterSettings" allowReordering='true'
+            allowFiltering=true allowPaging="true" allowResizing="true" allowSorting="true"
+            [pageSettings]='pageSettings' [height]="height">
+            <e-columns>
+                <e-column field='descripcionPDE' headerText='PDE' width=80></e-column>
+                <e-column field='numpartprod' headerText='NumpartPrd' width=70></e-column>
+                <e-column field='descripcionKit' headerText='Descripción' width=120></e-column>
+                <e-column field='porEmpacar' headerText='Revisados' width=80>
+                </e-column>>
+                <e-column field='seleccionado' headerText='' [allowFiltering]=false width=50>
+                    <ng-template #template let-data>
+                        <ejs-checkbox (change)="cambiaCheck(data)"></ejs-checkbox>
+                    </ng-template>
+                </e-column>>
+            </e-columns>
+        </ejs-grid>
+
+    </ng-template> -->
+    <ng-template #registroLotes>
+        <div class="col-4  offset-4 mt-4">
+            <div *ngIf="lotes.length==0" class="alert alert-outline-secondary text-center" role="alert">
+                <strong> SIN REGISTRO DE EMPAQUE</strong>
+            </div>
+        </div>
+        <div class="col-10 offset-1">
+            <app-tabla-entrega *ngIf="lotesDetalle.length>0" etiquetaDetalle="Ver"
+                [lotesDetalle]="lotesDetalle" (irEntrega)="irEntrega($event)"></app-tabla-entrega>
+        </div>
+    </ng-template>

@@ -1,0 +1,50 @@
+<div>
+    <div class="row mb-2" *ngIf="puedeMoverCajas">
+        <div class="col-2">
+            <!-- <button class="btn btn-success btn-xs" (click)="_agregarTarima()">Agregar tarima</button>       -->
+        </div>
+        <div class="col-2 ml-auto">
+            <!-- <div style="margin-top: -50px;">
+                <button type="button" (click)="recomendarPila()" *ngIf="!apilo" class="btn btn-primary btn-icon-square-sm"><i
+            class="fas fa-magic"></i></button>
+                <button type="button" style="margin-left: 2%;" (click)="resetApilamiento()" class="btn btn-secondary btn-icon-square-sm"><i class="fas fa-undo"></i></button>
+            </div> -->
+        </div>
+    </div>
+    <div cdkDropListGroup class="row">
+        <div cdkDropList class="tarima col-3" *ngFor="let tarima of tarimas; let i=index" [cdkDropListData]="tarima.cajas" [cdkDropListEnterPredicate]="validaMaximoCajas" (cdkDropListDropped)="drop($event)">
+            <div class="container-fluid">
+                <div class="row" *ngIf="!puedeMoverCajas">
+                    <div class="col-2 ml-auto">                         
+                        <!-- <button type="button" (click)="_eliminarTarimaDistribucion(tarima)"  class="btn btn-sm btn-light waves-effect waves-light"><i class="fas fa-times "></i></button> -->
+                    </div>
+                </div>
+                <div class=" row" style="margin:5px">
+                    <div class="col-6">
+                        <h4 class="title-tarima" [ngClass]="[puedeMoverCajas?'tarima-azul':'tarima-verde']">{{tarima.nombre }} </h4>
+                    </div>                    
+                    <div class="col-4" style="text-align: end;">
+                        <span *ngIf="tarima.cajas.length==MAX" class="badge badge-warning legendTarima">MAX</span>
+                    </div>
+                    <!-- <div class="col-2  align-center">
+                        <button [disabled]="actualizo" (click)="impresionService.generarPorTarima(tarima.id)" type="button" class="btn btn-xs btn-outline-pink mt-2"><i class="fas fa-file-pdf"></i></button>
+                    </div> -->
+                </div>
+                <div class="row">
+                    <!-- <div class="col-4"><button *ngIf="tarima.cajas.length==0" class="btn btn-danger btn-xs" (click)="_eliminarTarima(tarima)">Eliminar</button>
+                    </div> -->
+                </div>
+                <div class="box row" [ngClass]="puedeMoverCajas?'box-moved':''" *ngFor="let caja of tarima.cajas;let i=index" [cdkDragData]="caja" cdkDrag [cdkDragDisabled]="!puedeMoverCajas">
+                    <div class="col-2 align-left">
+                        <span class="badge  badge-pill badge-color" [ngStyle]="{'background-color':colorPDE(caja)}">{{i+1}}</span>
+                    </div>
+                    <div class="col-5 align-center" style="font-size: 10px;">{{caja.nombre | uppercase}} </div>
+                    <div class="col-3 align-right"><span class="badge badge-soft-primary">{{caja.totalKits}} kits</span></div>
+                    <div class="col-2  align-center espacio-boton" >
+                        <!-- <button type="button"  *ngIf="puedeMoverCajas"  (click)="eliminar(caja)" class="btn btn-xs btn-light waves-effect waves-light"><i class="fas fa-times "></i></button> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

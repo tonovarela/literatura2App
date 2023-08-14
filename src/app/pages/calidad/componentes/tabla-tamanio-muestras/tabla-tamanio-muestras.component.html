@@ -1,0 +1,66 @@
+<div class="row" >
+    <div class="col-12">
+        <div class="table-responsive">
+            <!-- <h4 class="page-title">Resumen de muestras</h4> -->
+            <hr>
+            <table class="table ">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Número parte</th>
+                        <!-- <th>Letra clave</th> -->
+                        <th>Total de kits</th>
+                        <th>Tamaño de la muestra</th>
+                        <th class="text-center">Aceptados <sup>(Muestra)</sup> </th>
+                        <th class="text-center">Rechazados <sup>(Muestra)</sup> </th>
+                        <th class="text-center th-inspeccion">Aceptados <sup>(Inspección)</sup> </th>
+                        <th class="text-center th-inspeccion">Rechazados <sup>(Inspección)</sup></th>
+                        <th class="th-inspeccion"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let muestra of tamanioMuestras">
+                        <td>
+                            <i class="fas fa-dot-circle " [ngStyle]="{'color':muestra.colorHexadecimal}"></i>
+                        </td>
+                        <td>{{muestra.nombreCaja | uppercase}}</td>
+                        <!-- <td class="text-center"> {{muestra.letra}}</td> -->
+                        <td class="text-center"> {{muestra.totalKits}}</td>
+                        <td class="text-center"> {{muestra.tamanioMuestra}}</td>
+                        <td class="text-center"> {{muestra.toleranciaAceptados}}</td>
+                        <td class="text-center"> {{muestra.toleranciaRechazados}}</td>
+                        <td class="text-center"> {{muestra.aceptadosInspeccion}} </td>
+                        <td class="text-center"> {{muestra.rechazadosInspeccion}}</td>
+                        <td class="text-center">
+                            <div *ngIf="muestra.aceptadosInspeccion>0 || muestra.rechazadosInspeccion>0 ">
+                                <i class="fas fa-check-circle text-success f-20" 
+                                    *ngIf="muestra.rechazadosInspeccion <= muestra.toleranciaRechazados"></i>
+                                <i class="far fa-times-circle  text-danger f-20 " 
+                                    *ngIf="muestra.rechazadosInspeccion > muestra.toleranciaRechazados"></i>
+
+                            </div>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td class="text-center" rowspan="2">
+                            <h4>Totales</h4>
+                        </td>
+                        <td>
+                            <h4 class="text-center">{{totalKits}}</h4>
+                        </td>
+                        <td>
+                            <h4 class="text-center">{{totalMuestra}}</h4>
+                        </td>
+                        <td> </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

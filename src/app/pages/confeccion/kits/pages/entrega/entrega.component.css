@@ -1,0 +1,5 @@
+#contenedor-tarimas{
+    border: 2px solid rgb(202, 202, 202);    
+    border-style: dashed;
+    padding: 10px;
+}

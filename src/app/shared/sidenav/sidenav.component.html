@@ -1,0 +1,88 @@
+<div class="left-sidenav">
+    <div class="brand">
+        <a href="index.html" class="logo">
+            <span>
+                <img src="assets/images/logos/logoLito.png" alt="logo-small" class="logo-sm">
+            </span>
+            <span>
+                <img src="assets/images/logos/letrasLito.png" alt="logo-large" class="logo-lg logo-light">
+                <img src="assets/images/logos/letras-light.png" alt="logo-large" class="logo-lg logo-dark">
+            </span>
+        </a>
+    </div>
+    <div class="menu-content h-100" data-simplebar>
+        <ul class="metismenu left-sidenav-menu">
+
+            <li *ngIf="usuarioService.Usuario?.carga_batch =='1'">
+                <a href="javascript: void(0)"   routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
+                    routerLink="/pages/kits/registrar"><i data-feather="upload"
+                        class="align-self-center menu-icon"></i><span>Carga en batch </span></a>
+            </li>
+            <!-- <li>
+                <a href="javascript: void(0);"><i data-feather="layers" class="align-self-center menu-icon"></i><span>Kits</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
+                <ul class="nav-second-level" aria-expanded="false">
+                    <li class="nav-item"><a  href="javascript: void(0);" class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" routerLink="/pages/kits/inicio" ><i class="ti-control-record"></i>Registro</a></li>                                                            
+                </ul>
+            </li>              -->
+            <li>
+                <a href="javascript: void(0)"  *ngIf="usuarioService.Usuario?.kits ==1" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
+                    routerLink="/pages/kits/inicio"><i data-feather="codesandbox"
+                        class="align-self-center menu-icon"></i><span>Kits</span></a>
+            </li>
+            <li>
+                <a href="javascript: void(0)" *ngIf="usuarioService.Usuario?.cuadernos ==1" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
+                    routerLink="/pages/cuadernos/listado"><i data-feather="book"
+                        class="align-self-center menu-icon"></i><span>Cuadernos</span></a>
+            </li>
+            <hr  *ngIf="usuarioService.Usuario?.carga_batch =='1'" class="hr-dashed hr-menu">
+            <li>
+                <a href="javascript: void(0)" *ngIf="usuarioService.Usuario?.pde==1" routerLinkActive="active" routerLink="/pages/pde"><i data-feather="zap"
+                        class="align-self-center menu-icon"></i><span>PDE</span></a>
+            </li>
+            
+            <hr *ngIf="usuarioService.Usuario?.pde==1" class="hr-dashed hr-menu">
+            <li  *ngIf="usuarioService.Usuario?.pde==1" class="menu-label my-2">Confección</li>
+            <li>
+                <a href="javascript: void(0)" *ngIf="usuarioService.Usuario?.armadoKits==1"  routerLinkActive="active" routerLink="/pages/confeccion/cuadernos"><i
+                        data-feather="layers" class="align-self-center menu-icon" ></i><span>Armado de Kits</span>
+                    <span class="badge badge-soft-danger bloqueado" *ngIf="!estaHabilitada(1)">
+                        <i class="fas fa-lock candado"></i>
+
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a href="javascript: void(0)" *ngIf="usuarioService.Usuario?.revisionKits==1"  routerLinkActive="active" routerLink="/pages/confeccion/conteo"><i
+                        data-feather="layers" class="align-self-center menu-icon" ></i><span>Revisión de Kits</span>
+                    <span class="badge badge-soft-danger bloqueado" *ngIf="!estaHabilitada(2)">
+                        <i class="fas fa-lock candado"></i>
+
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a href="javascript: void(0)" routerLinkActive="active"   *ngIf="usuarioService.Usuario?.empaque==1"  routerLink="/pages/confeccion/kits"><i
+                        data-feather="layers" class="align-self-center menu-icon" ></i><span>Empaque</span>
+                    <span class="badge badge-soft-danger bloqueado" *ngIf="!estaHabilitada(3)" >
+                        <i class="fas fa-lock candado"></i>
+                    </span>
+                </a>
+            </li>
+            <hr class="hr-dashed hr-menu">            
+            <li  *ngIf="usuarioService.Usuario?.calidad==1" class="menu-label my-2">Calidad</li>
+            <li>
+                <a href="javascript: void(0)"  *ngIf="usuarioService.Usuario?.calidad==1" routerLinkActive="active" routerLink="/pages/calidad/sin-inspeccion"><i
+                        data-feather="check-circle" class="align-self-center menu-icon" ></i><span>Sin inspección</span>                    
+                </a>
+            </li>
+            <li>
+                <a href="javascript: void(0)"  *ngIf="usuarioService.Usuario?.calidad==1" routerLinkActive="active" routerLink="/pages/calidad/con-inspeccion"><i
+                        data-feather="check-circle" class="align-self-center menu-icon" ></i><span>Con inspección</span>                    
+                </a>
+            </li>
+
+        </ul>
+        
+    </div>    
+    
+</div>

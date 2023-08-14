@@ -1,0 +1,136 @@
+<div class="container-fluid">
+    <div *ngIf="cargando">
+        <app-loader-spinner></app-loader-spinner>
+    </div>
+    <div class="workspace" *ngIf="!cargando && !stackKitRevision">
+        <div class="row">
+            <div class="col-sm-1">
+                <button type="button" (click)="regresar()"
+                    class="btn btn-outline-primary waves-effect waves-light btn-icon-square-sm mt-3 "><i
+                        class="mdi mdi-keyboard-backspace"></i></button>
+            </div>
+            <div class="col-sm-6">
+                <div class="page-title-box">
+                    <div class="row">
+                        <div class="col">
+                            <h4 class="page-title">Calidad</h4>
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a>PDE</a></li>
+                                <li class="breadcrumb-item " active><a href="javascript:void(0);"
+                                        (click)="regresar()">Entrega</a></li>
+                                <li class="breadcrumb-item active">Inspección de kits</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-3">
+                <div class="card report-card">
+                    <div class="card-header bg-primary">
+                        <p class=" text-white mb-0 font-weight-semibold">Total de kits</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="row d-flex justify-content-center">
+                            <div class="col">
+                                
+                                <h3 class="m-0">{{totalKits}}</h3>
+                            </div>
+                            <div class="col-auto align-self-center">
+                                <div class="report-main-icon bg-light-alt" >
+                                    <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        class="feather feather-package align-self-center text-muted icon-sm">
+                                        <line x1="16.5" y1="9.4" x2="7.5" y2="4.21"></line>
+                                        <path
+                                            d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                                        </path>
+                                        <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                                        <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3 offset-1">
+                <div class="card">
+                    <div class="card-header  bg-primary">
+                        <p class="text-white mb-0 font-weight-semibold">
+                            Nivel de inspección {{NivelDeinspeccion}}
+                        </p>
+                        
+                    </div>
+                    <div class="card-body">
+                        
+                        <input type="range" [disabled]="tieneDataMatrixCapturado"
+                            [(ngModel)]="seleccionSugerida.nivelDeInspeccion" list="tickmarks" class="custom-range" min="1"
+                            max="3" step="1" name="nivelInspeccion">
+                        <datalist id="tickmarks">
+                            <option *ngFor="let nivel of nivelesDeInspeccion;let i=$index" [value]="i">
+                                <b>{{nivel.label}}</b> <sup> ({{nivel.tamanioMuestra}})</sup>
+                            </option>
+                        </datalist>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="col-3 ml-auto offset-1 mt-3" style="text-align: right;">
+                <div class="btn-group pr-5 " role="group">
+                    <button *ngIf="!tieneDataMatrixCapturado" type="button" (click)="obtenerMuestras()"
+                        class="btn btn-sm btn-outline-info mr-1"><i class="fa fa-align-left mr-2"></i>Obtener muestras</button>
+                    <button *ngIf="puedeImprimirComprobante" type="button" class="btn btn-sm btn-outline-danger  mr-1" (click)="imprimir()"><i
+                            class="far fa-file-pdf mr-2"></i>Imprimir</button>
+                    <button *ngIf="tieneDataMatrixCapturado" type="button" (click)="guardar()"
+                        class="btn btn-sm btn-outline-primary mr-1"><i class="ti-save mr-2"></i>Guardar</button>
+                </div>
+            </div>
+        </div>
+        <div   *ngIf="tamanioMuestras.length>0">
+            <ul class="nav nav-tabs" role="tablist">
+            
+                <li class="nav-item">
+                    <a class="nav-link active"  data-toggle="tab" href="#seleccion" role="tab" >SELECCIÓN DE MUESTRAS</a>
+                </li>                                                                        
+                <li class="nav-item">
+                    <a class="nav-link " data-toggle="tab" href="#resumen" role="tab" >RESUMEN DE MUESTRAS</a>
+                </li>
+                
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane p-3 " id="resumen" role="tabpanel">
+                    <app-tabla-tamanio-muestras  [tamanioMuestras]="tamanioMuestras">
+                    </app-tabla-tamanio-muestras>
+                </div>
+                <div class="tab-pane p-3 active" id="seleccion" role="tabpanel">
+                    <div *ngIf="seleccionSugerida.stackKits.length>0">
+                        <div class="row">
+                            
+                            <div class="col-4">
+                                <div class="input-group">        
+                                    <input type="text" class="form-control input-code-matrix" (keypress)="buscarCodeMatrix($event)"
+                                        [(ngModel)]="busquedaDMtxt" placeholder="Datamatrix de la caja" />
+                                    <div class="input-group-append ">
+                                        <span class="input-group-text btn-data-matrix" (click)="buscarCode()"><i class=" fas fa-qrcode"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <app-tabla-seleccion-sugerida [seleccionSugerida]="seleccionSugerida"></app-tabla-seleccion-sugerida>
+                    </div>
+                </div>                                                            
+            </div>
+        </div>               
+    </div>
+    <!-- Revision de cajas -->
+    <div *ngIf="stackKitRevision">
+        <app-revision-kit [(stackKit)]="stackKitRevision" (kitRevisado)="actualizarKitRevisado($event)">
+        </app-revision-kit>
+    </div>
+
+
+</div>

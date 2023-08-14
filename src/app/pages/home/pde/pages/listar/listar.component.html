@@ -1,0 +1,60 @@
+<app-loader-spinner *ngIf="cargando"></app-loader-spinner>
+<div class="container-fluid" *ngIf="!cargando">
+    <div class="row mb-2">
+        <div class="col-3">
+            <h4 class="page-title">PDE </h4>
+        </div>
+        <div class="col-5 ml-auto">
+            <div class="text-right">
+                <a class="btn btn-outline-pink waves-effect btn-sm mt-3 mr-4" *ngIf="!mostrarCancelados"
+                    (click)="cargarData(true)" role="button">
+                    Mostrar cancelados y cerrados</a>
+                <a class="btn btn-sm btn-info mt-3" (click)="cargarData()" role="button"><i
+                        class="fas fa-sync-alt   mr-2"></i>Actualizar</a>
+                <a class="btn btn-sm btn-soft-primary mt-3 ml-3" [routerLink]="['/pages/pde/agregar']" role="button"><i
+                        class="fas fa-plus  mr-2"></i>Nuevo PDE</a>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <ejs-grid [dataSource]='pdes' #grid [filterSettings]="filterSettings" allowReordering='true'
+                [allowFiltering]=true allowPaging="true" allowResizing="true" allowSorting="true"
+                [pageSettings]='pageSettings' [height]="height">
+                <e-columns>
+
+                    <e-column field='id_pde' headerText='' [allowFiltering]=false width=25>
+                        <ng-template #template let-data>
+                            <span class="badge badge-outline-dark detalle_icon"
+                                [routerLink]="['/pages/pde/detalle',data.id_pde]"><i class="fab fa-wpforms"></i></span>
+                        </ng-template>
+                    </e-column>
+                    <e-column field='nombre' headerText='nombre' width=120></e-column>
+                    <e-column field='fecha_entrega' headerText='Fecha entrega' width=70></e-column>
+                    <e-column headerText="Estado" width=70>
+                        <ng-template #template let-data>
+                            <div>
+                                <select class="custom-select form-control-sm p-0 m-0" [disabled]="seleccionHabilitada"
+                                    (ngModelChange)="onChangeState($event,data)" [(ngModel)]="data.id_estado"
+                                    style="height: 24px;">
+                                    <option *ngFor="let estado of estados" [value]="estado.id_estado">
+                                        {{estado.descripcion}}
+                                    </option>
+                                </select>
+                            </div>
+                        </ng-template>
+                    </e-column>
+                    <e-column field='total' headerText='Total kits' width=50>
+                    </e-column>
+                    
+                    
+                    
+                    
+
+
+                </e-columns>
+            </ejs-grid>
+        </div>
+    </div>
+
+</div>

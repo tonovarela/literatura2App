@@ -1,0 +1,20 @@
+
+<div class="row">
+  <div class="col-4"><h1>{{print.titulo}}</h1></div>
+    <div class="col-4 ml-auto">
+      <button type="button" *ngIf="!cargando"  (click)="imprimir()" class="btn btn-info btn-icon-square-sm mt-3"><i class="dripicons-print  "></i></button>        
+    </div>
+</div>
+<div class="row">
+        
+        <div class="col-12">
+          <div  *ngIf="cargando" class="spinner-border spinner-border-custom-1 text-primary" role="status"></div>
+        </div>
+        <div class="col-12">            
+          <div #container  >          
+            
+          </div>
+        </div>
+      
+</div>
+
