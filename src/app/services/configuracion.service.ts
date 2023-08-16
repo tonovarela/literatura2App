@@ -44,10 +44,7 @@ export class ConfiguracionService {
         this.pausarSeleccion = { descripcion: c["descripcion"], id_configuracion: Number(c["id_configuracion"]), habilitada: c["habilitada"] == "1" };
       }  
       
-      this.puedeCambiarPDE = !this.kitActivo.terminoArmado || !this.kitActivo.terminoRevision;
-      // this.puedeCambiarPDE = this.configuraciones
-      //   .filter(x => x.id_configuracion != 4) //Ignorar el kit Activo en esta rutina
-      //   .some(x => x.habilitada == "0");
+      this.puedeCambiarPDE = !this.kitActivo.terminoArmado || !this.kitActivo.terminoRevision;      
     });
 
     

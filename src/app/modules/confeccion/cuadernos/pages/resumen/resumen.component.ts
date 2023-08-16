@@ -27,7 +27,7 @@ export class ResumenComponent implements OnInit, OnDestroy {
   cargando: boolean = false;
   mostrarBack: boolean = true;
   textChangedSubject: Subject<string> = new Subject<string>();
-  vistaToogle:boolean =false;
+  //vistaToogle:boolean =false;
 
   subscriptions: Subscription[] = [];
   textoPatron: string = '';
@@ -43,9 +43,9 @@ export class ResumenComponent implements OnInit, OnDestroy {
     private confeccionService: ConfeccionService) {
   }
 
-  cambiarVista(){
-    this.vistaToogle=!this.vistaToogle;
-  }
+  // cambiarVista(){
+  //   this.vistaToogle=!this.vistaToogle;
+  // }
   ngOnInit(): void {
     const subs1 = this.webSocketService.listen("reloadConfiguracion").subscribe(_ => this.configuracionService.cargarConfiguraciones());
     const subs2 = this.webSocketService.listen('cambioPDEActivo').subscribe(_ =>this.router.navigate(["../../pde"], { relativeTo: this.activatedRoute }));

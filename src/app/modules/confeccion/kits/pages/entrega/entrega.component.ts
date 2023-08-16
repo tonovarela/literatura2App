@@ -72,8 +72,7 @@ export class EntregaComponent implements OnInit, OnDestroy {
     );
     this.subscriptions.push(obs$.subscribe((response) => {
       this.data = response['distribucion'];
-      this.kits = response['kits'];      
-      console.log(response['kits']);
+      this.kits = response['kits'];            
       this.cargando = false;
       this.loteService.obtenerPDES(this.id_lote).subscribe(x => {
         this.pdesAsociados = x["pdes"];
@@ -144,8 +143,7 @@ export class EntregaComponent implements OnInit, OnDestroy {
         i = 0;
         ++j;
         //------------Para determinar el orden de compra-----------------------------
-        const [caja] = t.cajas;
-        console.log(this.kits);
+        const [caja] = t.cajas;        
         const kit = this.kits.find(k => k.numparteprod == caja.nombre);
         //---------------------------------------------------------------
         const {nombreTarima,nombrePallet}= this.obtenerTarima(_tarimasResponse,t.id);

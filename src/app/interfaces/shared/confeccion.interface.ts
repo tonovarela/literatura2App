@@ -27,6 +27,7 @@ export interface ResumenParte {
     numpartprod?: string;
     descripcion?:string;
     totalPorCaja?:number;
+    revisados?:number;
     totalCuadernos?:number;
     pendientes?:number;
     armados?:number;    

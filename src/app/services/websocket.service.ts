@@ -13,8 +13,7 @@ export class WebsocketService {
     this.checkStatus();
   }
 
-  checkStatus() {
-    console.log('checkStatus');
+  checkStatus() {    
     this.socket.on('connect', () => {
       this.socketStatus = true;
       console.log("Conectado");

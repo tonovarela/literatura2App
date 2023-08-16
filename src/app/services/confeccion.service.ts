@@ -40,42 +40,35 @@ export class ConfeccionService {
   
 
 
-  public revisionesKit(id_pde: string) {
-    return this.http.get<ResponseRevisionAlt>(`${this.URL}/api/confeccion/obtenerRevisionesAlt/${id_pde}`).pipe(
-      map(response=>{
-        //Se hizo esta conversion dado que la base de datos tardaba hasta 4 segundos en dar el resultado
+  public revisionesKit(id_pde: string,numpartprodActivo:string) {
+    return this.http.get<ResponseRevisionAlt>(`${this.URL}/api/confeccion/obtenerRevisionesAlt/${id_pde}?numpartprodActivo=${numpartprodActivo}`).pipe(
+      map(response=>{        
+        //Se hizo esta conversion dado que la base de datos tardaba hasta 4 segundos en dar el resultado        
         const responseRevision:ResponseRevision ={
-          ok:response.ok,
-          resumenAlternativo:response.resumenAlternativo,
-          revisiones:response.revisiones,
-          resumenGeneral:response.resumenGeneral.map(r=>{            
-            const empacados= response.enLote.find(x=>x.numpartprod==r.numpartprod)?.enLote || 0;           
-            const porEmpacar=response.sinLote.find(x=>x.numpartprod==r.numpartprod)?.sinLote || 0;
-            const revisionKit = response.revisionKit.find(x=>x.numpartprod==r.numpartprod)?.revisionKit || 0;
-            let armados =   response.armados.find(x=>x.numpartprod==r.numpartprod)?.armados || 0;
-            const pendientes=Number(r.total) - (armados-revisionKit)- empacados- porEmpacar  ;
-            armados=armados-revisionKit;                     
+          ok:response.ok,          
+          resumenGeneral:response.resumenGeneral.map(r=>{                        
             const resumenParte:ResumenParte ={              
             total:Number(r.total),
             descripcion:r.descripcion,
             totalPorCaja:Number(r.totalPorCaja),
             totalCuadernos:Number(r.totalCuadernos),
             numpartprod:r.numpartprod,
-            armados,
-            empacados,
-            pendientes,
-            porEmpacar      
-            }
+            armados:Number(r.armados),
+            revisados:Number(r.revisados),
+            empacados:Number(r.empacados),
+            pendientes:Number(r.pendientes),
+            porEmpacar:Number(r.porEmpacar)            
+            };            
             return resumenParte
           }),          
-        }
+        }        
         return responseRevision;
       })
     )
   }
 
-  public registrarRevisionKit(id_pde: string, numpartprod: string) {
-    return this.http.post(`${this.URL}/api/confeccion/registrarRevisionKit`, { id_pde, numpartprod });
+  public registrarRevisionKit(id_pde: string, numpartprod: string,armados:number) {
+    return this.http.post(`${this.URL}/api/confeccion/registrarRevisionKit`, { id_pde, numpartprod ,armados});
   }
 
 

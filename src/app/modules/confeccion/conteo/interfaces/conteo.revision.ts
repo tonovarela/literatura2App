@@ -36,7 +36,13 @@ export interface ResumenGeneral {
     descripcion:    string;
     totalCuadernos: string;
     total:          string;
+    armados?:number;
+    revisados?:number;
+    empacados?:number;
+    pendientes?:number;
+    porEmpacar?:number
 }
+   
 
 
 export interface RevisionKit {

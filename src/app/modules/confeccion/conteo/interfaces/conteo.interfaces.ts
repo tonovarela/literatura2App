@@ -7,7 +7,7 @@ import { ResumenParte } from "src/app/interfaces/shared/confeccion.interface";
 
 export interface ResponseRevision {
     revisiones?: Revision[];
-    resumenAlternativo:any;
+    //resumenAlternativo:any;
     resumenGeneral?:ResumenParte[];
     ok:boolean
 }

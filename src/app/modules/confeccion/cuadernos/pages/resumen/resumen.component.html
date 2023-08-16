@@ -6,16 +6,7 @@
             <div class="col-1">
                 <button type="button" *ngIf="mostrarBack" (click)="irListado()" class="btn  btn-outline-primary waves-effect waves-light btn-icon-square-sm "><i
                         class="mdi mdi-keyboard-backspace"></i></button>
-            </div>
-            <!-- <div class="col ">
-                <div class="">
-                    <ul class="nav nav-tabs" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active" data-toggle="tab" [ngClass]="{'active': selectedIndex == 1}" (click)="setSelected(1)" href="#resumen" role="tab" aria-selected="true">RESUMEN</a>
-                        </li>
-                    </ul>
-                </div>
-            </div> -->
+            </div>          
         </div>
         <div class="tab-content">
             <div class="row tab-pane active" [ngClass]="{'active': selectedIndex == 1}" id="resumen">
@@ -29,15 +20,15 @@
                                     </div>
                                 </div>
                                 <div class="col ml-auto">
-                                    <button type="button" class="btn btn-primary btn-icon-square-sm" (click)="cambiarVista()">
+                                    <!-- <button type="button" class="btn btn-primary btn-icon-square-sm" (click)="cambiarVista()">
                                         <i class="fas"  [ngClass]="vistaToogle?'fa-th':'fa-th-large '" ></i>                                                                                            
-                                    </button>
+                                    </button> -->
                                     <!-- <button class="btn btn-info btn-sm" (click)="cambiarPropuesta()">Cambiar propuesta</button> -->
                                 </div>
                             </div>
                         </div>
                         <!--end card-header-->
-                        <div class="card-body" id="propuesta1" *ngIf="!vistaToogle">
+                        <div class="card-body" id="propuesta1" >
                             <div class="table-responsive">
                                 <table class="table table-bordered table-striped mb-0 table-centered viewGeneral">
                                     <thead>
@@ -89,7 +80,7 @@
                         </div>
 
 
-                        <div class="card-body" id="propuesta2" *ngIf="vistaToogle">
+                        <!-- <div class="card-body" id="propuesta2" *ngIf="vistaToogle">
                             <table class="table table-bordered table-striped mb-0 table-centered viewGeneral">
                                 <thead>
                                     <th>NumpartPrd</th>
@@ -119,7 +110,7 @@
                                 </tr>
 
                             </table>
-                        </div>
+                        </div> -->
 
 
                     </div>

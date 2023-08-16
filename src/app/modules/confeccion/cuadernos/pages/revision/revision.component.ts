@@ -4,17 +4,18 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { of, Subscription } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 
-import { ConfeccionService } from 'src/app/services/confeccion.service';
-import { ConfiguracionService } from 'src/app/services/configuracion.service';
-import { KitService } from 'src/app/services/kit.service';
-import { UiService } from 'src/app/services/ui.service';
+
+
+
 import { CuadernoVerificado, AudioRevision, parametros } from '../../interfaces/cuadernos.interfaces';
-import { WebsocketService } from '../../../../../services/websocket.service';
+
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { environment } from 'src/environments/environment';
+
 import { pasteNotAllowFunc } from 'src/app/utils/utils';
 import { CuadernoKit, KitDetalle } from 'src/app/interfaces/shared/kit.interfaces';
 import { ConfeccionKitsGeneral, Resumen } from 'src/app/interfaces/shared/confeccion.interface';
+import { environment } from 'src/environments/environment.development';
+import { ConfeccionService, ConfiguracionService, KitService, UiService, WebsocketService } from '@services/index';
 @Component({
   selector: 'app-revision',
   templateUrl: './revision.component.html',
@@ -80,7 +81,6 @@ export class RevisionComponent implements OnInit, OnDestroy {
     ).subscribe(val => {      
       if (val.entrada.length < 6) {
         this.formCaptura.get('entrada').setValue("");
-
         return;
       }
     });
@@ -154,8 +154,7 @@ export class RevisionComponent implements OnInit, OnDestroy {
       this.confeccionService.verificarKit(this.params.id_pde, this.params.numpartprod).pipe(
         switchMap(response => this.reloadResumen())
       ).subscribe(response => {        
-        this.resetKit();  
-        
+        this.resetKit();          
         this.webSocketService.emitir("actualizarInfo", { modulo: "revisionCuadernos", numpartprod: this.params.numpartprod });
         setTimeout(() => {
           this.uiService.mostrarToaster("", ` Kit  ${this.params.numpartprod} se ha reportado`, true, 1000, "success");
@@ -204,11 +203,9 @@ export class RevisionComponent implements OnInit, OnDestroy {
 
 
   cambiarKitActivo() {
-    const { numparteprod } = this.kit;
-
-
-    if (this.configuracionService.kitActivo.terminoArmado || this.configuracionService.terminoRevision) {
-      this.configuracionService.iniciarArmado(numparteprod).subscribe((_) => {
+    const { numparteprod } = this.kit;      
+    if (this.configuracionService.kitActivo.terminoArmado || this.configuracionService.kitActivo.terminoRevision) {
+      this.configuracionService.iniciarArmado(numparteprod).subscribe((_) => {        
         this.webSocketService.emitir("reloadConfiguracion", "Informacion desde el cliente");
         this.configuracionService.cargarConfiguraciones();
       });
