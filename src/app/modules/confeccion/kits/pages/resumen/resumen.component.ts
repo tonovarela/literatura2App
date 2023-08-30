@@ -56,8 +56,7 @@ export class ResumenComponent implements OnInit {
   cargarData() {
     this.cargando = true;
     const { id_pde } = this.pde;
-    this.kitService.obtenerResiduos(id_pde).subscribe(({residuos}) => {
-      
+    this.kitService.obtenerResiduos(id_pde).subscribe(({residuos}) => {      
       this.residuosKitsPorEmpacar= residuos.map(x=>{x.seleccionado=false; return x});            
     });
     this.confeccionService.resumenKitsRevisados(id_pde)
@@ -68,7 +67,7 @@ export class ResumenComponent implements OnInit {
         }),
       )
       .subscribe((response: ConfeccionKitsGeneral) => {        
-        this.cargando = false;
+        //this.cargando = false;
         this.pde = response.pde;
         const { id_estado } = this.pde;
         if (id_estado == "1") {
@@ -165,10 +164,10 @@ export class ResumenComponent implements OnInit {
     this.selectedIndex = id;
   }
   actualizarLotes() {
-    this.pdeService.obtenerLotes(this.pde.id_pde).subscribe(x => {
-      
+    this.pdeService.obtenerLotes(this.pde.id_pde).subscribe(x => {      
       this.lotes = x["lotes"];      
       this.lotesDetalle = x["detalle"];
+      this.cargando=false;
     });
   }
   irListado() {

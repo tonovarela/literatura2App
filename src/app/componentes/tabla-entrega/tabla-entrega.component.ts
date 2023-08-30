@@ -20,7 +20,7 @@ export class TablaEntregaComponent implements OnInit {
 
   ngOnInit(): void {    
     let _pdes: any[] = [];
-
+  
     this.lotesDetalle.forEach(x => {
       const pdes = [... new Set(x.detalle.map(d => d.nombre))]; //Se quitan los duplicados                           
       _pdes = _pdes.concat(pdes)

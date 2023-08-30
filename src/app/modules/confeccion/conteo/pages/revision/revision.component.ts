@@ -1,10 +1,11 @@
 import { Component, OnDestroy, OnInit, } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { of, Subscription } from 'rxjs';
+import { firstValueFrom, of, Subscription } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 import { AudioRevision } from '../../../kits/interfaces/kit.interfaces';
+
 import { pasteNotAllowFunc } from 'src/app/utils/utils';
 import { ResumenParte } from 'src/app/interfaces/shared/confeccion.interface';
 import { KitDetalle } from 'src/app/interfaces/shared/kit.interfaces';
@@ -12,6 +13,7 @@ import { KitDetalle } from 'src/app/interfaces/shared/kit.interfaces';
 import { CajaService, ConfeccionService, ConfiguracionService, KitService, PdeService, UiService, WebsocketService } from '@services/index';
 
 import { environment } from 'src/environments/environment.development';
+
 
 
 
@@ -92,7 +94,6 @@ export class RevisionComponent implements OnInit, OnDestroy {
       });
       this.cargarRevisiones();
     });
-
     const subs5 = this.webSocketService.listen('reloadConfiguracion').subscribe(_ => {
       if (this.configuracionService.kitActivo.terminoRevision == false) {
         this.cargarRevisiones();
@@ -132,160 +133,159 @@ export class RevisionComponent implements OnInit, OnDestroy {
   private async revisionPreEtiqueta(revision) {
 
     if (revision == null) {
-      return;
+      return Promise.resolve(false);
     }
     const { revisados, totalPorCaja, total, numpartprod } = revision;
     const _restantes = revisados % totalPorCaja;
     if (_restantes === 0 || revisados == total) {
       const totalKits = _restantes === 0 ? totalPorCaja : _restantes;
       this.uiService.mostrarToaster("Caja", "Imprimiendo caja", false, 500, "info");
-      await this.imprimirPreEtiqueta(numpartprod, totalKits);
+     return await this.imprimirPreEtiqueta(numpartprod, totalKits);
     }
-    return Promise.resolve(true);
+    return Promise.resolve(false);
   }
-  imprimirPreEtiqueta(numpartprod, totalKits) {
+
+
+  async imprimirPreEtiqueta(numpartprod, totalKits) {
     let kit: KitDetalle = {};
-    this.kitService.obtenerDetalle(numpartprod).pipe(
+    const response = await firstValueFrom(this.kitService.obtenerDetalle(numpartprod).pipe(
       switchMap(kitResponse => {
         kit = kitResponse.kit;
         return this.cajaService.obtenerPreEtiqueta(this.id_pde, numpartprod)
-      })).subscribe((response) => {
-        let caja = {};
-        if (!response.ok) {
-          caja = {
-            cont1: kit.cont1,
-            cont2: kit.cont2,
-            contenido: `${kit.cont1} ${kit.cont2 || ""}`,
-            etiqueta: "Pre-etiqueta",
-            fechaImpresion: "",
-            id: "#################",
-            idioma: kit.idioma,
-            idLabel: "#############",
-            idTarima: "############",
-            importado: kit.edicion.toUpperCase() == "IMPORTADOS",
-            indice: kit.indice,
-            nombre: numpartprod,
-            numpartprod: numpartprod,
-            pr: kit.pr,
-            sku: kit.clavekit,
-            sku2: kit.clavekit2,
-            totalKits: totalKits,
-            vehiculo: kit.vehiculo || kit.identifica
-          };
+      })));
 
-          this.webSocketService.emitir("imprimirPreEtiqueta", caja);
+    let caja = {};
+    if (!response.ok) {
+      caja = {
+        cont1: kit.cont1,
+        cont2: kit.cont2,
+        contenido: `${kit.cont1} ${kit.cont2 || ""}`,
+        etiqueta: "Pre-etiqueta",
+        fechaImpresion: "",
+        id: "#################",
+        idioma: kit.idioma,
+        idLabel: "#############",
+        idTarima: "############",
+        importado: kit.edicion.toUpperCase() == "IMPORTADOS",
+        indice: kit.indice,
+        nombre: numpartprod,
+        numpartprod: numpartprod,
+        pr: kit.pr,
+        sku: kit.clavekit,
+        sku2: kit.clavekit2,
+        totalKits: totalKits,
+        vehiculo: kit.vehiculo || kit.identifica
+      };
 
-        } else {
-          const { id_caja, id_tarima, numeroTarima, numeroCaja } = response.caja;
-          const resumenTotal = response.resumenTotal;
-          const { totalCajas } = resumenTotal.find(x => x.id_tarima == id_tarima)
-          caja = {
-            cont1: kit.cont1,
-            cont2: kit.cont2,
-            contenido: `${kit.cont1} ${kit.cont2 || ""}`,
-            etiqueta: `Caja [${numeroCaja} de ${totalCajas} ] Tarima [${numeroTarima}}]`,
-            fechaImpresion: "",
-            id: id_caja,
-            idioma: kit.idioma,
-            idLabel: id_caja,
-            idTarima: id_tarima,
-            importado: kit.edicion.toUpperCase() == "IMPORTADOS",
-            indice: kit.indice,
-            nombre: numpartprod,
-            numpartprod: numpartprod,
-            pr: kit.pr,
-            sku: kit.clavekit,
-            sku2: kit.clavekit2,
-            totalKits: totalKits,
-            vehiculo: kit.vehiculo || kit.identifica
+      this.webSocketService.emitir("imprimirPreEtiqueta", caja);
 
-          };
-          this.webSocketService.emitir("imprimirPreEtiqueta", caja);
-          this.webSocketService.emitir("imprimirPreEtiqueta", caja);
+    } else {
+      const { id_caja, id_tarima, numeroTarima, numeroCaja } = response.caja;
+      const resumenTotal = response.resumenTotal;
+      const { totalCajas } = resumenTotal.find(x => x.id_tarima == id_tarima)
+      caja = {
+        cont1: kit.cont1,
+        cont2: kit.cont2,
+        contenido: `${kit.cont1} ${kit.cont2 || ""}`,
+        etiqueta: `Caja [${numeroCaja} de ${totalCajas} ] Tarima [${numeroTarima}}]`,
+        fechaImpresion: "",
+        id: id_caja,
+        idioma: kit.idioma,
+        idLabel: id_caja,
+        idTarima: id_tarima,
+        importado: kit.edicion.toUpperCase() == "IMPORTADOS",
+        indice: kit.indice,
+        nombre: numpartprod,
+        numpartprod: numpartprod,
+        pr: kit.pr,
+        sku: kit.clavekit,
+        sku2: kit.clavekit2,
+        totalKits: totalKits,
+        vehiculo: kit.vehiculo || kit.identifica
+      };
+      this.webSocketService.emitir('actualizarInfo', { modulo: "revisionKits", numparteprod: numpartprod });
+      this.webSocketService.emitir("imprimirPreEtiqueta", caja);
+      this.webSocketService.emitir("imprimirPreEtiqueta", caja);
+      await this.cargarRevisiones();
+      return Promise.resolve(true);      
+    }
 
-          this.cargarRevisiones();
-        }
-        //console.log(caja);
-
-      });
-
-
+    return Promise.resolve(false)
   }
 
 
-
-
-
-  async cargarInfo(response, numparteprod: string, imprimirPreEtiqueta: boolean) {
-
-
+  async cargarInfo(response, numparteprod: string) {    
     this.cargando = false;
-
+    
     let _revisiones = [...response.resumenGeneral];
-    const numpartActivo = this.kitActivo.numpartprod;
+    const numpartActivo = this.configuracionService.kitActivo.numpartprod;
     if (numpartActivo.length > 0) {
       _revisiones = _revisiones.filter(x => x.numpartprod == numpartActivo);
       const [revision] = _revisiones;
-
       if (Number(revision.porEmpacar) > 0 && Number(revision.armados) == 0) {
         _revisiones = [...response.resumenGeneral];
         this.configuracionService.terminoRevision().subscribe(_ => {
           this.webSocketService.emitir("reloadConfiguracion", {});
-          if (numparteprod != "") {
+          if (numpartActivo != "") {
             this.regresar();
           }
         })
       }
     }
     if (numparteprod.length > 0) {
-      setTimeout(() => this.animarContador(numparteprod), 1);
-      if (imprimirPreEtiqueta) {
-        await this.revisionPreEtiqueta(_revisiones.find(x => x.numpartprod == numpartActivo));
-      }
-    }
-    this.resumenKit = _revisiones;
-
-
+      setTimeout(() => this.animarContador(numparteprod), 1);      
+       const etiqueta= await this.revisionPreEtiqueta(_revisiones.find(x => x.numpartprod == numparteprod));
+       if (etiqueta){
+        return Promise.resolve(true);
+       }
+      
+    }    
+    this.resumenKit = [..._revisiones];  
+    
+    return await Promise.resolve(true);
   }
 
 
+   async callBackCargaInfo (response,numparteprod)  {
+    await this.cargarInfo(response, numparteprod);
+    if (document.getElementById("entrada") != null) {
+      pasteNotAllowFunc("entrada");
+      this.formCaptura.get("entrada").setValue("");
+      document.getElementById("entrada").focus();
+      return Promise.resolve(true);
+      // const [k] = this.resumenKit
+      // if (k.armados >= 10 && numparteprod != "") {
+      //   this.formCaptura.get("entrada").setValue(numparteprod);
+      //   this.verificarKit();
+      // }
+    }
+  }
 
-
-  async cargarRevisiones(numparteprod = "", imprimirPreEtiqueta = true) {
+  async cargarRevisiones(numparteprod = "") {
     const materialActivo = this.configuracionService.kitActivo.numpartprod;
     this.cargando = true;
-
-    const callBackCargaInfo = async (response) => {
-      await this.cargarInfo(response, numparteprod, imprimirPreEtiqueta);
-
-      if (document.getElementById("entrada") != null) {
-        pasteNotAllowFunc("entrada");
-        this.formCaptura.get("entrada").setValue("");
-        document.getElementById("entrada").focus();
-        const [k] = this.resumenKit
-        if (k.armados >= 50 && numparteprod != "") {
-
-          this.formCaptura.get("entrada").setValue(numparteprod);
-          this.verificarKit();
-        }
-
-      }
-    }
-
+    
     if (numparteprod != "") {
+      
       const [nK] = this.resumenKit;
       if (nK != null) {
-        const nuevoResumenGeneral = [{ ...nK, porEmpacar: Number(nK.porEmpacar) + 1, armados: Number(nK.armados) - 1, revisados: nK.revisados + 1 }];
-        const porcentajeAvance = Math.round((Number(nK.empacados) * 100) / Number(nK.total));
-        if (porcentajeAvance <= 80) {
+        const nuevoResumenGeneral = [{ ...nK, porEmpacar: Number(nK.porEmpacar) + 1, armados: Number(nK.armados) - 1, revisados: nK.revisados + 1 }];        
+        const armados = nuevoResumenGeneral[0].armados;
+        if (armados >= 10) {
           const newResponse = { resumenGeneral: nuevoResumenGeneral };
-          await callBackCargaInfo(newResponse);
-          return;
+          await this.callBackCargaInfo(newResponse,numparteprod);          
+          return Promise.resolve(true);
         }
       }
-    }
-    this.confeccionService.revisionesKit(this.id_pde, materialActivo).subscribe(callBackCargaInfo);
+      
+    }    
+    const response = await firstValueFrom(this.confeccionService.revisionesKit(this.id_pde, materialActivo));        
+    await this.callBackCargaInfo(response,numparteprod);
+    return Promise.resolve(true);
   }
+
+
+
 
 
   verificarKit() {
@@ -317,16 +317,17 @@ export class RevisionComponent implements OnInit, OnDestroy {
           return of({ ok: false })
         }),
       )
-      .subscribe(response => {
+      .subscribe(async (response) => {
         this.blockInput = false
         if (response["ok"] == false) {
           return;
         }
-
-        this.webSocketService.emitir('actualizarInfo', { modulo: "revisionKits", numparteprod: kitVerificar });
+        
+       
         this.audios.ok.play();
         this.uiService.mostrarToaster("OK", response['result'], true, 400, "success");
-        this.cargarRevisiones(kitVerificar);
+        await this.cargarRevisiones(kitVerificar);
+        
         this.formCaptura.get("entrada").setValue("");
         document.getElementById("entrada").focus();
       })

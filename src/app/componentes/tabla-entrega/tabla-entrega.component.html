@@ -2,7 +2,7 @@
     <thead>
         <th>-</th>
         <th>Total</th>
-        <th>--</th>
+        <th>Material</th>
         <th *ngIf="etiquetaDetalle=='Ver'">Nombre pallet</th>        
     </thead>
     <tr *ngFor="let lote of lotesDetalle">
@@ -15,7 +15,7 @@
         <td  class="col-1 ">
             {{lote.totalKits}}
         </td>
-        <td>
+        <!-- <td>
             <table class="table table-bordered">
                 <thead>
                     <th></th>
@@ -26,9 +26,9 @@
                     <td>{{pde}}</td>                    
                 </tr>            
             </table>
-        </td>
-       
-        <td class="col-2" *ngIf="etiquetaDetalle=='Ver'">                        
+        </td> -->
+       <td class="col-2">{{lote.materialEnTarima}}</td>
+        <td class="col-4" *ngIf="etiquetaDetalle=='Ver'">                        
             <div *ngIf="lote.tipo=='mezclada' && etiquetaDetalle=='Ver'">
                 <div class="input-group">
                     <input type="text" [(ngModel)]="lote.nombrePallet" class="form-control"

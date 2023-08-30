@@ -14,7 +14,7 @@
                             <a class="nav-link active" data-toggle="tab" [ngClass]="{'active': selectedIndex == 2}"
                                 (click)="setSelected(2)" href="#resumen" role="tab" aria-selected="true">CAJAS SIN ENTARIMAR</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item">                               
                             <a class="nav-link" data-toggle="tab" href="#enLote"
                                 [ngClass]="{'active': selectedIndex == 1}" role="tab" aria-selected="false">TARIMAS
                                 <span [ngClass]="[ lotes.length==0?'badge-secondary':'badge-success']"
@@ -123,11 +123,11 @@
     </ng-template> -->
     <ng-template #registroLotes>
         <div class="col-4  offset-4 mt-4">
-            <div *ngIf="lotes.length==0" class="alert alert-outline-secondary text-center" role="alert">
+            <div *ngIf="lotes.length==0 && !cargando" class="alert alert-outline-secondary text-center" role="alert">
                 <strong> SIN REGISTRO DE EMPAQUE</strong>
             </div>
         </div>
-        <div class="col-10 offset-1">
+        <div class="col-11 offset-1">
             <app-tabla-entrega *ngIf="lotesDetalle.length>0" etiquetaDetalle="Ver"
                 [lotesDetalle]="lotesDetalle" (irEntrega)="irEntrega($event)"></app-tabla-entrega>
         </div>
