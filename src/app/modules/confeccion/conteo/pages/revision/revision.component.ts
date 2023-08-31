@@ -35,21 +35,13 @@ export class RevisionComponent implements OnInit, OnDestroy {
   resumenKit: ResumenParte[] = [];
   //resumenAlternativo: any;
   DELAYMAX: number = environment.delayTimeAllowedInput;
-
-
   blockInput: boolean = false;
-
   esFireFox: boolean = false;
-
-
   audios: AudioRevision = {
     scan: new Audio(`assets/audio/scan.mp3`),
     error: new Audio(`assets/audio/error.mp3`),
     ok: new Audio(`assets/audio/ok.mp3`)
   };
-
-
-
 
   constructor(private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -64,14 +56,9 @@ export class RevisionComponent implements OnInit, OnDestroy {
     const agent = window.navigator.userAgent.toLowerCase()
     this.esFireFox = agent.indexOf('firefox') > -1;
   }
-
   regresar() {
     this.router.navigate(['../../pde'], { relativeTo: this.activatedRoute })
   }
-
-
-
-
   ngOnInit(): void {
 
     const subs1 = this.formCaptura.valueChanges.pipe(
@@ -209,24 +196,20 @@ export class RevisionComponent implements OnInit, OnDestroy {
       await this.cargarRevisiones();
       return Promise.resolve(true);      
     }
-
     return Promise.resolve(false)
   }
-
-
   async cargarInfo(response, numparteprod: string) {    
-    this.cargando = false;
-    
+    this.cargando = false;    
     let _revisiones = [...response.resumenGeneral];
     const numpartActivo = this.configuracionService.kitActivo.numpartprod;
     if (numpartActivo.length > 0) {
       _revisiones = _revisiones.filter(x => x.numpartprod == numpartActivo);
-      const [revision] = _revisiones;
+      const [revision] = _revisiones;      
       if (Number(revision.porEmpacar) > 0 && Number(revision.armados) == 0) {
         _revisiones = [...response.resumenGeneral];
         this.configuracionService.terminoRevision().subscribe(_ => {
           this.webSocketService.emitir("reloadConfiguracion", {});
-          if (numpartActivo != "") {
+          if (numparteprod != "") {
             this.regresar();
           }
         })
@@ -237,28 +220,31 @@ export class RevisionComponent implements OnInit, OnDestroy {
        const etiqueta= await this.revisionPreEtiqueta(_revisiones.find(x => x.numpartprod == numparteprod));
        if (etiqueta){
         return Promise.resolve(true);
-       }
-      
+       }      
     }    
-    this.resumenKit = [..._revisiones];  
-    
+    this.resumenKit = [..._revisiones];      
     return await Promise.resolve(true);
   }
 
 
-   async callBackCargaInfo (response,numparteprod)  {
-    await this.cargarInfo(response, numparteprod);
+   private async ckCargarInfo (response,numparteprod)  {
+       await this.cargarInfo(response, numparteprod);
     if (document.getElementById("entrada") != null) {
       pasteNotAllowFunc("entrada");
       this.formCaptura.get("entrada").setValue("");
       document.getElementById("entrada").focus();
-      return Promise.resolve(true);
-      // const [k] = this.resumenKit
-      // if (k.armados >= 10 && numparteprod != "") {
-      //   this.formCaptura.get("entrada").setValue(numparteprod);
-      //   this.verificarKit();
-      // }
+
+      //Registro Automatico
+      return Promise.resolve(true);     
     }
+  }
+
+  private async registroAutomatico(numparteprod:string){
+      const [k] = this.resumenKit      
+      if (k.armados >= 3 && numparteprod != "") {      
+        this.formCaptura.get("entrada").setValue(numparteprod);
+        this.verificarKit();
+      }
   }
 
   async cargarRevisiones(numparteprod = "") {
@@ -273,14 +259,14 @@ export class RevisionComponent implements OnInit, OnDestroy {
         const armados = nuevoResumenGeneral[0].armados;
         if (armados >= 10) {
           const newResponse = { resumenGeneral: nuevoResumenGeneral };
-          await this.callBackCargaInfo(newResponse,numparteprod);          
+          await this.ckCargarInfo(newResponse,numparteprod);          
           return Promise.resolve(true);
         }
       }
       
     }    
     const response = await firstValueFrom(this.confeccionService.revisionesKit(this.id_pde, materialActivo));        
-    await this.callBackCargaInfo(response,numparteprod);
+    await this.ckCargarInfo(response,numparteprod);
     return Promise.resolve(true);
   }
 
@@ -317,16 +303,17 @@ export class RevisionComponent implements OnInit, OnDestroy {
           return of({ ok: false })
         }),
       )
-      .subscribe(async (response) => {
-        this.blockInput = false
+      .subscribe(async (response) => {        
         if (response["ok"] == false) {
           return;
-        }
-        
-       
+        }               
         this.audios.ok.play();
         this.uiService.mostrarToaster("OK", response['result'], true, 400, "success");
-        await this.cargarRevisiones(kitVerificar);
+        //console.log("Carga");        
+        await this.cargarRevisiones(kitVerificar);        
+        this.blockInput = false
+        this.registroAutomatico(kitVerificar);        
+        //console.log("fin de carga");
         
         this.formCaptura.get("entrada").setValue("");
         document.getElementById("entrada").focus();

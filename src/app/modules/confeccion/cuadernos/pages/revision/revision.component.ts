@@ -1,7 +1,7 @@
 import { OnDestroy, } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { of, Subscription } from 'rxjs';
+import { firstValueFrom, of, Subscription } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 
 
@@ -30,7 +30,7 @@ export class RevisionComponent implements OnInit, OnDestroy {
   resumen: Resumen;
   cuadernos: CuadernoKit[] = [];
   cuadernosVerificados: CuadernoVerificado[] = [];
-  blockInput:boolean= false;
+  blockInput: boolean = false;
   audios: AudioRevision = {
     scan: new Audio(`assets/audio/scan.mp3`),
     error: new Audio(`assets/audio/error.mp3`),
@@ -59,7 +59,7 @@ export class RevisionComponent implements OnInit, OnDestroy {
     this.resetKit();
   }
 
-  
+
 
   resetSound() {
     this.audios.scan.pause();
@@ -78,7 +78,7 @@ export class RevisionComponent implements OnInit, OnDestroy {
     const subs = this.formCaptura.valueChanges.pipe(
       debounceTime(this.DELAYMAX),
       distinctUntilChanged()
-    ).subscribe(val => {      
+    ).subscribe(val => {
       if (val.entrada.length < 6) {
         this.formCaptura.get('entrada').setValue("");
         return;
@@ -90,7 +90,7 @@ export class RevisionComponent implements OnInit, OnDestroy {
 
 
     const subs1 = this.webSocketService.listen("reloadConfiguracion").subscribe(response => {
-      const t = this.configuracionService.kitActivo.numpartprod;      
+      const t = this.configuracionService.kitActivo.numpartprod;
       if (t.length > 0 && t != this.kit.numparteprod) {
         this.irListado();
       }
@@ -103,7 +103,6 @@ export class RevisionComponent implements OnInit, OnDestroy {
 
     this.subscriptions.push(subs1);
     this.subscriptions.push(subs2);
-
     this.activatedRoute.params.pipe(
       switchMap(({ id_pde, numpartprod }) => {
         this.params = { id_pde, numpartprod };
@@ -113,7 +112,7 @@ export class RevisionComponent implements OnInit, OnDestroy {
         this.router.navigate([`../../../resumen/${this.params.id_pde}`], { relativeTo: this.activatedRoute });
         return of({ ok: false } as ConfeccionKitsGeneral)
       })
-    ).subscribe((response) => {
+    ).subscribe((_) => {
       this.cargarSKULibros();
     });
   }
@@ -127,42 +126,45 @@ export class RevisionComponent implements OnInit, OnDestroy {
   }
 
 
-  reloadResumen() {    
+  reloadResumen(revision = false) {
+    if (revision && Number(this.resumen.restantes) > 5) {
+      this.resumen = { ...this.resumen, restantes: (Number(this.resumen.restantes) - 1).toString(), reportados: (Number(this.resumen.reportados) + 1).toString() }
+      this.blockInput = false;
+      return of("xx")
+    }
     return this.confeccionService.resumenKit(this.params.id_pde, this.params.numpartprod).pipe(
       tap(response => {
-        
-        this.resumen = response.resumen[0];        
-        if (Number(this.resumen.restantes) == 0) {          
-          this.configuracionService.terminarArmado().subscribe(_=> {
-            this.webSocketService.emitir("reloadConfiguracion",{});
+        this.resumen = response.resumen[0];
+        if (Number(this.resumen.restantes) == 0) {
+          this.configuracionService.terminarArmado().subscribe(_ => {
+            this.webSocketService.emitir("reloadConfiguracion", {});
             this.router.navigate([`../../../resumen/${this.params.id_pde}`], { relativeTo: this.activatedRoute });
-          })          
-        }else{
-          this.blockInput=false;
+          })
+        } else {
+          this.blockInput = false;
         }
       })
     );
   }
   resetKit() {
-    this.cuadernosVerificados = this.cuadernos.map(c => {
-      return { sku1: c.sku1, descripcion: c.descripcion, verificado: false } as CuadernoVerificado
-    })
+    this.cuadernosVerificados = this.cuadernos.map(c => { return { sku1: c.sku1, descripcion: c.descripcion, verificado: false } as CuadernoVerificado });
   }
-  vefificarKitCompleto() {    
-    if (this.cuadernosVerificados.filter(c => c.verificado).length == this.cuadernosVerificados.length) {      
-      this.blockInput=true;
-      this.confeccionService.verificarKit(this.params.id_pde, this.params.numpartprod).pipe(
-        switchMap(response => this.reloadResumen())
-      ).subscribe(response => {        
-        this.resetKit();          
-        this.webSocketService.emitir("actualizarInfo", { modulo: "revisionCuadernos", numpartprod: this.params.numpartprod });
-        setTimeout(() => {
-          this.uiService.mostrarToaster("", ` Kit  ${this.params.numpartprod} se ha reportado`, true, 1000, "success");
-          this.resetSound();
-          this.audios.ok.play();
-        }, 0)
-      });
-    }
+  async registroKit() {
+    this.blockInput = true;
+    await firstValueFrom(this.confeccionService.verificarKit(this.params.id_pde, this.params.numpartprod).pipe(
+      switchMap(_ => this.reloadResumen(true))
+    ));
+    
+    this.webSocketService.emitir("actualizarInfo", { modulo: "revisionCuadernos", numpartprod: this.params.numpartprod });
+    this.uiService.mostrarToaster("", ` Kit  ${this.params.numpartprod} se ha reportado`, true, 1000, "success");
+    this.resetSound();
+    this.audios.ok.play();
+    return Promise.resolve(true);
+  }
+
+  vefificarKitCompleto() {
+    return this.cuadernosVerificados.filter(c => c.verificado).length == this.cuadernosVerificados.length;
+
   }
 
   irListado() {
@@ -170,11 +172,11 @@ export class RevisionComponent implements OnInit, OnDestroy {
   }
 
 
-  verificarLibro() {
-    if (this.blockInput){
+  async verificarLibro() {
+    if (this.blockInput) {
       return;
-    }    
-    let skuVerificar = this.formCaptura.get("entrada").value;         
+    }
+    let skuVerificar = this.formCaptura.get("entrada").value;
     this.resetSound();
     this.audios.scan.play();
     if (skuVerificar.length == 0) {
@@ -187,25 +189,34 @@ export class RevisionComponent implements OnInit, OnDestroy {
         c.verificado = true;
       }
     });
-    if (_cambio) {      
-      this.vefificarKitCompleto();
-      this.resetSound();
-      this.audios.scan.play();
-      this.cambiarKitActivo();
-    } else {
+
+
+    if (!_cambio) {
       this.uiService.mostrarToaster("Atencion!", `Libro ${skuVerificar} no encontrado`, true, 1500, "error");
       this.resetSound();
       this.audios.error.play();
+      return
     }
+
+    const estaCompleto = this.vefificarKitCompleto();
+    if (estaCompleto) {
+      while (Number(this.resumen.restantes) > 5) {
+        await this.registroKit();
+      }
+      await this.registroKit();
+      this.resetKit();
+
+    }
+    this.cambiarKitActivo();
     this.formCaptura.get("entrada").setValue("");
     document.getElementById("entrada_cuaderno").focus();
   }
 
 
   cambiarKitActivo() {
-    const { numparteprod } = this.kit;      
+    const { numparteprod } = this.kit;
     if (this.configuracionService.kitActivo.terminoArmado || this.configuracionService.kitActivo.terminoRevision) {
-      this.configuracionService.iniciarArmado(numparteprod).subscribe((_) => {        
+      this.configuracionService.iniciarArmado(numparteprod).subscribe((_) => {
         this.webSocketService.emitir("reloadConfiguracion", "Informacion desde el cliente");
         this.configuracionService.cargarConfiguraciones();
       });

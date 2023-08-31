@@ -54,12 +54,12 @@ export class PdeComponent implements OnInit,OnDestroy {
         const pdeActivoParaConfeccion = this.pdes.filter(p => Number(p["id_estado"]) == 1);
         this.tienePdeActivo =pdeActivoParaConfeccion.length > 0;        
         if (this.tienePdeActivo) {
-          const { id_pde } = pdeActivoParaConfeccion[0];
+          const { id_pde } = pdeActivoParaConfeccion[0];          
           this.router.navigate(['../revision', id_pde], { relativeTo: this.activatedRouter })
         }
       })
     )
-    .subscribe(response=>{      
+    .subscribe(_=>{      
       this.cargando=false;
       //this.pdes=response["pde"];            
       //this.pdes =this.pdes.filter(p=>Number(p["revisionKits"])>0);

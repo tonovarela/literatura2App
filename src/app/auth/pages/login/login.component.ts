@@ -14,6 +14,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 
 export class LoginComponent implements OnInit {
   loginForm: FormGroup ;
+  year: number = new Date().getFullYear();
   constructor(private router: Router,
     private uiService: UiService,
     private fb: FormBuilder,

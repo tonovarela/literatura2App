@@ -1,10 +1,10 @@
 import { SocketIoConfig } from "ngx-socket-io";
-const config: SocketIoConfig = { url: 'http://localhost:5000', options: {} };
+const config: SocketIoConfig = { url: 'http://192.168.2.222:8081', options: {} };
 
 export const environment = {
   production: false,
   sockectConfig: config,  
-  URL: 'http://192.168.2.222/literatura7',    
+  URL: 'http://servicios.litoprocess.com/literatura7',    
   delayTimeAllowedInput: 200,
   puederPegarTexto: true,
     //URL_IMPRESIONES: "http://localhost:8050"  

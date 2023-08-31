@@ -10,7 +10,7 @@ export class WebsocketService {
 
   public socketStatus = false;    
   constructor(private socket:Socket) {    
-    this.checkStatus();
+    //this.checkStatus();
   }
 
   checkStatus() {    

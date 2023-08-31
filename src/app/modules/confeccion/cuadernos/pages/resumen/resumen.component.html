@@ -1,5 +1,5 @@
 <!-- <app-mensaje-estacion-bloquedada *ngIf="configuracionService.pausarSeleccion.habilitada"></app-mensaje-estacion-bloquedada> -->
-<div class="container-fluid">
+<div class="container-fluid">    
     <app-loader *ngIf="cargando"></app-loader>
     <div class="" >
         <div class="row mt-2">
@@ -19,12 +19,7 @@
                                         <h3>{{pde.nombre}}</h3>
                                     </div>
                                 </div>
-                                <div class="col ml-auto">
-                                    <!-- <button type="button" class="btn btn-primary btn-icon-square-sm" (click)="cambiarVista()">
-                                        <i class="fas"  [ngClass]="vistaToogle?'fa-th':'fa-th-large '" ></i>                                                                                            
-                                    </button> -->
-                                    <!-- <button class="btn btn-info btn-sm" (click)="cambiarPropuesta()">Cambiar propuesta</button> -->
-                                </div>
+                              
                             </div>
                         </div>
                         <!--end card-header-->
@@ -78,41 +73,6 @@
                                 </table>
                             </div>
                         </div>
-
-
-                        <!-- <div class="card-body" id="propuesta2" *ngIf="vistaToogle">
-                            <table class="table table-bordered table-striped mb-0 table-centered viewGeneral">
-                                <thead>
-                                    <th>NumpartPrd</th>
-                                    <th>Total </th>
-                                    <th>por Armar </th>
-                                    <th>Armados </th>
-                                    <th>por Revisar</th>
-                                    <th>Revisados</th>
-                                    <th></th>
-                                </thead>
-                                <tr *ngFor="let kit of resumenKit.resumenAlternativo">
-                                    <td>
-                                        {{kit.numpartprod}}
-                                    </td>
-                                    <td>
-                                        <span class="badge badge-outline-dark total">{{kit.total}}</span>
-                                    </td>
-                                    <td>
-                                        <span class="badge badge-outline-dark number">{{kit.porArmar}}</span>
-                                    </td>
-                                    <td><span class="badge badge-outline-dark number">{{kit.armados}}</span></td>
-                                    <td><span class="badge badge-outline-dark number">{{kit.porRevisar}}</span></td>
-                                    <td><span class="badge badge-outline-dark number">{{kit.revisados}}</span></td>
-                                    <td>
-                                        <a class="btn btn-sm btn-outline-primary waves-effect waves-light" *ngIf="puedeConfeccionarse(kit.numpartprod)" [routerLink]="['/pages/confeccion/cuadernos/revision',pde.id_pde,kit.numpartprod]"><i class="fas fa-diagnoses mr-2"></i>Confección</a>
-                                    </td>
-                                </tr>
-
-                            </table>
-                        </div> -->
-
-
                     </div>
                 </div>
             </div>

@@ -16,7 +16,7 @@
     text-align: center;
   }
   .bar:nth-child(1) {
-    background-color: #da4733;    
+    background-color: #3b78e7;    
     animation: loading 0.5s linear infinite;
   }
   .bar:nth-child(2) {
@@ -24,7 +24,7 @@
     animation: loading 1s linear 1s infinite;
   }
   .bar:nth-child(3) {
-    background-color: #fdba2c;
+    background-color: purple;
     /* background-color: #03d87f; */
     animation: loading 1s linear 1s infinite;
   }
