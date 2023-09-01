@@ -7,7 +7,7 @@
     </thead>
     <tr *ngFor="let lote of lotesDetalle">
         <td class="col-3 ">                            
-                    <h5>{{lote.nombreTarima}} - {{lote.tipo |titlecase}}</h5>                                                        
+                    <span class="font-15">{{lote.nombreTarima}} - {{lote.tipo |titlecase}}</span>                                                        
                     <div *ngIf="lote.origen=='No'">
                        <k>Registrado en el plan de entrega {{lote.nombrePDEOrigen}}</k> 
                     </div>

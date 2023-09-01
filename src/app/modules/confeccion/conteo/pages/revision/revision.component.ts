@@ -127,7 +127,12 @@ export class RevisionComponent implements OnInit, OnDestroy {
     if (_restantes === 0 || revisados == total) {
       const totalKits = _restantes === 0 ? totalPorCaja : _restantes;
       this.uiService.mostrarToaster("Caja", "Imprimiendo caja", false, 500, "info");
-     return await this.imprimirPreEtiqueta(numpartprod, totalKits);
+      const [k] = this.resumenKit;
+      this.resumenKit = [{ ...k, porEmpacar: Number(k.porEmpacar + 1) }];
+      return await this.imprimirPreEtiqueta(numpartprod, totalKits);
+    }
+    if (revisados > totalPorCaja) {
+      this.webSocketService.emitir('actualizarInfo', { modulo: "revisionKits", numparteprod: numpartprod });
     }
     return Promise.resolve(false);
   }
@@ -194,17 +199,17 @@ export class RevisionComponent implements OnInit, OnDestroy {
       this.webSocketService.emitir("imprimirPreEtiqueta", caja);
       this.webSocketService.emitir("imprimirPreEtiqueta", caja);
       await this.cargarRevisiones();
-      return Promise.resolve(true);      
+      return Promise.resolve(true);
     }
     return Promise.resolve(false)
   }
-  async cargarInfo(response, numparteprod: string) {    
-    this.cargando = false;    
+  async cargarInfo(response, numparteprod: string) {
+    this.cargando = false;
     let _revisiones = [...response.resumenGeneral];
     const numpartActivo = this.configuracionService.kitActivo.numpartprod;
     if (numpartActivo.length > 0) {
       _revisiones = _revisiones.filter(x => x.numpartprod == numpartActivo);
-      const [revision] = _revisiones;      
+      const [revision] = _revisiones;
       if (Number(revision.porEmpacar) > 0 && Number(revision.armados) == 0) {
         _revisiones = [...response.resumenGeneral];
         this.configuracionService.terminoRevision().subscribe(_ => {
@@ -216,57 +221,57 @@ export class RevisionComponent implements OnInit, OnDestroy {
       }
     }
     if (numparteprod.length > 0) {
-      setTimeout(() => this.animarContador(numparteprod), 1);      
-       const etiqueta= await this.revisionPreEtiqueta(_revisiones.find(x => x.numpartprod == numparteprod));
-       if (etiqueta){
+    
+      setTimeout(() =>this.animarContador(numparteprod) , 1);      
+      const etiqueta = await this.revisionPreEtiqueta(_revisiones.find(x => x.numpartprod == numparteprod));
+      if (etiqueta) {
         return Promise.resolve(true);
-       }      
-    }    
-    this.resumenKit = [..._revisiones];      
+      }
+    }
+    this.resumenKit = [..._revisiones];
     return await Promise.resolve(true);
   }
 
 
-   private async ckCargarInfo (response,numparteprod)  {
-       await this.cargarInfo(response, numparteprod);
+  private async ckCargarInfo(response, numparteprod) {
+    await this.cargarInfo(response, numparteprod);
     if (document.getElementById("entrada") != null) {
       pasteNotAllowFunc("entrada");
       this.formCaptura.get("entrada").setValue("");
-      document.getElementById("entrada").focus();
+      document.getElementById("entrada")?.focus();
 
-      //Registro Automatico
-      return Promise.resolve(true);     
+      return Promise.resolve(true);
     }
   }
 
-  private async registroAutomatico(numparteprod:string){
-      const [k] = this.resumenKit      
-      if (k.armados >= 3 && numparteprod != "") {      
-        this.formCaptura.get("entrada").setValue(numparteprod);
-        this.verificarKit();
-      }
+  private async registroAutomatico(numparteprod: string) {
+    const [k] = this.resumenKit
+    if (k.armados >= 3 && numparteprod != "") {
+      this.formCaptura.get("entrada").setValue(numparteprod);
+      this.verificarKit();
+    }
   }
 
   async cargarRevisiones(numparteprod = "") {
     const materialActivo = this.configuracionService.kitActivo.numpartprod;
     this.cargando = true;
-    
+
     if (numparteprod != "") {
-      
+
       const [nK] = this.resumenKit;
       if (nK != null) {
-        const nuevoResumenGeneral = [{ ...nK, porEmpacar: Number(nK.porEmpacar) + 1, armados: Number(nK.armados) - 1, revisados: nK.revisados + 1 }];        
+        const nuevoResumenGeneral = [{ ...nK, porEmpacar: Number(nK.porEmpacar) + 1, armados: Number(nK.armados) - 1, revisados: nK.revisados + 1 }];
         const armados = nuevoResumenGeneral[0].armados;
         if (armados >= 10) {
           const newResponse = { resumenGeneral: nuevoResumenGeneral };
-          await this.ckCargarInfo(newResponse,numparteprod);          
+          await this.ckCargarInfo(newResponse, numparteprod);
           return Promise.resolve(true);
         }
       }
-      
-    }    
-    const response = await firstValueFrom(this.confeccionService.revisionesKit(this.id_pde, materialActivo));        
-    await this.ckCargarInfo(response,numparteprod);
+
+    }
+    const response = await firstValueFrom(this.confeccionService.revisionesKit(this.id_pde, materialActivo));
+    await this.ckCargarInfo(response, numparteprod);
     return Promise.resolve(true);
   }
 
@@ -303,18 +308,18 @@ export class RevisionComponent implements OnInit, OnDestroy {
           return of({ ok: false })
         }),
       )
-      .subscribe(async (response) => {        
+      .subscribe(async (response) => {
         if (response["ok"] == false) {
           return;
-        }               
+        }
         this.audios.ok.play();
         this.uiService.mostrarToaster("OK", response['result'], true, 400, "success");
-        //console.log("Carga");        
-        await this.cargarRevisiones(kitVerificar);        
+
+        await this.cargarRevisiones(kitVerificar);
         this.blockInput = false
-        this.registroAutomatico(kitVerificar);        
-        //console.log("fin de carga");
-        
+//            this.registroAutomatico(kitVerificar);        
+
+
         this.formCaptura.get("entrada").setValue("");
         document.getElementById("entrada").focus();
       })

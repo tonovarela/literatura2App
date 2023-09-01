@@ -130,17 +130,17 @@ export class RevisionComponent implements OnInit, OnDestroy {
     if (revision && Number(this.resumen.restantes) > 5) {
       this.resumen = { ...this.resumen, restantes: (Number(this.resumen.restantes) - 1).toString(), reportados: (Number(this.resumen.reportados) + 1).toString() }
       this.blockInput = false;
-      return of("xx")
+      return of("")
     }
     return this.confeccionService.resumenKit(this.params.id_pde, this.params.numpartprod).pipe(
       tap(response => {
-        this.resumen = response.resumen[0];
-        if (Number(this.resumen.restantes) == 0) {
-          this.configuracionService.terminarArmado().subscribe(_ => {
+        this.resumen = response.resumen[0];        
+        if (Number(this.resumen.restantes) == 0) {          
+          this.configuracionService.terminarArmado().subscribe(_ => {            
             this.webSocketService.emitir("reloadConfiguracion", {});
             this.router.navigate([`../../../resumen/${this.params.id_pde}`], { relativeTo: this.activatedRoute });
           })
-        } else {
+        } else {          
           this.blockInput = false;
         }
       })
@@ -195,19 +195,30 @@ export class RevisionComponent implements OnInit, OnDestroy {
       this.uiService.mostrarToaster("Atencion!", `Libro ${skuVerificar} no encontrado`, true, 1500, "error");
       this.resetSound();
       this.audios.error.play();
+      this.setFocoEntradaPrincipal();
       return
     }
 
     const estaCompleto = this.vefificarKitCompleto();
-    if (estaCompleto) {
-      while (Number(this.resumen.restantes) > 5) {
-        await this.registroKit();
-      }
+    if (estaCompleto) {  
+      this.cambiarKitActivo();    
+      //  while (Number(this.resumen.restantes) > 5) {
+      //   const r= new Promise((resolve,rejet)=>{
+      //        setTimeout(async()=>{
+      //         resolve(await this.registroKit())
+      //        },1500)
+      //   });
+      // await r;
+          
+      //  }
       await this.registroKit();
       this.resetKit();
-
     }
-    this.cambiarKitActivo();
+    this.setFocoEntradaPrincipal();
+    
+  }
+
+  setFocoEntradaPrincipal(){
     this.formCaptura.get("entrada").setValue("");
     document.getElementById("entrada_cuaderno").focus();
   }

@@ -13,7 +13,7 @@
         <div class="col-6">
             <form [formGroup]="formCaptura">
                 <div class="row">
-                    <div class="col-10">
+                    <div class="col-12">
                         <div class="form-group mt-2">
                             
                             <div class="input-group">
@@ -41,18 +41,18 @@
                     <div class="card">
                         <!--end card-header-->
                         <div class="card-body my-1">
-                            <div class="row">
+                            <div class="row" style="border-radius: 10px;padding: 10px;border: 1px solid #8193a6;">
                                 <div class="col">
-                                    <div class="media">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag align-self-center icon-md text-secondary mr-2">
+                                    <div class="media" >
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag align-self-center icon-md  mr-2" style="color:#beb144">
                                             <path
                                                 d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z">
                                             </path>
                                             <line x1="7" y1="7" x2="7.01" y2="7"></line>
                                         </svg>
                                         <div class="media-body align-self-center">
-                                            <h6 class="m-0 font-40 text-center">{{resumen?.total}}</h6>
-                                            <p class="text-muted mb-0">Total</p>
+                                            <p class="m-0 font-40 ">{{resumen?.total}}</p>
+                                            <p class=" mb-0">Total</p>
                                         </div>
                                         <!--end media body-->
                                     </div>
@@ -60,7 +60,7 @@
                                 <!--end col-->
                                 <div class="col">
                                     <div class="media">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-package align-self-center icon-md text-secondary mr-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-package align-self-center icon-md  mr-2" style="color:#ff8500"> 
                                             <line x1="16.5" y1="9.4" x2="7.5" y2="4.21"></line>
                                             <path
                                                 d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
@@ -69,8 +69,8 @@
                                             <line x1="12" y1="22.08" x2="12" y2="12"></line>
                                         </svg>
                                         <div class="media-body align-self-center">
-                                            <h6 class="m-0 font-40  text-center">{{resumen?.reportados}}</h6>
-                                            <p class="text-muted mb-0">Reportados</p>
+                                            <p class="m-0 font-40">{{resumen?.reportados}}</p>
+                                            <p class="mb-0">Reportados</p>
                                         </div>
                                         <!--end media body-->
                                     </div>
@@ -78,12 +78,12 @@
                                 <!--end col-->
                                 <div class="col">
                                     <div class="media">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-zap align-self-center icon-md text-secondary mr-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-zap align-self-center icon-md  mr-2" style="color:#06d17d ">
                                             <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
                                         </svg>
                                         <div class="media-body align-self-center">
-                                            <h6 class="m-0 font-40 text-center">{{resumen?.restantes}}</h6>
-                                            <p class="text-muted mb-0">Pendientes</p>
+                                            <p class="m-0 font-40">{{resumen?.restantes}}</p>
+                                            <p class="mb-0">Pendientes</p>
                                         </div>
                                         <!--end media body-->
                                     </div>
@@ -133,7 +133,7 @@
                                     <p class="d-inline-block align-middle mb-0 bounceIn animated" [ngClass]="{bounceIn:cuaderno.verificado, animated:cuaderno.verificado}">
                                         <a class="d-inline-block align-middle mb-0 product-name">{{cuaderno.descripcion}}</a>
                                         <br>
-                                        <span class="text-muted  ml-4  font-13">{{cuaderno.sku1}}</span>
+                                        <span class="font-20 font-13">{{cuaderno.sku1}}</span>
                                     </p>
                                 </td>
                             </tr>

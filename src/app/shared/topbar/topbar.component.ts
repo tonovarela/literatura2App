@@ -103,7 +103,7 @@ export class TopbarComponent implements OnInit, OnDestroy {
   }
 
   terminarArmado() {
-    this.configuracionService.terminarArmado().subscribe(this.callbackCargarConfiguracion);
+    //this.configuracionService.terminarArmado().subscribe(this.callbackCargarConfiguracion);
   }
 
   terminoRevision() {

@@ -13,7 +13,7 @@ import { Configuracion, KitActivo } from '../modules/confeccion/conteo/interface
 export class ConfiguracionService {
 
   URL: string = environment.URL;
-  watcherSkuActivo= new Subject();
+  //watcherSkuActivo= new Subject();
   pausarSeleccion: Configuracion = { habilitada: false, id_configuracion: 0, descripcion: '' };
   kitActivo:KitActivo= {numpartprod:'',terminoArmado:false, terminoRevision:false};  
   configuraciones: any[] = [];
@@ -58,7 +58,9 @@ export class ConfiguracionService {
    
 
 
-  iniciarArmado(numpartprod){            
+  iniciarArmado(numpartprod){     
+    
+    console.log(numpartprod)       
     this.kitActivo = { numpartprod,terminoArmado:false, terminoRevision:false}        
     return this.actualizarKitActivo();    
   }
@@ -79,10 +81,10 @@ export class ConfiguracionService {
     return this.actualizarKitActivo();
   }
 
-  private actualizarKitActivo(){
+  private actualizarKitActivo(){      
     const descripcion = JSON.stringify(this.kitActivo);    
     const configuracion:Configuracion = {id_configuracion:4, descripcion, habilitada:true};
-     this.watcherSkuActivo.next(true);
+     //this.watcherSkuActivo.next(true);
      return this.http.patch(`${this.URL}/api/configuracion`, { configuracion })
    }
 

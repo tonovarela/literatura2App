@@ -79,7 +79,7 @@ export class ResumenComponent implements OnInit, OnDestroy {
         this.router.navigate(['/pages/confeccion/cuadernos/pde']);
         return of({} as ConfeccionKitsGeneral);
       }),
-      delay(500),
+      //delay(500),
     )
       .subscribe((response: ConfeccionKitsGeneral) => {
         this.cargando = false;

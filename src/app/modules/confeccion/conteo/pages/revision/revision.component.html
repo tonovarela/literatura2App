@@ -50,7 +50,7 @@
 
                     <table class="table table-bordered table-striped mb-0 table-centered viewGeneral"
                         *ngIf="resumenKit.length>0">
-                        <thead>
+                        <thead >
                             <th>NumpartPrd</th>
                             <th># Total por caja</th>
                             <th>Descripción</th>
@@ -62,30 +62,30 @@
                             <!-- <th>Estatus</th> -->
                         </thead>
                         <tr *ngFor="let kit of resumenKit ">
-                            <td>{{kit.numpartprod}}</td>
-                            <td>{{kit.totalPorCaja}}</td>
-                            <td>{{kit.descripcion}}</td>
-                            <td class="text-center">
+                            <td class="font-15">{{kit.numpartprod}}</td>
+                            <td class="font-15">{{kit.totalPorCaja}}</td>
+                            <td class="font-15">{{kit.descripcion}}</td>
+                            <td >
                                 <span class="badge badge-outline-dark total">
                                     {{kit.total}}
                                 </span>
                             </td>
-                            <td class="text-center">
+                            <td >
                                 <span class="badge badge-outline-dark number" >
                                     {{kit.pendientes<=0?'0':kit.pendientes}}
                                 </span>
                             </td>
-                            <td class="text-center">
+                            <td >
                                 <span class="badge badge-outline-dark number">
                                     {{kit.armados}}
                                 </span>
                             </td>
-                            <td class="text-center">
+                            <td >
                                 <span class="badge badge-outline-dark number animated" [id]="kit.numpartprod">
                                     {{kit.porEmpacar}}
                                 </span>
                             </td>
-                            <td class="text-center">
+                            <td >
                                 <span class="badge badge-outline-dark number animated">
                                     {{kit.empacados}}
                                 </span>

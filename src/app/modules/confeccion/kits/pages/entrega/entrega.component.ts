@@ -109,7 +109,7 @@ export class EntregaComponent implements OnInit, OnDestroy {
       vehiculo: kit.identifica,
       sku: kit.clavekit,
       sku2: kit.clavekit2,
-      fechaImpresion: DateTime.now().toFormat('dd-MM-yyy'),      
+      fechaImpresion: DateTime.now().toFormat('dd-MM-yyyy'),      
       nombre: numpartprod,
       totalKits,
       etiqueta: etiqueta,
