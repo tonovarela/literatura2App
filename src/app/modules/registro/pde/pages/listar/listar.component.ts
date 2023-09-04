@@ -1,11 +1,13 @@
 import { PdeService } from 'src/app/services/pde.service';
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FilterSettingsModel, GridComponent, PageSettingsModel } from '@syncfusion/ej2-angular-grids';
 import { from, Subscription } from 'rxjs';
 
 import { concatMap } from 'rxjs/operators';
 import { ConfiguracionService, UsuarioService, WebsocketService, WindowsService } from '@services/index';
+
+
 
 
 @Component({
@@ -24,6 +26,11 @@ export class ListarComponent implements OnInit, OnDestroy {
   estados: any[] = [];
   mostrarCancelados: boolean = false;
 
+  @ViewChild('myElement') myElement: ElementRef;
+
+
+
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -41,9 +48,11 @@ export class ListarComponent implements OnInit, OnDestroy {
 
 
 
-  ngOnInit(): void {
-    
 
+
+
+  ngOnInit(): void {
+        
     const sb1$ = this.webSocketService
       .listen('reloadConfiguracion')
       .subscribe(_ => this.configuracionService.cargarConfiguraciones());

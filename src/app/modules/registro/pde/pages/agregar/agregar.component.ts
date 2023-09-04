@@ -317,10 +317,7 @@ export class AgregarComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // console.log(this.registroForm.value);
     // console.log(solicitudesCuaderno);
-    // console.log(this.tarimas);
-    // console.log(this.resumenConfeccion);
-    // this.cargando=false;
-    // return;
+     
 
     //Registrar el PDE en el sistema de Almacen PT y despues registrarlo en Literatura
     this.pdeService

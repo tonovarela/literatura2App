@@ -32,9 +32,10 @@ export class UiService {
       this.toastr.warning(mensaje, titulo, { progressBar: showProgresBar, timeOut });     
       break;
   }
-       
-     
+            
   }
+
+  
 
   mostrarAlertaConfirmacion(titulo, mensaje,labelAceptar='Aceptar',labelCancelar='Cancelar'): Promise<SweetAlertResult> {
     return swal.fire({
@@ -72,7 +73,7 @@ export class UiService {
 
   }
 
-  mostrarAlertaSuccess(titulo, mensaje, timer=3500) {
+  mostrarAlertaSuccess(titulo, mensaje, timer=3500) {    
     swal.fire({
       icon: 'success',
       title: titulo,
@@ -80,6 +81,7 @@ export class UiService {
       showConfirmButton: false,
       timer
     });
-
   }
+
+  
 }

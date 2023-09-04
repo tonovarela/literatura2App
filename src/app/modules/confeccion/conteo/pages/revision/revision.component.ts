@@ -1,8 +1,9 @@
-import { Component, OnDestroy, OnInit, } from '@angular/core';
+import {  Component, OnDestroy, OnInit, } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { firstValueFrom, of, Subscription } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { toast } from 'wc-toast'
 
 import { AudioRevision } from '../../../kits/interfaces/kit.interfaces';
 
@@ -17,10 +18,14 @@ import { environment } from 'src/environments/environment.development';
 
 
 
+
+
+
 @Component({
   selector: 'app-revision',
   templateUrl: './revision.component.html',
   styleUrls: ['./revision.component.css'],
+
 })
 
 
@@ -126,6 +131,7 @@ export class RevisionComponent implements OnInit, OnDestroy {
     const _restantes = revisados % totalPorCaja;
     if (_restantes === 0 || revisados == total) {
       const totalKits = _restantes === 0 ? totalPorCaja : _restantes;
+      //toast('Imprimiendo caja', { icon: { type:'success' }, theme: { type: 'light' }, duration: 500 });
       this.uiService.mostrarToaster("Caja", "Imprimiendo caja", false, 500, "info");
       const [k] = this.resumenKit;
       this.resumenKit = [{ ...k, porEmpacar: Number(k.porEmpacar + 1) }];
@@ -221,8 +227,8 @@ export class RevisionComponent implements OnInit, OnDestroy {
       }
     }
     if (numparteprod.length > 0) {
-    
-      setTimeout(() =>this.animarContador(numparteprod) , 1);      
+
+      setTimeout(() => this.animarContador(numparteprod), 1);
       const etiqueta = await this.revisionPreEtiqueta(_revisiones.find(x => x.numpartprod == numparteprod));
       if (etiqueta) {
         return Promise.resolve(true);
@@ -313,11 +319,10 @@ export class RevisionComponent implements OnInit, OnDestroy {
           return;
         }
         this.audios.ok.play();
-        this.uiService.mostrarToaster("OK", response['result'], true, 400, "success");
-
+        toast(response['result'], { icon: { type: 'success' }, theme: { type: 'light' }, duration: 400 });
         await this.cargarRevisiones(kitVerificar);
         this.blockInput = false
-//            this.registroAutomatico(kitVerificar);        
+        //this.registroAutomatico(kitVerificar);
 
 
         this.formCaptura.get("entrada").setValue("");
@@ -325,5 +330,7 @@ export class RevisionComponent implements OnInit, OnDestroy {
       })
 
   }
+
+
 
 }

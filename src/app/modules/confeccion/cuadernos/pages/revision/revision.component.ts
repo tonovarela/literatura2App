@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { firstValueFrom, of, Subscription } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
-
+import { toast } from 'wc-toast'
 
 
 
@@ -134,13 +134,13 @@ export class RevisionComponent implements OnInit, OnDestroy {
     }
     return this.confeccionService.resumenKit(this.params.id_pde, this.params.numpartprod).pipe(
       tap(response => {
-        this.resumen = response.resumen[0];        
-        if (Number(this.resumen.restantes) == 0) {          
-          this.configuracionService.terminarArmado().subscribe(_ => {            
+        this.resumen = response.resumen[0];
+        if (Number(this.resumen.restantes) == 0) {
+          this.configuracionService.terminarArmado().subscribe(_ => {
             this.webSocketService.emitir("reloadConfiguracion", {});
             this.router.navigate([`../../../resumen/${this.params.id_pde}`], { relativeTo: this.activatedRoute });
           })
-        } else {          
+        } else {
           this.blockInput = false;
         }
       })
@@ -154,9 +154,9 @@ export class RevisionComponent implements OnInit, OnDestroy {
     await firstValueFrom(this.confeccionService.verificarKit(this.params.id_pde, this.params.numpartprod).pipe(
       switchMap(_ => this.reloadResumen(true))
     ));
-    
+
     this.webSocketService.emitir("actualizarInfo", { modulo: "revisionCuadernos", numpartprod: this.params.numpartprod });
-    this.uiService.mostrarToaster("", ` Kit  ${this.params.numpartprod} se ha reportado`, true, 1000, "success");
+    toast(` Kit  ${this.params.numpartprod} se ha reportado`, { icon: { type: 'success' }, theme: { type: 'light' }, duration: 400 });
     this.resetSound();
     this.audios.ok.play();
     return Promise.resolve(true);
@@ -200,25 +200,24 @@ export class RevisionComponent implements OnInit, OnDestroy {
     }
 
     const estaCompleto = this.vefificarKitCompleto();
-    if (estaCompleto) {  
-      this.cambiarKitActivo();    
-      //  while (Number(this.resumen.restantes) > 5) {
-      //   const r= new Promise((resolve,rejet)=>{
-      //        setTimeout(async()=>{
-      //         resolve(await this.registroKit())
-      //        },1500)
-      //   });
-      // await r;
-          
-      //  }
+    if (estaCompleto) {
+      this.cambiarKitActivo();
+      //while (Number(this.resumen.restantes) > 5) {        
+      //const r= new Promise((resolve,rejet)=>{
+      //   setTimeout(async()=>{
+      //  resolve(await this.registroKit())
+      //},200)
+      //});
+      //await r;          
+      //}
       await this.registroKit();
       this.resetKit();
     }
     this.setFocoEntradaPrincipal();
-    
+
   }
 
-  setFocoEntradaPrincipal(){
+  setFocoEntradaPrincipal() {
     this.formCaptura.get("entrada").setValue("");
     document.getElementById("entrada_cuaderno").focus();
   }

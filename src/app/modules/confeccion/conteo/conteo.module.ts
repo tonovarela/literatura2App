@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ConteoRoutingModule } from './conteo-routing.module';
 import { ComponentesModule } from 'src/app/componentes/componentes.module';
@@ -18,6 +18,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     RevisionComponent,
   ],
   imports: [    
+    
   CommonModule,      
     ConteoRoutingModule,    
     GridModule,
@@ -26,5 +27,6 @@ import { ReactiveFormsModule } from '@angular/forms';
     DropDownListAllModule,
     ComponentesModule,
   ], 
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })
 export class ConteoModule { }
