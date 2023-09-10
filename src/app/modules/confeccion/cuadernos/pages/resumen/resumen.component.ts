@@ -108,8 +108,7 @@ export class ResumenComponent implements OnInit, OnDestroy {
 
   }
 
-  puedeConfeccionarse(numpartprod){
-    
+  puedeConfeccionarse(numpartprod){    
     if (this.configuracionService.kitActivo.numpartprod.length==0){
       return true;
     }    

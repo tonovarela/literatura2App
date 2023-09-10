@@ -153,9 +153,8 @@ export class RevisionComponent implements OnInit, OnDestroy {
     this.blockInput = true;
     await firstValueFrom(this.confeccionService.verificarKit(this.params.id_pde, this.params.numpartprod).pipe(
       switchMap(_ => this.reloadResumen(true))
-    ));
-
-    this.webSocketService.emitir("actualizarInfo", { modulo: "revisionCuadernos", numpartprod: this.params.numpartprod });
+    ));    
+    this.webSocketService.emitir("actualizarInfo", { modulo: "revisionCuadernos", numpartprod: this.params.numpartprod,resumen:this.resumen });
     toast(` Kit  ${this.params.numpartprod} se ha reportado`, { icon: { type: 'success' }, theme: { type: 'light' }, duration: 400 });
     this.resetSound();
     this.audios.ok.play();
@@ -202,14 +201,14 @@ export class RevisionComponent implements OnInit, OnDestroy {
     const estaCompleto = this.vefificarKitCompleto();
     if (estaCompleto) {
       this.cambiarKitActivo();
-      //while (Number(this.resumen.restantes) > 5) {        
-      //const r= new Promise((resolve,rejet)=>{
+      // while (Number(this.resumen.restantes) > 5) {        
+      // const r= new Promise((resolve,rejet)=>{
       //   setTimeout(async()=>{
       //  resolve(await this.registroKit())
-      //},200)
-      //});
-      //await r;          
-      //}
+      // },1000)
+      // });
+      // await r;          
+      // }
       await this.registroKit();
       this.resetKit();
     }

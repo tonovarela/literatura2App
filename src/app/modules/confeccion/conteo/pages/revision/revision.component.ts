@@ -1,4 +1,4 @@
-import {  Component, OnDestroy, OnInit, } from '@angular/core';
+import { Component, OnDestroy, OnInit, } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { firstValueFrom, of, Subscription } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
@@ -33,6 +33,7 @@ export class RevisionComponent implements OnInit, OnDestroy {
 
   id_pde: string = "";
   cargando: boolean = false;
+  estaRegistrandoCaja: boolean = false;
   pde: any = {};
   subscriptions: Subscription[] = [];
   formCaptura: FormGroup = this.fb.group({ entrada: '' });
@@ -76,19 +77,37 @@ export class RevisionComponent implements OnInit, OnDestroy {
       }
     });
     const subs2 = this.webSocketService.listen("cambioPDEActivo").subscribe(_ => this.regresar());
-    const subs3 = this.webSocketService.listen('actualizarInfo').subscribe((payload: any) => {
-      this.cargarRevisiones();
+    const subs3 = this.webSocketService.listen('actualizarInfo').subscribe(async (payload: any) => {
+      const { modulo, numpartprod, resumen } = payload;
+      //console.log(payload);
+      if (modulo == "revisionCuadernos") {
+        const { restantes: pendientes } = resumen;
+        console.log(resumen);
+        const r = this.resumenKit.find(r => r.numpartprod == numpartprod);
+        if (r != undefined) {
+          r.pendientes = Number(pendientes);
+          r.armados= r.armados +1;
+          
+        } else {
+          if (!this.estaRegistrandoCaja){
+            await this.cargarRevisiones();
+          }          
+          
+        }
+      }
+
+
     });
-    const subs4 = this.activatedRoute.params.subscribe((params: Params) => {
+    const subs4 = this.activatedRoute.params.subscribe(async (params: Params) => {
       this.id_pde = params['id_pde'];
-      this.pdeService.obtener(this.id_pde).subscribe(response => {
+      this.pdeService.obtener(this.id_pde).subscribe((response) => {
         this.pde = response["pde"];
       });
-      this.cargarRevisiones();
+      await this.cargarRevisiones();
     });
-    const subs5 = this.webSocketService.listen('reloadConfiguracion').subscribe(_ => {
+    const subs5 = this.webSocketService.listen('reloadConfiguracion').subscribe(async (_) => {
       if (this.configuracionService.kitActivo.terminoRevision == false) {
-        this.cargarRevisiones();
+        await this.cargarRevisiones();
       }
 
     });
@@ -126,16 +145,18 @@ export class RevisionComponent implements OnInit, OnDestroy {
 
     if (revision == null) {
       return Promise.resolve(false);
-    }
-    const { revisados, totalPorCaja, total, numpartprod } = revision;
-    const _restantes = revisados % totalPorCaja;
+    }   
+    const { revisados, totalPorCaja, total, numpartprod,porEmpacar } = revision;
+    const _restantes = Number(revisados) % totalPorCaja;
+    //console.log(revision);
     if (_restantes === 0 || revisados == total) {
       const totalKits = _restantes === 0 ? totalPorCaja : _restantes;
       //toast('Imprimiendo caja', { icon: { type:'success' }, theme: { type: 'light' }, duration: 500 });
       this.uiService.mostrarToaster("Caja", "Imprimiendo caja", false, 500, "info");
       const [k] = this.resumenKit;
       this.resumenKit = [{ ...k, porEmpacar: Number(k.porEmpacar + 1) }];
-      return await this.imprimirPreEtiqueta(numpartprod, totalKits);
+      await this.imprimirPreEtiqueta(numpartprod, totalKits);
+      return Promise.resolve(true)
     }
     if (revisados > totalPorCaja) {
       this.webSocketService.emitir('actualizarInfo', { modulo: "revisionKits", numparteprod: numpartprod });
@@ -146,6 +167,7 @@ export class RevisionComponent implements OnInit, OnDestroy {
 
   async imprimirPreEtiqueta(numpartprod, totalKits) {
     let kit: KitDetalle = {};
+
     const response = await firstValueFrom(this.kitService.obtenerDetalle(numpartprod).pipe(
       switchMap(kitResponse => {
         kit = kitResponse.kit;
@@ -201,7 +223,7 @@ export class RevisionComponent implements OnInit, OnDestroy {
         totalKits: totalKits,
         vehiculo: kit.vehiculo || kit.identifica
       };
-      this.webSocketService.emitir('actualizarInfo', { modulo: "revisionKits", numparteprod: numpartprod });
+      //this.webSocketService.emitir('actualizarInfo', { modulo: "revisionKits", numparteprod: numpartprod });
       this.webSocketService.emitir("imprimirPreEtiqueta", caja);
       this.webSocketService.emitir("imprimirPreEtiqueta", caja);
       await this.cargarRevisiones();
@@ -227,9 +249,10 @@ export class RevisionComponent implements OnInit, OnDestroy {
       }
     }
     if (numparteprod.length > 0) {
-
-      setTimeout(() => this.animarContador(numparteprod), 1);
+      this.estaRegistrandoCaja = true;
       const etiqueta = await this.revisionPreEtiqueta(_revisiones.find(x => x.numpartprod == numparteprod));
+      this.estaRegistrandoCaja = false;
+      setTimeout(() => this.animarContador(numparteprod), 1);
       if (etiqueta) {
         return Promise.resolve(true);
       }
@@ -259,11 +282,12 @@ export class RevisionComponent implements OnInit, OnDestroy {
   }
 
   async cargarRevisiones(numparteprod = "") {
+    // if (this.estaRegistrandoCaja) {
+    //   return Promise.resolve(true);
+    // }
     const materialActivo = this.configuracionService.kitActivo.numpartprod;
     this.cargando = true;
-
     if (numparteprod != "") {
-
       const [nK] = this.resumenKit;
       if (nK != null) {
         const nuevoResumenGeneral = [{ ...nK, porEmpacar: Number(nK.porEmpacar) + 1, armados: Number(nK.armados) - 1, revisados: nK.revisados + 1 }];
@@ -322,7 +346,7 @@ export class RevisionComponent implements OnInit, OnDestroy {
         toast(response['result'], { icon: { type: 'success' }, theme: { type: 'light' }, duration: 400 });
         await this.cargarRevisiones(kitVerificar);
         this.blockInput = false
-        //this.registroAutomatico(kitVerificar);
+       await this.registroAutomatico(kitVerificar);
 
 
         this.formCaptura.get("entrada").setValue("");
