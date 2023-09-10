@@ -346,7 +346,7 @@ export class RevisionComponent implements OnInit, OnDestroy {
         toast(response['result'], { icon: { type: 'success' }, theme: { type: 'light' }, duration: 400 });
         await this.cargarRevisiones(kitVerificar);
         this.blockInput = false
-       await this.registroAutomatico(kitVerificar);
+       //await this.registroAutomatico(kitVerificar);
 
 
         this.formCaptura.get("entrada").setValue("");
