@@ -4,22 +4,12 @@ import { firstValueFrom, of, Subscription } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { toast } from 'wc-toast'
-
 import { AudioRevision } from '../../../kits/interfaces/kit.interfaces';
-
 import { pasteNotAllowFunc } from 'src/app/utils/utils';
 import { ResumenParte } from 'src/app/interfaces/shared/confeccion.interface';
 import { KitDetalle } from 'src/app/interfaces/shared/kit.interfaces';
-
 import { CajaService, ConfeccionService, ConfiguracionService, KitService, PdeService, UiService, WebsocketService } from '@services/index';
-
 import { environment } from 'src/environments/environment.development';
-
-
-
-
-
-
 
 @Component({
   selector: 'app-revision',
@@ -95,7 +85,6 @@ export class RevisionComponent implements OnInit, OnDestroy {
           
         }
       }
-
 
     });
     const subs4 = this.activatedRoute.params.subscribe(async (params: Params) => {
@@ -309,7 +298,7 @@ export class RevisionComponent implements OnInit, OnDestroy {
 
 
 
-  verificarKit() {
+  async verificarKit() {
     const kitVerificar = this.formCaptura.get('entrada').value;
     if (this.blockInput) {
       return;
@@ -330,7 +319,7 @@ export class RevisionComponent implements OnInit, OnDestroy {
     if (kit != null) {
       armados = Number(kit.armados);
     }
-    this.confeccionService.registrarRevisionKit(this.id_pde, kitVerificar, armados)
+    const response=await firstValueFrom(this.confeccionService.registrarRevisionKit(this.id_pde, kitVerificar, armados)
       .pipe(
         catchError(err => {
           this.uiService.mostrarToaster("Atencion!", err.error.mensaje, true, 400, "error");
@@ -338,20 +327,19 @@ export class RevisionComponent implements OnInit, OnDestroy {
           return of({ ok: false })
         }),
       )
-      .subscribe(async (response) => {
-        if (response["ok"] == false) {
-          return;
-        }
-        this.audios.ok.play();
-        toast(response['result'], { icon: { type: 'success' }, theme: { type: 'light' }, duration: 400 });
-        await this.cargarRevisiones(kitVerificar);
-        this.blockInput = false
-       //await this.registroAutomatico(kitVerificar);
-
-
-        this.formCaptura.get("entrada").setValue("");
-        document.getElementById("entrada").focus();
-      })
+      );
+      if (response["ok"] == false) {
+        return;
+      }
+      this.audios.ok.play();
+      toast(response['result'], { icon: { type: 'success' }, theme: { type: 'light' }, duration: 400 });
+      await this.cargarRevisiones(kitVerificar);
+      this.blockInput = false
+     //await this.registroAutomatico(kitVerificar);
+      this.formCaptura.get("entrada").setValue("");
+      document.getElementById("entrada").focus();
+      
+      
 
   }
 
