@@ -17,19 +17,14 @@ import { environment } from 'src/environments/environment.development';
   styleUrls: ['./revision.component.css'],
 
 })
-
-
 export class RevisionComponent implements OnInit, OnDestroy {
-
   id_pde: string = "";
   cargando: boolean = false;
   estaRegistrandoCaja: boolean = false;
   pde: any = {};
   subscriptions: Subscription[] = [];
   formCaptura: FormGroup = this.fb.group({ entrada: '' });
-  //revisiones: Revision[] = [];
-  resumenKit: ResumenParte[] = [];
-  //resumenAlternativo: any;
+  resumenKit: ResumenParte[] = [];  
   DELAYMAX: number = environment.delayTimeAllowedInput;
   blockInput: boolean = false;
   esFireFox: boolean = false;
@@ -115,9 +110,6 @@ export class RevisionComponent implements OnInit, OnDestroy {
   get kitActivo() {
     return this.configuracionService.kitActivo;
   }
-
-
-
 
   animarContador(numparteprod) {
     const element = document.getElementById(numparteprod);
