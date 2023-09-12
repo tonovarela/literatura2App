@@ -69,7 +69,7 @@ export class RevisionComponent implements OnInit, OnDestroy {
         const { restantes: pendientes } = resumen;
         console.log(resumen);
         const r = this.resumenKit.find(r => r.numpartprod == numpartprod);
-        if (r != undefined) {
+        if (r != undefined) {          
           r.pendientes = Number(pendientes);
           r.armados= r.armados +1;
           
@@ -127,16 +127,21 @@ export class RevisionComponent implements OnInit, OnDestroy {
     if (revision == null) {
       return Promise.resolve(false);
     }   
-    const { revisados, totalPorCaja, total, numpartprod } = revision;
-    const _restantes = Number(revisados) % totalPorCaja;
-    //console.log(revision);
-    if (_restantes === 0 || revisados == total) {
+    const { revisados, totalPorCaja, total, numpartprod,porEmpacar } = revision;
+    const _restantes = Number(porEmpacar) % Number(totalPorCaja);
+      //console.log({revisados,total})
+    // console.log(_restantes);
+    // console.log(porEmpacar);
+    //console.log({revisados,total});
+    
+    if (_restantes === 0 || Number(revisados) == Number(total)) {
+      console.log("imprimiendo Caja");
       const totalKits = _restantes === 0 ? totalPorCaja : _restantes;
-      //toast('Imprimiendo caja', { icon: { type:'success' }, theme: { type: 'light' }, duration: 500 });
-      this.uiService.mostrarToaster("Caja", "Imprimiendo caja", false, 500, "info");
+      //toast('Imprimiendo caja', { icon: { type:'success' }, theme: { type: 'light' }, duration: 500 });      
       const [k] = this.resumenKit;
       this.resumenKit = [{ ...k, porEmpacar: Number(k.porEmpacar + 1) }];
-      await this.imprimirPreEtiqueta(numpartprod, totalKits);
+      await this.imprimirPreEtiqueta(numpartprod, totalKits);      
+      this.uiService.mostrarToaster("Caja", "Imprimiendo caja", false, 500, "info");      
       return Promise.resolve(true)
     }
     if (revisados > totalPorCaja) {
@@ -204,7 +209,7 @@ export class RevisionComponent implements OnInit, OnDestroy {
         totalKits: totalKits,
         vehiculo: kit.vehiculo || kit.identifica
       };
-      //this.webSocketService.emitir('actualizarInfo', { modulo: "revisionKits", numparteprod: numpartprod });
+      this.webSocketService.emitir('actualizarInfo', { modulo: "revisionKits", numparteprod: numpartprod });
       this.webSocketService.emitir("imprimirPreEtiqueta", caja);
       this.webSocketService.emitir("imprimirPreEtiqueta", caja);
       await this.cargarRevisiones();
@@ -271,7 +276,7 @@ export class RevisionComponent implements OnInit, OnDestroy {
     if (numparteprod != "") {
       const [nK] = this.resumenKit;
       if (nK != null) {
-        const nuevoResumenGeneral = [{ ...nK, porEmpacar: Number(nK.porEmpacar) + 1, armados: Number(nK.armados) - 1, revisados: nK.revisados + 1 }];
+        const nuevoResumenGeneral = [{ ...nK, porEmpacar: Number(nK.porEmpacar) + 1, armados: Number(nK.armados) - 1, revisados: nK.revisados + 1 }];        
         const armados = nuevoResumenGeneral[0].armados;
         if (armados >= 10) {
           const newResponse = { resumenGeneral: nuevoResumenGeneral };
