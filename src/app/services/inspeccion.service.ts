@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from 'src/environments/environment';
+
 import { SeleccionSugerida } from '../modules/calidad/interfaces/interfaces';
 import { TamanioMuesta } from '../modules/calidad/utils/calidad';
+import { environment } from 'src/environments/environment.development';
 
 
 @Injectable({

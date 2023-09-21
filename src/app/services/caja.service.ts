@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from 'src/environments/environment';
+
 import { ResponsePreEtiqueta } from '../modules/confeccion/conteo/interfaces/conteo.interfaces';
+import { environment } from 'src/environments/environment.development';
 //import { ResponsePreEtiqueta } from '../pages/confeccion/conteo/interfaces/interfaces';
 
 

@@ -2,8 +2,9 @@
 import { HttpClient } from '@angular/common/http';
 
 import { Injectable } from '@angular/core';
-import { environment } from 'src/environments/environment';
+
 import { Cuaderno, ResponseCuaderno } from '../modules/registro/cuadernos/interface/cuaderno.interface';
+import { environment } from 'src/environments/environment.development';
 
 
 @Injectable({

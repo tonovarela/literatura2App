@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router, RoutesRecognized } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { KitService } from '@services/kit.service';
 import { WindowsService } from '@services/windows.service';
 import { FilterSettingsModel, Grid, PageSettingsModel } from '@syncfusion/ej2-angular-grids';
@@ -97,6 +97,25 @@ export class ResumenComponent implements OnInit {
     return resultCajaEmpaque;
   }
   ngOnInit(): void {    
+  //   const cuadernos = [
+  //     {
+  //         reportados: 34,
+  //         numparteprod: "17A012722DK",
+  //         maxCaja: 21,
+  //         id_pde: "18353264-4030-4795-9697-604d43fbd74f"
+  //     }
+  // ];
+  // console.log(cuadernos);
+
+
+  //   let distribucion = generarLote(cuadernos,
+  //     21,
+  //     19,
+  //     true,
+  //     "mezcladas");     
+  //     console.log(distribucion);
+
+    
     this.height = window.innerHeight - 350;
     this.resizeSubscription$ = this.wService.ResizeHeight().subscribe(x => {
       this.height = window.innerHeight - 350;
@@ -182,15 +201,13 @@ export class ResumenComponent implements OnInit {
     const { id_pde } = this.pde;
     let id_lote = "";
     const cajas = this.cajasEmpaque.filter(c => c.seleccionado);        
+        
     this.loteService.registrar(id_pde, cajas, kitOtrosPDE)
       .subscribe(response => {      
         id_lote = response["id_lote"];
         let cuadernos = response["cuadernos"];
         const contadorTarima = Number(response["contadorTarima"]);        
-        let distribucion = generarLote(cuadernos,
-          this.pde.max_cajas,
-          contadorTarima,
-          true);        
+        let distribucion = generarLote(cuadernos,this.pde.max_cajas,contadorTarima,true,"mezcladas");                  
         this.loteService.registrarDistribucion(id_lote, JSON.stringify(distribucion)).subscribe(x => {
           this.uiService.mostrarAlertaSuccess("PDE", "Entrega registrada");
           this.irEntrega(id_lote);

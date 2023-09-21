@@ -5,11 +5,8 @@ import { Injectable } from '@angular/core';
 import { from } from 'rxjs';
 import { concatMap, map } from 'rxjs/operators';
 import { ResponseResiduosKit } from '../modules/confeccion/kits/pages/interface/interfaces';
-import { environment } from 'src/environments/environment.development';
 import { ResponseKitDetalle } from '../interfaces/shared/kit.interfaces';
-
-
-
+import { environment } from 'src/environments/environment.development';
 
 @Injectable({
   providedIn: 'root'

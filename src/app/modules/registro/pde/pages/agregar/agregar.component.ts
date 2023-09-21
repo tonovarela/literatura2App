@@ -269,7 +269,7 @@ export class AgregarComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
     //console.log(dto);
-    this.tarimas = generarLote(dto, this.maximoCajasPorTarima);
+    this.tarimas = generarLote(dto, this.maximoCajasPorTarima,1,false,"completas");
 
 
 
@@ -315,9 +315,10 @@ export class AgregarComponent implements OnInit, OnDestroy, AfterViewInit {
     });
 
 
-    // console.log(this.registroForm.value);
+     //console.log(this.tarimas);
+     //this.cargando=false;
     // console.log(solicitudesCuaderno);
-     
+     //return;
 
     //Registrar el PDE en el sistema de Almacen PT y despues registrarlo en Literatura
     this.pdeService
