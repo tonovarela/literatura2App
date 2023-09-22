@@ -59,9 +59,9 @@ function formarCajas(numparteprod, totalCompletas, totalKitCompletas, totalKitsI
       stack.push({ id: NewID(), nombre: numparteprod,id_pde:id_pde, totalKits: totalKitCompletas });
     }
   //}
-  // if (totalKitsIncompletas > 0) {
-  //   stack.push({ id: NewID(), nombre: numparteprod,id_pde:id_pde ,totalKits: totalKitsIncompletas });
-  // }
+  if (totalKitsIncompletas > 0) {
+    stack.push({ id: NewID(), nombre: numparteprod,id_pde:id_pde ,totalKits: totalKitsIncompletas });
+  }
   
   return stack;
 }
