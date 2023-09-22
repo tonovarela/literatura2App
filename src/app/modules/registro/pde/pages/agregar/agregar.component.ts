@@ -315,10 +315,12 @@ export class AgregarComponent implements OnInit, OnDestroy, AfterViewInit {
     });
 
 
-     //console.log(this.tarimas);
+     
      //this.cargando=false;
     // console.log(solicitudesCuaderno);
-     //return;
+      // console.log(this.tarimas);
+      // this.cargado=false;
+      // return;
 
     //Registrar el PDE en el sistema de Almacen PT y despues registrarlo en Literatura
     this.pdeService

@@ -201,7 +201,7 @@ export class RevisionComponent implements OnInit, OnDestroy {
     const estaCompleto = this.vefificarKitCompleto();
     if (estaCompleto) {
       this.cambiarKitActivo();
-      // while (Number(this.resumsen.restantes) > 5) {        
+      // while (Number(this.resumen.restantes) > 5) {        
       // const r= new Promise((resolve,rejet)=>{
       //   setTimeout(async()=>{
       //  resolve(await this.registroKit())

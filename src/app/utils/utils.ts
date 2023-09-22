@@ -49,20 +49,19 @@ export function b64toBlob(b64Data, contentType = '', sliceSize = 512) {
 }
 
 function formarCajas(numparteprod, totalCompletas, totalKitCompletas, totalKitsIncompletas,id_pde,origen) {    
-  let stack = new Stack();
-  if (origen=="mezcladas"){
+   let stack = new Stack();
+  // if (origen=="mezcladas"){
+  //   for (let i = 0; i < totalCompletas; i++) {
+  //     stack.push({ id: NewID(), nombre: numparteprod,id_pde:id_pde, totalKits: totalKitCompletas });
+  //   }
+  // }else{
     for (let i = 0; i < totalCompletas; i++) {
       stack.push({ id: NewID(), nombre: numparteprod,id_pde:id_pde, totalKits: totalKitCompletas });
     }
-  }else{
-    for (let i = 0; i <= totalCompletas; i++) {
-      stack.push({ id: NewID(), nombre: numparteprod,id_pde:id_pde, totalKits: totalKitCompletas });
-    }
-  }
-
-  if (totalKitsIncompletas > 0) {
-    stack.push({ id: NewID(), nombre: numparteprod,id_pde:id_pde ,totalKits: totalKitsIncompletas });
-  }
+  //}
+  // if (totalKitsIncompletas > 0) {
+  //   stack.push({ id: NewID(), nombre: numparteprod,id_pde:id_pde ,totalKits: totalKitsIncompletas });
+  // }
   
   return stack;
 }
@@ -82,15 +81,17 @@ export function generarLote(dto: any,
       d.distribucion = { Caja: { detalle: {} } };
     }
     d.distribucion.Caja.detalle = formarCajas(d.numparteprod,Math.trunc(totalCajas),Number(d.maxCaja),(d.reportados % d.maxCaja),d.id_pde || '',origen);        
-    //console.log(formarCajas(d.numparteprod,Math.trunc(totalCajas),Number(d.maxCaja),(d.reportados % d.maxCaja),d.id_pde || '') );
+    
+    //console.log(formarCajas(d.numparteprod,Math.trunc(totalCajas),Number(d.maxCaja),(d.reportados % d.maxCaja),d.id_pde || '',origen) );
     let stack: Stack = d.distribucion.Caja.detalle;
     while (stack.size() > 0) {     
-      if (stack.size() >= max) {        
-        const r = stack.obtener(max);
-       // console.log(r);
+      if (stack.size() >  max) {        
+        //console.log({size:stack.size(),max});
+        const r = stack.obtener(max);    
+      //  console.log("completa");           
         tarimas.push({ id: NewID(), tipo: "completa", cajas: r });
       }    
-      if (stack.size() < max && stack.size() > 0) {        
+      if (stack.size() <= max && stack.size() > 0) {        
         const r = stack.obtener(stack.size());
         tarimas.push({ id: NewID(), tipo: "mezclada", cajas: r, });
       }
