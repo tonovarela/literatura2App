@@ -70,7 +70,7 @@ export class AgregarComponent implements OnInit, OnDestroy, AfterViewInit {
     this.registroForm = this.fb.group({
       nombre: ['', [Validators.required]],
       fecha_entrega: [''],
-      max_cajas: ['9'],
+      max_cajas: ['32'],
       serial: [""],
       //orden_compra: [""],
       lote: ["", Validators.required],

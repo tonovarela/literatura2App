@@ -4,18 +4,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { firstValueFrom, of, Subscription } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 import { toast } from 'wc-toast'
-
-
-
 import { CuadernoVerificado, AudioRevision, parametros } from '../../interfaces/cuadernos.interfaces';
-
 import { FormBuilder, FormGroup } from '@angular/forms';
-
 import { pasteNotAllowFunc } from 'src/app/utils/utils';
 import { CuadernoKit, KitDetalle } from 'src/app/interfaces/shared/kit.interfaces';
 import { ConfeccionKitsGeneral, Resumen } from 'src/app/interfaces/shared/confeccion.interface';
-import { environment } from 'src/environments/environment.development';
 import { ConfeccionService, ConfiguracionService, KitService, UiService, WebsocketService } from '@services/index';
+import { environment } from 'src/environments/environment.development';
+
 @Component({
   selector: 'app-revision',
   templateUrl: './revision.component.html',
@@ -153,8 +149,8 @@ export class RevisionComponent implements OnInit, OnDestroy {
     this.blockInput = true;
     await firstValueFrom(this.confeccionService.verificarKit(this.params.id_pde, this.params.numpartprod).pipe(
       switchMap(_ => this.reloadResumen(true))
-    ));    
-    this.webSocketService.emitir("actualizarInfo", { modulo: "revisionCuadernos", numpartprod: this.params.numpartprod,resumen:this.resumen });
+    ));
+    this.webSocketService.emitir("actualizarInfo", { modulo: "revisionCuadernos", numpartprod: this.params.numpartprod, resumen: this.resumen });
     toast(` Kit  ${this.params.numpartprod} se ha reportado`, { icon: { type: 'success' }, theme: { type: 'light' }, duration: 400 });
     this.resetSound();
     this.audios.ok.play();
@@ -201,14 +197,19 @@ export class RevisionComponent implements OnInit, OnDestroy {
     const estaCompleto = this.vefificarKitCompleto();
     if (estaCompleto) {
       this.cambiarKitActivo();
-      // while (Number(this.resumen.restantes) > 5) {        
-      // const r= new Promise((resolve,rejet)=>{
-      //   setTimeout(async()=>{
-      //  resolve(await this.registroKit())
-      // },500)
-      // });
-      // await r;          
-      // }
+      if (!environment.production) {
+        while (Number(this.resumen.restantes) > 5) {
+          const r = new Promise((resolve, rejet) => {
+            setTimeout(async () => {
+              resolve(await this.registroKit())
+            }, 10)
+          });
+          await r;
+        }
+      }
+
+
+
       await this.registroKit();
       this.resetKit();
     }

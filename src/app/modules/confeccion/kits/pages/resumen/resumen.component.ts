@@ -221,7 +221,7 @@ export class ResumenComponent implements OnInit {
 
   get puedeGenerarTarima() {
     const tamanio = this.cajasEmpaque.filter(x => x.seleccionado).length;
-    return tamanio <= 12 && tamanio > 0;
+    return tamanio <= 32 && tamanio > 0;
   }
 
   get CajasSeleccionadas() {

@@ -27,7 +27,7 @@ export class RevisionComponent implements OnInit, OnDestroy {
   resumenKit: ResumenParte[] = [];  
   DELAYMAX: number = environment.delayTimeAllowedInput;
   blockInput: boolean = false;
-  esFireFox: boolean = false;
+  esFireFox: boolean = false;  
   audios: AudioRevision = {
     scan: new Audio(`assets/audio/scan.mp3`),
     error: new Audio(`assets/audio/error.mp3`),
@@ -67,7 +67,7 @@ export class RevisionComponent implements OnInit, OnDestroy {
       //console.log(payload);
       if (modulo == "revisionCuadernos") {
         const { restantes: pendientes } = resumen;
-        console.log(resumen);
+        
         const r = this.resumenKit.find(r => r.numpartprod == numpartprod);
         if (r != undefined) {          
           r.pendientes = Number(pendientes);
@@ -138,8 +138,8 @@ export class RevisionComponent implements OnInit, OnDestroy {
       console.log("imprimiendo Caja");
       const totalKits = _restantes === 0 ? totalPorCaja : _restantes;
       //toast('Imprimiendo caja', { icon: { type:'success' }, theme: { type: 'light' }, duration: 500 });      
-      const [k] = this.resumenKit;
-      this.resumenKit = [{ ...k, porEmpacar: Number(k.porEmpacar + 1) }];
+      const [nK] = this.resumenKit;      
+      this.resumenKit=[{ ...nK, porEmpacar: Number(nK.porEmpacar) + 1, armados: Number(nK.armados)-1, revisados: nK.revisados + 1 }];      
       await this.imprimirPreEtiqueta(numpartprod, totalKits);      
       this.uiService.mostrarToaster("Caja", "Imprimiendo caja", false, 500, "info");      
       return Promise.resolve(true)
@@ -260,8 +260,8 @@ export class RevisionComponent implements OnInit, OnDestroy {
   }
 
   private async registroAutomatico(numparteprod: string) {
-    const [k] = this.resumenKit
-    if (k.armados >= 3 && numparteprod != "") {
+    const [k] = this.resumenKit    
+    if (k.armados >= 2 && numparteprod != "") {
       this.formCaptura.get("entrada").setValue(numparteprod);
       this.verificarKit();
     }
@@ -273,13 +273,17 @@ export class RevisionComponent implements OnInit, OnDestroy {
     // }
     const materialActivo = this.configuracionService.kitActivo.numpartprod;
     this.cargando = true;
+    
     if (numparteprod != "") {
       const [nK] = this.resumenKit;
       if (nK != null) {
-        const nuevoResumenGeneral = [{ ...nK, porEmpacar: Number(nK.porEmpacar) + 1, armados: Number(nK.armados) - 1, revisados: nK.revisados + 1 }];        
+        const nuevoResumenGeneral = [{ ...nK, porEmpacar: Number(nK.porEmpacar) + 1, armados: Number(nK.armados)-1, revisados: nK.revisados + 1 }];   
+          
+        //this.maxNumeroCajas= nK.totalPorCaja +10;
         const armados = nuevoResumenGeneral[0].armados;
         if (armados >= 10) {
           const newResponse = { resumenGeneral: nuevoResumenGeneral };
+          //console.log(nuevoResumenGeneral);
           await this.ckCargarInfo(newResponse, numparteprod);
           return Promise.resolve(true);
         }
@@ -331,8 +335,12 @@ export class RevisionComponent implements OnInit, OnDestroy {
       this.audios.ok.play();
       toast(response['result'], { icon: { type: 'success' }, theme: { type: 'light' }, duration: 400 });
       await this.cargarRevisiones(kitVerificar);
-      this.blockInput = false
-     //await this.registroAutomatico(kitVerificar);
+      this.blockInput = false;
+
+      if (!environment.production){
+       await this.registroAutomatico(kitVerificar);
+      }
+     
       this.formCaptura.get("entrada").setValue("");
       document.getElementById("entrada").focus();
       
