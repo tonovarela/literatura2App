@@ -31,7 +31,7 @@
                     </e-column>
                     <e-column field='nombre' headerText='nombre' width=120></e-column>
                     <e-column field='fecha_entrega' headerText='Fecha entrega' width=70></e-column>
-                    <e-column headerText="Estado" width=70>
+                    <e-column  field='estadoDescripcion' headerText="Estado" width=70>
                         <ng-template #template let-data>
                             <div>
                                 <select class="custom-select form-control-sm p-0 m-0" [disabled]="seleccionHabilitada"
@@ -45,6 +45,8 @@
                         </ng-template>
                     </e-column>
                     <e-column field='total' headerText='Total kits' width=50>
+                    </e-column>
+                    <e-column field='totalConfeccion' headerText='Confección' width=50>
                     </e-column>
                     
                     

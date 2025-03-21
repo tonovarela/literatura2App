@@ -277,13 +277,10 @@ export class RevisionComponent implements OnInit, OnDestroy {
     if (numparteprod != "") {
       const [nK] = this.resumenKit;
       if (nK != null) {
-        const nuevoResumenGeneral = [{ ...nK, porEmpacar: Number(nK.porEmpacar) + 1, armados: Number(nK.armados)-1, revisados: nK.revisados + 1 }];   
-          
-        //this.maxNumeroCajas= nK.totalPorCaja +10;
+        const nuevoResumenGeneral = [{ ...nK, porEmpacar: Number(nK.porEmpacar) + 1, armados: Number(nK.armados)-1, revisados: nK.revisados + 1 }];                   
         const armados = nuevoResumenGeneral[0].armados;
         if (armados >= 10) {
-          const newResponse = { resumenGeneral: nuevoResumenGeneral };
-          //console.log(nuevoResumenGeneral);
+          const newResponse = { resumenGeneral: nuevoResumenGeneral };          
           await this.ckCargarInfo(newResponse, numparteprod);
           return Promise.resolve(true);
         }
