@@ -333,4 +333,16 @@ export class RevisionComponent implements OnInit, OnDestroy {
 
 
 
+  iniciarConfeccion({numpartprod}: ResumenParte) {
+     this.configuracionService.iniciarArmado(numpartprod).subscribe(this.callbackCargarConfiguracion);     
+  }
+
+  callbackCargarConfiguracion = (_) => {
+    this.webSocketService.emitir('reloadConfiguracion', "Actualizar desde el cliente");
+    this.configuracionService.cargarConfiguraciones();
+  }
+
+    
+
+
 }
