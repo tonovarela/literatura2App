@@ -7,6 +7,6 @@ export const environment = {
   URL: 'http://servicios.litoprocess.com/literatura7',    
   delayTimeAllowedInput: 200,
   puederPegarTexto: true,
-    //URL_IMPRESIONES: "http://localhost:8050"  
- URL_IMPRESIONES: 'http://192.168.2.222/impresiones'
+  URL_IMPRESIONES: "http://localhost:8050"  
+ //URL_IMPRESIONES: 'http://192.168.2.222/impresiones'
 };
