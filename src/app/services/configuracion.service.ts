@@ -59,7 +59,7 @@ export class ConfiguracionService {
    
 
 
-  iniciarArmado(numpartprod){            
+  iniciarArmado(numpartprod){             
     this.kitActivo = { numpartprod,terminoArmado:true, terminoRevision:false}        
     return this.actualizarKitActivo();    
   }
