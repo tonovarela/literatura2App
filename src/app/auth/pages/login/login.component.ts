@@ -5,6 +5,7 @@ import { UiService } from 'src/app/services/ui.service';
 import { catchError } from 'rxjs/operators';
 import { of,  } from 'rxjs';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { environment } from 'src/environments/environment.development';
 
 @Component({
   selector: 'app-login',
@@ -15,6 +16,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 export class LoginComponent implements OnInit {
   loginForm: FormGroup ;
   year: number = new Date().getFullYear();
+  isDebug= !environment.production;
   constructor(private router: Router,
     private uiService: UiService,
     private fb: FormBuilder,

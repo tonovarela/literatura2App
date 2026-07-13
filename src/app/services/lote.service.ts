@@ -2,8 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
 import { delay } from 'rxjs/operators';
+import { environment } from 'src/environments/environment.development';
 
-import { environment } from 'src/environments/environment';
+
 
 @Injectable({
   providedIn: 'root'

@@ -3,8 +3,8 @@ import { WindowsService } from '../../../../../services/windows.service';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { CellModel, SheetModel, SpreadsheetComponent } from '@syncfusion/ej2-angular-spreadsheet';
 import { Subscription } from 'rxjs';
-import { CuadernoRegistro, ErrorMensaje, KitRegistro } from '../../interfaces/kit.interface';
 import { KitService } from '../../services/kit.service';
+import { MaxUsedRange, obtenerDetalleKit, obtenerKit } from 'src/app/utils/spreadsheet-helper';
 
 
 interface SheetProceso {
@@ -20,7 +20,7 @@ interface SheetProceso {
 export class RegistrarComponent implements OnInit, OnDestroy {
   @ViewChild('spreadsheet') spreadsheetObj!: SpreadsheetComponent;
   spreadheight: number = 0;
-  posicionCell: number = 2;
+  //posicionCell: number = 1;
   resizeSubscription$: Subscription;
 
 
@@ -65,7 +65,6 @@ export class RegistrarComponent implements OnInit, OnDestroy {
           { width: 10 },
           { width: 140 },
           { width: 130 },
-          //{ width: 150 },
           { width: 130 },
           { width: 100 },
           { width: 100 },
@@ -87,7 +86,7 @@ export class RegistrarComponent implements OnInit, OnDestroy {
           cells: [
             { value: "", },
             { value: "Número parte Prod*", style: this.styleCellRequerido },
-            { value: "Total kits por caja*", style: this.styleCellRequerido },            
+            { value: "Total kits por caja*", style: this.styleCellRequerido },
             { value: "Numero de parte", style: this.styleCell },
             { value: "Edición", style: this.styleCell },
             { value: "Clave kit", style: this.styleCell },
@@ -153,101 +152,22 @@ export class RegistrarComponent implements OnInit, OnDestroy {
 
 
 
-  private obtenerData(indice, columna) {
-    return this.spreadsheetObj.getValueRowCol(this.SheetActive.indice,
-      indice,
-      columna) || "";
-  }
 
 
   limpiarLayout() {
+    const maxSheet1Index = MaxUsedRange(this.spreadsheetObj, 0);
+    const maxSheet2Index = MaxUsedRange(this.spreadsheetObj, 1);
 
     this.SheetActive = { nombre: this.spreadsheetObj.sheets[0].name, indice: 0 };
-    this.spreadsheetObj.clear({ type: "Clear Contents", range: `${this.SheetActive.nombre}!A2:R${this.MaxUsedRange + 100}` });
+    this.spreadsheetObj.clear({ type: "Clear Contents", range: `${this.SheetActive.nombre}!A2:Z${maxSheet1Index+100}` });
     this.SheetActive = { nombre: this.spreadsheetObj.sheets[1].name, indice: 1 };
-    this.spreadsheetObj.clear({ type: "Clear Contents", range: `${this.SheetActive.nombre}!A2:F${this.MaxUsedRange + 100}` });
+    this.spreadsheetObj.clear({ type: "Clear Contents", range: `${this.SheetActive.nombre}!A2:Z${maxSheet2Index+100}` });
     this.spreadsheetObj.closeEdit();
     this.resetVariables();
 
 
 
   }
-  private obtenerKit(indiceRow): KitRegistro | ErrorMensaje {
-
-    let row: KitRegistro = {
-      numparteprod: this.obtenerData(indiceRow, 2).toString(),
-      totalPorCaja: Number(this.obtenerData(indiceRow, 3).toString()),
-      //totalCajasPorTarima: Number(this.obtenerData(indiceRow, 4).toString()),
-      numparte: this.obtenerData(indiceRow, 4).toString(),
-      edicion: this.obtenerData(indiceRow, 5).toString(),
-      clavekit: this.obtenerData(indiceRow, 6).toString(),
-      clavekit2: this.obtenerData(indiceRow, 7).toString(),
-      identifica: this.obtenerData(indiceRow, 8).toString(),
-      plataforma: this.obtenerData(indiceRow, 9).toString(),
-      pr: this.obtenerData(indiceRow, 10).toString(),
-      indice: this.obtenerData(indiceRow, 11).toString(),
-      idioma: this.obtenerData(indiceRow, 12).toString(),
-      cont1: this.obtenerData(indiceRow, 13).toString(),
-      cont2: this.obtenerData(indiceRow, 14).toString(),
-      vehiculo: this.obtenerData(indiceRow, 15).toString(),
-      tipo: this.obtenerData(indiceRow, 16).toString(),      
-      etiqueta: this.obtenerData(indiceRow, 17).toString(),
-      orden_compra: this.obtenerData(indiceRow, 18).toString(),
-      
-    };
-
-
-    if (row.numparteprod.length > 0 && (isNaN(row.totalPorCaja) || row.totalPorCaja <= 0)) {
-      return { error: true, mensaje: "Capture el total de kits por caja" };
-    }
-
-  
-    if (row.numparteprod.length > 0 && row.etiqueta.length <= 0) {
-      return { error: true, mensaje: "Capture la etiqueta " };
-    }
-
-    return row;
-
-  }
-
-  private obtenerDetalleKit(indiceRow): CuadernoRegistro | ErrorMensaje {
-
-
-    if (this.obtenerData(indiceRow, 2).toString().trim().length > 0
-      && this.obtenerData(indiceRow, 3).toString().trim().length == 0) {
-
-      return { error: true, mensaje: "Hace falta el sku 1" };
-    }
-
-    if (this.obtenerData(indiceRow, 2).toString().trim().length > 0
-      && this.obtenerData(indiceRow, 5).toString().trim().length == 0) {
-      return { error: true, mensaje: "Hace falta la descripcion" };
-    }
-
-    if (this.obtenerData(indiceRow, 2).toString().trim().length > 0
-      && this.obtenerData(indiceRow, 6).toString().trim().length == 0) {
-      return { error: true, mensaje: "Hace falta la clasificación" };
-    }
-
-    let row: CuadernoRegistro = {
-      numparteprod: this.obtenerData(indiceRow, 2).toString(),
-      sku1: this.obtenerData(indiceRow, 3).toString(),
-      sku2: this.obtenerData(indiceRow, 4).toString(),
-      descripcion: this.obtenerData(indiceRow, 5).toString(),
-      clasificacion: this.obtenerData(indiceRow, 6).toString(),
-
-    };
-
-    return row;
-
-  }
-
-  get MaxUsedRange() {
-    const { rowIndex } = this.spreadsheetObj.sheets[this.SheetActive.indice].usedRange;
-    return rowIndex;
-  }
-
-
 
 
   get TextoTotalKit() {
@@ -261,21 +181,34 @@ export class RegistrarComponent implements OnInit, OnDestroy {
 
 
 
-  registroKits() {
+  async registroKits() {
+ 
+    this.kitPorProcesar=[];
+    this.spreadsheetObj.activeSheetIndex = 0;
+    const p = new Promise((resolve, reject) => {
+      setTimeout(() => { resolve(true) }, 500)
+    });
+    await p;
+
+    this.spreadsheetObj.goTo("Kit!A1");
+    const x = new Promise((resolve, reject) => {
+      setTimeout(() => { resolve(true) }, 500)
+    });
+    await x
 
     this.SheetActive = { nombre: this.spreadsheetObj.sheets[0].name, indice: 0 };
-    let rowIndex = this.MaxUsedRange;
+    let rowIndex = MaxUsedRange(this.spreadsheetObj, this.SheetActive.indice) + 1;
+
     this.resetVariables();
     this.spreadsheetObj.endEdit();
 
     this.cargando = true;
+    this.spreadsheetObj.clear({ type: "Clear Contents", range: `${this.SheetActive.nombre}!A2:A${rowIndex}` });
 
-    this.spreadsheetObj.clear({ type: "Clear Contents", range: `${this.SheetActive.nombre}!A2:A${this.MaxUsedRange + 1}` });
-
-    for (let i = this.posicionCell; i <= rowIndex + 100; i++) {
-      let row = this.obtenerKit(i);
+    for (let i = 1; i <= rowIndex; i++) {
+      let row = obtenerKit(this.spreadsheetObj, i);
       if (row.hasOwnProperty('mensaje')) {
-        this.ObserverProcesarKit({ mensaje: row["mensaje"], id: i, registro: {}, success: false, tipo: "kit" });
+        this.ObserverProcesarKit({ mensaje: row["mensaje"], id: i + 1, registro: {}, success: false, tipo: "kit" });
         continue;
       }
       if (row["numparteprod"].length > 0) {
@@ -283,24 +216,46 @@ export class RegistrarComponent implements OnInit, OnDestroy {
       }
     }
 
-    this.kitService.procesarKit(this.kitPorProcesar)
-      .subscribe(this.ObserverProcesarKit,
-        (e) => {
-          console.log(e);
-        }, this.registroDetalleKits);
+
+    this.kitService.procesarKit(this.kitPorProcesar).subscribe({
+      next: (response) => {
+        this.ObserverProcesarKit(response)
+      },
+      complete: async () => {
+        await this.registroDetalleKits();
+      },
+      error: () => {
+        this.cargando = false
+      }
+    });
+
+
 
   }
 
 
-  registroDetalleKits = () => {
+  async registroDetalleKits() {
+    this.spreadsheetObj.activeSheetIndex = 1
+    this.detalleKitPorProcesar=[];
+    const p = new Promise((resolve, reject) => {
+      setTimeout(() => { resolve(true) },500)
+    });
+    await p;
+    this.spreadsheetObj.goTo("Cuadernos!A1");    
+    const x = new Promise((resolve, reject) => {
+      setTimeout(() => { resolve(true) }, 500)
+    });
+    await x
+    
     this.SheetActive = { nombre: this.spreadsheetObj.sheets[1].name, indice: 1 };
-    const rowIndex = this.MaxUsedRange;
-    this.spreadsheetObj.clear({ type: "Clear Contents", range: `${this.SheetActive.nombre}!A2:A${this.MaxUsedRange + 1}` });
+    const rowIndex = MaxUsedRange(this.spreadsheetObj, 1);    
+    this.spreadsheetObj.clear({ type: "Clear Contents", range: `${this.SheetActive.nombre}!A2:A${rowIndex+1}` });
     this.spreadsheetObj.endEdit();
-    for (let i = this.posicionCell; i <= rowIndex + 100; i++) {
-      let row = this.obtenerDetalleKit(i);
+    for (let i = 1; i <= rowIndex + 1; i++) {
+      let row = obtenerDetalleKit(this.spreadsheetObj, i);
+    
       if (row.hasOwnProperty('mensaje')) {
-        this.ObserverProcesarKit({ mensaje: row["mensaje"], id: i, registro: {}, success: false, tipo: 'detalleKit' });
+        this.ObserverProcesarKit({ mensaje: row["mensaje"], id: i + 1, registro: {}, success: false, tipo: 'detalleKit' });
         continue;
       }
       if (row["numparteprod"].length > 0) {
@@ -319,51 +274,44 @@ export class RegistrarComponent implements OnInit, OnDestroy {
       this.detalleKitError.length == 0) {
       this.uiService.mostrarAlertaError("Kits", "No hay registros por procesar");
     }
+
+  
     this.kitService.procesarKitDetalle(this.detalleKitPorProcesar)
-      .subscribe(this.ObserverProcesarKit, () => {
-      }, () => {
-        this.cargando = false;
-      });
+    .subscribe({
+      next: (response) => {
+        this.ObserverProcesarKit(response);
+      },
+      complete: () => { this.cargando = false },
+    });
+
+
+
+
+
 
   }
 
 
 
 
-  ObserverProcesarKit = ({ mensaje, id, registro, success, tipo }) => {
+  ObserverProcesarKit({ mensaje, id, registro, success, tipo }) {
 
-    const nombreSheet = this.SheetActive.nombre;;
-    const address = `${nombreSheet}!A${id}`;
+    const nombreSheet = this.SheetActive.nombre;
+    const address = `${nombreSheet}!A${id + 1}`;
     const cell: CellModel = {
       style: { color: (!success ? "red" : "green") },
       value: mensaje
     };
 
     if (!success) {
-
-      if (tipo == "kit") {
-        this.kitError.push(cell);
-        this.spreadsheetObj.activeSheetIndex = 0;
-      } else {
-
-        this.detalleKitError.push(cell);
-        this.spreadsheetObj.activeSheetIndex = 1;
-      }
+      tipo == "kit" ? this.kitError.push(cell) : this.detalleKitError.push(cell)
     }
     else {
-
-      if (tipo == "kit") {
-        this.kitProcesado.push(cell);
-        this.spreadsheetObj.activeSheetIndex = 0;
-      } else {
-        this.detalleKitProcesado.push(cell);
-        this.spreadsheetObj.activeSheetIndex = 1;
-      }
+      tipo == "kit" ? this.kitProcesado.push(cell) : this.detalleKitProcesado.push(cell)
 
     }
 
-
-    this.spreadsheetObj.updateCell(cell, address);
+    this.spreadsheetObj.updateCell(cell, address);    
     this.spreadsheetObj.autoFit("A");
     this.spreadsheetObj.goTo(address);
 

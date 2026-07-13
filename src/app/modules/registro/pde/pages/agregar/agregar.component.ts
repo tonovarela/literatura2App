@@ -70,7 +70,7 @@ export class AgregarComponent implements OnInit, OnDestroy, AfterViewInit {
     this.registroForm = this.fb.group({
       nombre: ['', [Validators.required]],
       fecha_entrega: [''],
-      max_cajas: ['9'],
+      max_cajas: ['32'],
       serial: [""],
       //orden_compra: [""],
       lote: ["", Validators.required],
@@ -269,7 +269,7 @@ export class AgregarComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
     //console.log(dto);
-    this.tarimas = generarLote(dto, this.maximoCajasPorTarima);
+    this.tarimas = generarLote(dto, this.maximoCajasPorTarima,1,false,"completas");
 
 
 
@@ -315,9 +315,12 @@ export class AgregarComponent implements OnInit, OnDestroy, AfterViewInit {
     });
 
 
-    // console.log(this.registroForm.value);
-    // console.log(solicitudesCuaderno);
      
+     //this.cargando=false;
+    // console.log(solicitudesCuaderno);
+      // console.log(this.tarimas);
+      // this.cargado=false;
+      // return;
 
     //Registrar el PDE en el sistema de Almacen PT y despues registrarlo en Literatura
     this.pdeService

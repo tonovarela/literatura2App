@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { environment } from '../../environments/environment';
+
 import { HttpClient } from '@angular/common/http';
 import { b64toBlob, groupBy } from '../utils/utils';
 import * as alasql  from 'alasql';
+import { environment } from 'src/environments/environment.development';
 
 
 @Injectable({
