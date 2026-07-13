@@ -2,11 +2,12 @@
     <div class="brand">
         <a href="index.html" class="logo">
             <span>
-                <img src="assets/images/logos/logoLito.png" alt="logo-small" class="logo-sm">
+                <!-- <img src="assets/images/logos/logoLito.png" alt="logo-small" class="logo-sm"> -->
             </span>
             <span>
-                <img src="assets/images/logos/letrasLito.png" alt="logo-large" class="logo-lg logo-light">
-                <img src="assets/images/logos/letras-light.png" alt="logo-large" class="logo-lg logo-dark">
+                <!-- <img src="assets/images/logos/letrasLito.png" alt="logo-large" class="logo-lg logo-light"> -->
+                <img *ngIf="isDebug" src="https://servicios.litoprocess.com/static/assets/img/lito-dark.png" width="200px" alt="logo-large" class=" logo-light"/>
+                <img *ngIf="!isDebug" src="/static/assets/img/lito-dark.png" alt="logo-large" width="200px" class="logo-dark"/>
             </span>
         </a>
     </div>

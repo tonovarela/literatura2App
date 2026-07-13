@@ -4,9 +4,11 @@ import { ConfiguracionService } from 'src/app/services/configuracion.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { WebsocketService } from 'src/app/services/websocket.service';
 import { ConfeccionService } from '../../services/confeccion.service';
+import { environment } from 'src/environments/environment.development';
 
 @Component({
   selector: 'app-sidenav',
+  
   templateUrl: './sidenav.component.html',
   styles: [
     `.logo-sm{
@@ -40,6 +42,7 @@ import { ConfeccionService } from '../../services/confeccion.service';
 })
 export class SidenavComponent {
   
+  isDebug=!environment.production;
   constructor(public configuracionService: ConfiguracionService,
                public usuarioService:UsuarioService) { }
 
