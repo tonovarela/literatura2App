@@ -16,11 +16,11 @@
     text-align: center;
   }
   .bar:nth-child(1) {
-    background-color: #3b78e7;    
+    background-color: #5b90e5;    
     animation: loading 0.5s linear infinite;
   }
   .bar:nth-child(2) {
-    background-color: #3b78e7;
+    background-color: #5b90e5;
     animation: loading 1s linear 1s infinite;
   }
   .bar:nth-child(3) {

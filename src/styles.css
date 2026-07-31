@@ -21,6 +21,69 @@
 
 @import 'ngx-toastr/toastr';
 
+/* Fondo del sidebar: imagen NISSAN con velo oscuro para mantener legible el menú.
+   Sube/baja los valores alfa del linear-gradient para ver más o menos la imagen. */
+body.dark-sidenav .left-sidenav {
+  background-color: #1d1d1d;
+  background-image:
+    linear-gradient(rgba(29, 29, 29, 0.78), rgba(29, 29, 29, 0.93)),
+    url("assets/images/sidebar-bg.jpg");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+}
+
+/* El tema pintaba bloques opacos detrás del item abierto y de la marca; con la
+   imagen de fondo taparían la foto, así que se transparentan. */
+body.dark-sidenav .left-sidenav-menu li.mm-active .mm-active > a,
+body.dark-sidenav.enlarge-menu .left-sidenav .brand {
+  background: transparent;
+}
+
+/* Sidebar: tipografía blanca */
+body.dark-sidenav .left-sidenav-menu .menu-label,
+body.dark-sidenav .left-sidenav-menu li > a,
+body.dark-sidenav .left-sidenav-menu li > a i,
+body.dark-sidenav .left-sidenav-menu li > a span i,
+body.dark-sidenav .left-sidenav-menu li ul li > a,
+body.dark-sidenav .left-sidenav-menu li ul li > a i,
+body.dark-sidenav .left-sidenav-menu .menu-arrow i {
+  color: #ffffff;
+}
+
+body.dark-sidenav .left-sidenav-menu li > a .menu-icon {
+  color: #ffffff;
+  fill: rgba(255, 255, 255, 0.12);
+}
+
+/* Hover: blanco atenuado para que se distinga del estado activo */
+body.dark-sidenav .left-sidenav-menu li > a:hover,
+body.dark-sidenav .left-sidenav-menu li > a:hover i,
+body.dark-sidenav .left-sidenav-menu li > a:hover span i,
+body.dark-sidenav .left-sidenav-menu li ul li > a:hover,
+body.dark-sidenav .left-sidenav-menu li ul li > a:hover i {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Menú activo: verde */
+body.dark-sidenav .left-sidenav-menu li > a.active,
+body.dark-sidenav .left-sidenav-menu li > a.active i,
+body.dark-sidenav .left-sidenav-menu li.mm-active > a,
+body.dark-sidenav .left-sidenav-menu li.mm-active > a i,
+body.dark-sidenav .left-sidenav-menu li.mm-active .mm-active > a,
+body.dark-sidenav .left-sidenav-menu li.mm-active .mm-active > a i,
+body.dark-sidenav .left-sidenav-menu li.mm-active .mm-active > a.active,
+body.dark-sidenav .left-sidenav-menu li.mm-active .mm-active .mm-show li a.active,
+body.dark-sidenav .left-sidenav-menu li.mm-active .nav-item.active a.nav-link.active,
+body.dark-sidenav .left-sidenav-menu li.mm-active .nav-item.active a.nav-link.active i {
+  color: #03d87f;
+}
+
+body.dark-sidenav .left-sidenav-menu li > a.active .menu-icon {
+  color: #03d87f;
+  fill: rgba(3, 216, 127, 0.15);
+}
+
 .detalle_icon {
   padding: 5px;
   /* border-radius: 50%; */

@@ -16,61 +16,62 @@ $header-light-bg:           #ffffff;
 $header-dark-bg:            #292e40;
 
 // Toptbar Variables
-$bg-navbar:                 #ffffff; 
+$bg-navbar:                 #f2f7fe;
+$border-navbar:             #dbe7fb;
 $header-item-color:         #7081b9;
 $vertical-menu-btn-color:   #7081b9;
 $noti-icon-color:           #748aa9;
 $icon-dual-hori-nav-color:  #a3afd4;
 
 // Toptbar Dark Variables
-$bg-dark-navbar:                  #0c213a; 
+$bg-dark-navbar:                  #102444; 
 $header-item-dark-color:          #b9c4ce;
 $vertical-menu-btn-dark-color:    #c2cbe2;
 $noti-icon-dark-color:            #c2cbe2;
 
 // Navy
-$navy:                            #244f96;
+$navy:                            #2e5da8;
 
 // Leftbar Variables
 $menu-label-color:                #687598;
 $hr-leftbar:                      #c2cbe2;
 $bg-leftbar:                      #ffffff;
 $leftbar-icon-color:              #a6aed4;
-$leftbar-icon-hover-color:        #2f6bf9;
+$leftbar-icon-hover-color:        #5290f4;
 $menu-item-color:                 #68728c;
-$menu-item-hover-color:           #2f6bf9;
+$menu-item-hover-color:           #5290f4;
 $menu-sub-item-color:             #68728c;
-$menu-sub-item-hover-color:       #2f6bf9;
+$menu-sub-item-hover-color:       #5290f4;
 
 $menu-item-active-color:          #303e67;
 $menu-item-active-bg-color:    linear-gradient(14deg, $primary 0%, rgba($primary, .6));
 
 $menu-second-item-active-color:    #303e67;
 
-$menu-sub-item-active-color:       #6374ff;
+$menu-sub-item-active-color:       #619eff;
 $menu-sub-item-active-bg-color:    transparent;
 $menu-arrow-color:                 #303e67;
 
 
 // Leftbar Dark Variables
 $menu-label-dark-color:                #c2cbe2;
-$hr-dark-leftbar:                      #20446f;
-$bg-dark-leftbar:                      #0c213a;
+$hr-dark-leftbar:                      #3a3a3a;
+$bg-dark-leftbar:                      #1d1d1d;
 $leftbar-icon-dark-color:              #7683a5;
-$leftbar-icon-hover-dark-color:        #0f4fff;
+$leftbar-icon-hover-dark-color:        #3580f8;
 $menu-item-dark-color:                 #a9baca;
 $menu-item-dark-active-color:          #ffffff;
 $menu-item-hover-dark-color:           #e6e6e6;
 $menu-sub-item-dark-color:             #a9baca;
 $menu-sub-item-hover-dark-color:       #e6e6e6;
-$menu-nav-item-active-dark-color:      #6374ff;
+$menu-nav-item-active-dark-color:      #619eff;
 $menu-arrow-dark-color:                #a9baca;
 
 $menu-item-active-dark-color:       $white;
 $menu-item-active-bg-dark-color:    linear-gradient(14deg, $primary 0%, rgba($primary, .6));
 
 $menu-second-item-active-dark-color:       #f7f8f9;
-$menu-sub-item-active-dark-color:       #6374ff;
+$menu-sub-item-active-dark-color:       #619eff;
 $menu-sub-item-active-bg-dark-color:    transparent;
 
 $main-menu-inner-bg:          #ffffff;
@@ -154,10 +155,10 @@ $leftbar-dark-box-shadow:       0 8px 8px 0 rgba(31, 30, 47, 0.06);
   $menu-line-color:               #c8cbd4;
   $mobile-menu-item-color:        #7081b9;
   $topnav-menu-item-color:        #68728c;
-  $topnav-menu-item-active-color: #2f6bf9;
-  $topnav-menu-item-hover-color:  #2f6bf9;
+  $topnav-menu-item-active-color: #5290f4;
+  $topnav-menu-item-hover-color:  #5290f4;
   $topnav-menu-item-hover-bg:     #fdfeff;
-  $topnav-menu-icon-color:        #307df3;
+  $topnav-menu-icon-color:        #528eef;
   $topnav-menu-item-dark-color:   #a7b1c1;
 
 
@@ -167,7 +168,7 @@ $leftbar-dark-box-shadow:       0 8px 8px 0 rgba(31, 30, 47, 0.06);
   $tag:  #a10000;
   $atn:  #ff0000;
   $atv:  #0000ff;
-  $com:  #307df3;
+  $com:  #528eef;
 
 // 
 // Bootstrap Variables
@@ -209,7 +210,7 @@ $grays: map-merge(
   $grays
 );
 
-$blue:    #1761fd;
+$blue:    #3c83f6;
 $indigo:  #6610f2;
 $purple:  #6d81f5;
 $pink:    #fd3c97;

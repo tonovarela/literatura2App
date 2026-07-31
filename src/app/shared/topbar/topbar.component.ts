@@ -16,6 +16,24 @@ import { WebsocketService } from 'src/app/services/websocket.service';
       padding: 5px 10px;
       font-size:13px!important
     }
+    .navbar-brand-center{
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      height: 52px;
+      display: flex;
+      align-items: center;
+      pointer-events: none;
+    }
+    .brand-center-logo{
+      height: 40px;
+      width: auto;
+      display: block;
+    }
+    @media (max-width: 991px){
+      .navbar-brand-center{ display: none; }
+    }
   `
   ]
 })
