@@ -83,6 +83,20 @@ body.dark-sidenav .left-sidenav-menu li > a.active .menu-icon {
   fill: rgba(3, 216, 127, 0.15);
 }
 
+/* Grids Syncfusion: misma tipografía que el sidenav (Roboto 13px, peso 400).
+   Por defecto el tema material pinta los encabezados en 12px / peso 500. */
+.e-grid,
+.e-grid .e-rowcell,
+.e-grid .e-headercelldiv,
+.e-grid .e-detailheadercell,
+.e-grid .e-groupcaption,
+.e-grid .e-headerclone,
+.e-grid .e-cloneproperties {
+  font-family: 'Roboto', sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+}
+
 .detalle_icon {
   padding: 5px;
   /* border-radius: 50%; */

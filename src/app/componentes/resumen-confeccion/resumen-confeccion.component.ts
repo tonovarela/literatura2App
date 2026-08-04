@@ -106,7 +106,7 @@ export class ResumenConfeccionComponent implements OnInit {
 
   private descargarPDF(modelsSKUS) {
     this.cargandoImpresion = true;
-    this.http.post(`${this.URL}/api/impresion/kit?esBase=SI&importado=true`, { modelsSKUS })
+    this.http.post(`${this.URL}/api/impresion/kit?esBase=SI&importado=true`, { modelsSKUS, compania: "NISSAN" })
       .pipe(
         catchError((e) => {
           this.cargandoImpresion = false;

@@ -24,7 +24,7 @@ export class ImpresionService {
     }
 
 
-    this.http.post(`${this.URL_IMPRESIONES}/api/impresion/caja?esBase=SI`, { models }).subscribe((response) => {
+    this.http.post(`${this.URL_IMPRESIONES}/api/impresion/caja?esBase=SI`, { models,compania:"NISSAN" }).subscribe((response) => {
       if (!response["ok"])
         return;
       const pdf = `${response["pdf"]}`;
@@ -117,7 +117,7 @@ export class ImpresionService {
     //console.log(_models);
 
 
-    this.http.post(`${this.URL_IMPRESIONES}/api/impresion/tarima?esBase=SI`, { _models }).subscribe((response) => {
+    this.http.post(`${this.URL_IMPRESIONES}/api/impresion/tarima?esBase=SI`, { _models,compania:"NISSAN" }).subscribe((response) => {
       if (!response["ok"])
         return;
       const pdf = `${response["pdf"]}`;
