@@ -21,23 +21,22 @@
 
 @import 'ngx-toastr/toastr';
 
-/* Fondo del sidebar: imagen NISSAN con velo oscuro para mantener legible el menú.
-   Sube/baja los valores alfa del linear-gradient para ver más o menos la imagen. */
+/* Fondo del sidebar: color plano (se retiró la imagen NISSAN). */
 body.dark-sidenav .left-sidenav {
-  background-color: #1d1d1d;
-  background-image:
-    linear-gradient(rgba(29, 29, 29, 0.78), rgba(29, 29, 29, 0.93)),
-    url("assets/images/sidebar-bg.jpg");
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
+  background-color: #464343;
+  background-image: none;
 }
 
-/* El tema pintaba bloques opacos detrás del item abierto y de la marca; con la
-   imagen de fondo taparían la foto, así que se transparentan. */
-body.dark-sidenav .left-sidenav-menu li.mm-active .mm-active > a,
-body.dark-sidenav.enlarge-menu .left-sidenav .brand {
+/* El tema pintaba un bloque opaco detrás del item abierto; con la imagen de
+   fondo taparía la foto, así que se transparenta. */
+body.dark-sidenav .left-sidenav-menu li.mm-active .mm-active > a {
   background: transparent;
+}
+
+/* Marca: fondo azul detrás del logo (también con el menú colapsado) */
+body.dark-sidenav .left-sidenav .brand,
+body.dark-sidenav.enlarge-menu .left-sidenav .brand {
+  background-color: #165fd1cf;
 }
 
 /* Sidebar: tipografía blanca */
