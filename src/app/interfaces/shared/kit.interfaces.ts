@@ -80,6 +80,7 @@ export interface CuadernoKit {
     sku2:                null;
     descripcion:         string;
     clasificacion:       string;
+    orden?:              string;
     fecha_registro:      null;
     fecha_actualizacion: Date;
 }

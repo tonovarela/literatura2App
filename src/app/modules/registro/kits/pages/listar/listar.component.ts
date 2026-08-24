@@ -18,6 +18,7 @@ export class ListarComponent implements OnInit, OnDestroy {
   public pageSettings: PageSettingsModel = { pageSizes: true, pageSize:20 };
   filterSettings: FilterSettingsModel = { type: "CheckBox", };
   height: number = 0;
+  rowHeight: number = 28;
   resizeSubscription$: Subscription
 
   constructor(private kitService: KitService,

@@ -143,7 +143,25 @@ export class RevisionComponent implements OnInit, OnDestroy {
     );
   }
   resetKit() {
-    this.cuadernosVerificados = this.cuadernos.map(c => { return { sku1: c.sku1, descripcion: c.descripcion, verificado: false } as CuadernoVerificado });
+    // La revision sigue el orden con el que se capturo el kit: se escanea 1..n
+    this.cuadernosVerificados = [...this.cuadernos]
+      .sort((a, b) => this.valorOrden(a) - this.valorOrden(b))
+      .map((c, i) => { return { sku1: c.sku1, descripcion: c.descripcion, orden: `${i + 1}`, verificado: false } as CuadernoVerificado });
+  }
+
+
+  // Los cuadernos sin `orden` se van al final conservando el orden que devolvio el servicio
+  private valorOrden(c: CuadernoKit): number {
+    const valor = Number(c?.orden);
+    return c?.orden === null || c?.orden === undefined || c?.orden === '' || isNaN(valor)
+      ? Number.MAX_SAFE_INTEGER
+      : valor;
+  }
+
+
+  // Siguiente cuaderno que se espera escanear (el primero pendiente en orden)
+  get siguienteCuaderno(): CuadernoVerificado {
+    return this.cuadernosVerificados.find(c => !c.verificado);
   }
   async registroKit() {
     this.blockInput = true;
@@ -177,22 +195,20 @@ export class RevisionComponent implements OnInit, OnDestroy {
     if (skuVerificar.length == 0) {
       return;
     }
-    let _cambio = false;
-    this.cuadernosVerificados.forEach(c => {
-      if (c.sku1 == skuVerificar && c.verificado == false) {
-        _cambio = true;
-        c.verificado = true;
-      }
-    });
-
-
-    if (!_cambio) {
-      this.uiService.mostrarToaster("Atencion!", `Libro ${skuVerificar} no encontrado`, true, 1500, "error");
+    // Solo se acepta el cuaderno que toca segun el orden del kit
+    const siguiente = this.siguienteCuaderno;
+    if (siguiente == undefined || siguiente.sku1 != skuVerificar) {
+      const existeEnKit = this.cuadernosVerificados.some(c => c.sku1 == skuVerificar);
+      const mensaje = existeEnKit && siguiente != undefined
+        ? `Fuera de orden, sigue el cuaderno ${siguiente.orden}: ${siguiente.sku1}`
+        : `Libro ${skuVerificar} no encontrado`;
+      this.uiService.mostrarToaster("Atencion!", mensaje, true, 1500, "error");
       this.resetSound();
       this.audios.error.play();
       this.setFocoEntradaPrincipal();
       return
     }
+    siguiente.verificado = true;
 
     const estaCompleto = this.vefificarKitCompleto();
     if (estaCompleto) {

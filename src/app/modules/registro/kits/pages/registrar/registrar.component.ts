@@ -68,16 +68,8 @@ export class RegistrarComponent implements OnInit, OnDestroy {
           { width: 130 },
           { width: 100 },
           { width: 100 },
-          { width: 100, hidden: true },
           { width: 80 },
-          { width: 100, hidden: true },
-          { width: 80, hidden: true },
-          { width: 100, hidden: true },
           { width: 100 },
-          { width: 100 },
-          { width: 100, hidden: true },
-          { width: 100 },
-          { width: 100, hidden: true },
           { width: 100 },
           { width: 100 },
         ],
@@ -90,18 +82,10 @@ export class RegistrarComponent implements OnInit, OnDestroy {
             { value: "Numero de parte", style: this.styleCell },
             { value: "Edición", style: this.styleCell },
             { value: "Clave kit", style: this.styleCell },
-            { value: "Clave kit 2", style: this.styleCell },
             { value: "Identifica", style: this.styleCell },
-            { value: "Plataforma", style: this.styleCell },
-            { value: "Pr", style: this.styleCell },
-            { value: "Indice", style: this.styleCell },
             { value: "Idioma", style: this.styleCell },
             { value: "Cont1", style: this.styleCell },
-            { value: "Cont2", style: this.styleCell },
             { value: "Vehiculo", style: this.styleCell },
-            { value: "Tipo", style: this.styleCell },
-            { value: "Etiqueta", style: this.styleCellRequerido },
-            { value: "Orden compra", style: this.styleCellRequerido },
           ]
         }]
       },
@@ -251,6 +235,11 @@ export class RegistrarComponent implements OnInit, OnDestroy {
     const rowIndex = MaxUsedRange(this.spreadsheetObj, 1);    
     this.spreadsheetObj.clear({ type: "Clear Contents", range: `${this.SheetActive.nombre}!A2:A${rowIndex+1}` });
     this.spreadsheetObj.endEdit();
+
+    // El orden del cuaderno es su posicion dentro del kit: se numera 1..n conforme
+    // aparecen los renglones y se reinicia con cada "Numero parte Prod kit".
+    const ordenPorKit = new Map<string, number>();
+
     for (let i = 1; i <= rowIndex + 1; i++) {
       let row = obtenerDetalleKit(this.spreadsheetObj, i);
     
@@ -259,6 +248,10 @@ export class RegistrarComponent implements OnInit, OnDestroy {
         continue;
       }
       if (row["numparteprod"].length > 0) {
+        const claveKit = row["numparteprod"].trim();
+        const orden = (ordenPorKit.get(claveKit) || 0) + 1;
+        ordenPorKit.set(claveKit, orden);
+        row["orden"] = `${orden}`;
         this.detalleKitPorProcesar.push({ registro: row, id: i, tipo: 'detalleKit' });
 
       }

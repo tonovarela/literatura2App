@@ -117,7 +117,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr role="row" *ngFor="let cuaderno of cuadernosVerificados">
+                            <tr role="row" *ngFor="let cuaderno of cuadernosVerificados" [class.table-warning]="cuaderno === siguienteCuaderno">
                                 <td class="text-center">
                                     <ul class="list-inline mb-0">
                                         <li class="list-inline-item align-middle">
@@ -131,6 +131,7 @@
                                 <td>
 
                                     <p class="d-inline-block align-middle mb-0 bounceIn animated" [ngClass]="{bounceIn:cuaderno.verificado, animated:cuaderno.verificado}">
+                                        <span class="badge badge-soft-primary mr-1" title="Orden del cuaderno dentro del kit">{{cuaderno.orden}}</span>
                                         <a class="d-inline-block align-middle mb-0 product-name">{{cuaderno.descripcion}}</a>
                                         <br>
                                         <span class="font-20 font-13">{{cuaderno.sku1}}</span>

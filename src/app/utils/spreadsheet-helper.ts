@@ -7,11 +7,16 @@ import { solicitudKit } from "../interfaces/shared/kit.interfaces";
 //import { ErrorMensaje } from "../pages/home/kits/interfaces/kit.interface";
 
 
+// Se lee del modelo del libro y no del DOM: spreadsheetObj.getCell() es un metodo de
+// elemento y solo devuelve la celda cuando cae dentro del viewport visible
+// (insideViewport), asi que los renglones fuera de pantalla se leian vacios.
 const obtenerValorColumna = (spreadsheetObj: SpreadsheetComponent, i: number, j: number) => {
-  if (spreadsheetObj.getCell(i, 0) == undefined) {
+  const hoja = spreadsheetObj?.getActiveSheet();
+  const celda = hoja?.rows?.[i]?.cells?.[j];
+  if (celda == undefined || celda.value == undefined) {
     return "";
-  }  
-  return spreadsheetObj.getCell(i, j).firstChild?.nodeValue?.valueOf() || "";
+  }
+  return celda.value.toString().trim();
 
 }
 
@@ -60,26 +65,22 @@ export const obtenerKit = (spreadsheetObj: SpreadsheetComponent, i: number): Kit
     numparte: obtenerValorColumna(spreadsheetObj, i, 3),
     edicion: obtenerValorColumna(spreadsheetObj, i, 4),
     clavekit: obtenerValorColumna(spreadsheetObj, i, 5),
-    // Columnas ocultas en el layout (6,8,9,10,13,15): no se capturan
+    identifica: obtenerValorColumna(spreadsheetObj, i, 6),
+    idioma: obtenerValorColumna(spreadsheetObj, i, 7),
+    cont1: obtenerValorColumna(spreadsheetObj, i, 8),
+    vehiculo: obtenerValorColumna(spreadsheetObj, i, 9),
+    // Campos removidos del layout: se envían con valor fijo por default
+    etiqueta: "1",
+    orden_compra: "1",
     clavekit2: "",
-    identifica: obtenerValorColumna(spreadsheetObj, i, 7),
     plataforma: "",
     pr: "",
     indice: "",
-    idioma: obtenerValorColumna(spreadsheetObj, i, 11),
-    cont1: obtenerValorColumna(spreadsheetObj, i, 12),
     cont2: "",
-    vehiculo: obtenerValorColumna(spreadsheetObj, i, 14),
     tipo: "",
-    etiqueta: obtenerValorColumna(spreadsheetObj, i, 16),
-    orden_compra: obtenerValorColumna(spreadsheetObj, i, 17),
   };     
   if (row.numparteprod.length > 0 && (isNaN(row.totalPorCaja) || row.totalPorCaja <= 0)) {
     return { error: true, mensaje: "Capture el total de kits por caja" };
-  }
-
-  if (row.numparteprod.length > 0 && row.etiqueta.length <= 0) {
-    return { error: true, mensaje: "Capture la etiqueta " };
   }
 
   return row;
@@ -94,17 +95,17 @@ export const obtenerDetalleKit=(spreadsheetObj: SpreadsheetComponent,i): Cuadern
   if (obtenerValorColumna(spreadsheetObj,i, 1).toString().trim().length > 0
     && obtenerValorColumna(spreadsheetObj,i, 2).toString().trim().length == 0) {
 
-    return { error: true, mensaje: "Hace falta el sku 1" };
+    return { error: true, mensaje: "Hace falta el sku 1 (columna C)" };
   }
 
   if (obtenerValorColumna(spreadsheetObj,i, 1).toString().trim().length > 0
     && obtenerValorColumna(spreadsheetObj,i, 4).toString().trim().length == 0) {
-    return { error: true, mensaje: "Hace falta la descripcion" };
+    return { error: true, mensaje: "Hace falta la descripcion (columna E)" };
   }
   
   if (obtenerValorColumna(spreadsheetObj,i, 1).toString().trim().length > 0
     && obtenerValorColumna(spreadsheetObj,i, 5).toString().trim().length == 0) {
-    return { error: true, mensaje: "Hace falta la clasificación" };
+    return { error: true, mensaje: "Hace falta la clasificación (columna F)" };
   }
 
   let row: CuadernoRegistro = {

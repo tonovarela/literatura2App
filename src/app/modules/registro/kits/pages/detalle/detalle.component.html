@@ -63,13 +63,6 @@
                                             name="clavekit" />
                                     </div>
                                 </div>
-                                <div class="form-group row d-none">
-                                    <label class="col-sm-2 col-form-label text-right">Clave kit 2</label>
-                                    <div class="col-sm-10">
-                                        <input class="form-control" type="text" formControlName="clavekit2"
-                                            name="clavekit2" />
-                                    </div>
-                                </div>
                                 <div class="form-group row">
                                     <label class="col-sm-2 col-form-label text-right">Identifica</label>
                                     <div class="col-sm-10">
@@ -77,31 +70,8 @@
                                             name="identifica">
                                     </div>
                                 </div>
-
-                                <div class="form-group row d-none">
-                                    <label class="col-sm-2 col-form-label text-right">Plataforma</label>
-                                    <div class="col-sm-10">
-                                        <input class="form-control" type="text" formControlName="plataforma"
-                                            name="plataforma" />
-                                    </div>
-                                </div>
-                                <div class="form-group row d-none">
-                                    <label class="col-sm-2 col-form-label text-right">Pr</label>
-                                    <div class="col-sm-10">
-                                        <input class="form-control" type="text" formControlName="pr" name="pr" />
-                                    </div>
-                                </div>
-
-
                             </div>
                             <div class="col-6">
-                                <div class="form-group row d-none">
-                                    <label class="col-sm-2 col-form-label text-right">Indice</label>
-                                    <div class="col-sm-10">
-                                        <input class="form-control" type="text" formControlName="indice"
-                                            name="indice" />
-                                    </div>
-                                </div>
                                 <div class="form-group row">
                                     <label class="col-sm-2 col-form-label text-right">Idioma</label>
                                     <div class="col-sm-10">
@@ -115,30 +85,11 @@
                                         <input class="form-control" type="text" formControlName="cont1" name="cont1" />
                                     </div>
                                 </div>
-                                <div class="form-group row d-none">
-                                    <label class="col-sm-2 col-form-label text-right">Cont2</label>
-                                    <div class="col-sm-10">
-                                        <input class="form-control" type="text" formControlName="cont2" name="cont2" />
-                                    </div>
-                                </div>
                                 <div class="form-group row">
                                     <label class="col-sm-2 col-form-label text-right">Vehiculo</label>
                                     <div class="col-sm-10">
                                         <input class="form-control" type="text" formControlName="vehiculo"
                                             name="vehiculo" />
-                                    </div>
-                                </div>
-                                <div class="form-group row d-none">
-                                    <label class="col-sm-2 col-form-label text-right">Tipo</label>
-                                    <div class="col-sm-10">
-                                        <input class="form-control" type="text" formControlName="tipo" name="tipo" />
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-sm-2 col-form-label text-right">Etiqueta</label>
-                                    <div class="col-sm-10">
-                                        <input class="form-control" type="text" formControlName="etiqueta"
-                                            name="etiqueta" />
                                     </div>
                                 </div>
                             </div>
@@ -156,33 +107,32 @@
                                     </div>
                                 </div>                                                                
                             </div>
-                            <div class="col-6">
-                                <div class="form-group row">
-                                    <label class="col-sm-2 col-form-label text-right">Orden de compra </label>
-                                    <div class="col-sm-10">
-                                        <input class="form-control" type="text" formControlName="orden_compra"
-                                        error-indicador [valido]="!tieneErrorKit('orden_compra')"
-                                            name="orden_compra" />
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                     <!--end card-body-->
                 </div>
 
-                <div class="mt-1 row p-2 mb-3" style="background-color:rgba(176, 176, 176, 0.17);">
-                    <div class="col-4 animationSandbox  slideInRight  animated"
+                <div class="mt-1 row p-2 mb-3" cdkDropListGroup
+                    style="background-color:rgba(176, 176, 176, 0.17);">
+                    <div class="col-4 animationSandbox  slideInRight  animated" cdkDropList
+                        [cdkDropListData]="i" (cdkDropListEntered)="alEntrarCuaderno($event)"
                         *ngFor="let detalle of detallesArray.controls;let i=index">
-                        <div class="card ">
-                            <div class="card-header ">
-                                <div class="row">
+                        <div class="card " cdkDrag [cdkDragData]="i">
+                            <div class="card-placeholder" *cdkDragPlaceholder></div>
+                            <div class="card-header " cdkDragHandle>
+                                <div class="row align-items-center">
                                     <div class="col-4">
-                                        <h4 class="card-title">Cuaderno {{i+1}}</h4>
+                                        <h4 class="card-title">
+                                            <span class="badge badge-soft-primary mr-1"
+                                                title="Orden del cuaderno dentro del kit">{{detalle.get('orden').value}}</span>
+                                            Cuaderno
+                                        </h4>
                                     </div>
-                                    <div class="col-2 ml-auto">
-                                        <button type="button" (click)="eliminarDetalle(i)"
-                                            class="btn btn-outline-danger btn-icon-circle-sm mr-5 "><i
+                                    <div class="col-8 text-right">
+                                        <i class="mdi mdi-drag-horizontal-variant text-muted mr-2 handle-cuaderno"
+                                            title="Arrastre para cambiar el orden"></i>
+                                        <button type="button" (click)="eliminarDetalle(i)" title="Eliminar cuaderno"
+                                            class="btn btn-outline-danger btn-icon-circle-sm"><i
                                                 class="ti-close   "></i></button>
                                     </div>
                                 </div>

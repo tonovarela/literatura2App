@@ -7,6 +7,7 @@ export interface parametros {
     sku1: string;
     verificado: boolean;
     descripcion: string;
+    orden?: string;
   
   }
  export interface AudioRevision {

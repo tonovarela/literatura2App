@@ -2,6 +2,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from './../../../shared/shared.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 
 import { KitsRoutingModule } from './kits-routing.module';
@@ -24,6 +25,7 @@ import { AutocompleteLibModule } from 'angular-ng-autocomplete';
   ],
   imports: [
     CommonModule,
+    DragDropModule,
     AutocompleteLibModule,  
     SpreadsheetAllModule,
     GridModule,

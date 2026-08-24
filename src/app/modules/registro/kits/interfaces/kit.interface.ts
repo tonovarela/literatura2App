@@ -55,6 +55,7 @@ export interface CuadernoRegistro {
   descripcion?: string;
   clasificacion?: string;
   fecha_registro?: Date;
+  orden?:string;
   fecha_actualizacion?: Date;
 }
 
